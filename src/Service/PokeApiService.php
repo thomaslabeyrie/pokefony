@@ -90,7 +90,11 @@ class PokeApiService
         // Récupère les données des types
         $typesData = $this->fetchTypesData($pokemonData['types']);
 
-        return PokemonDTO::fromApiResponse($pokemonData, $speciesData, $typesData);
+        // Récupère la chaîne d'évolution
+        $evolutionChainResponse = $this->httpClient->request('GET', $speciesData['evolution_chain']['url']);
+        $evolutionChainData = $evolutionChainResponse->toArray();
+
+        return PokemonDTO::fromApiResponse($pokemonData, $speciesData, $typesData, $evolutionChainData);
     }
 
     /**
