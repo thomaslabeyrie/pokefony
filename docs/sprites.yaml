@@ -1,0 +1,204 @@
+sprites:
+    pokemon:
+        other:
+            official_artwork:
+                format: PNG
+            # dream_world:
+            #     format: SVG
+            # showdown:
+            #     format: GIF
+            # home:
+            #     format: PNG
+
+        versions:
+            generation_i:
+                red_and_blue:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - gray
+                        - transparent
+                        - back_gray
+
+                yellow:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - gbc
+                        - gray
+                        - transparent
+                        - back_gbc
+                        - back_gray
+                        - back_transparent
+
+            generation_ii:
+                crystal:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_shiny
+                        - back_shiny
+                        - front_transparent
+                        - front_transparent_shiny
+                        - back_transparent
+                        - back_transparent_shiny
+                    animated:
+                        format: GIF
+                        variants:
+                            - front_default
+                            - front_shiny
+
+                gold:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_shiny
+                        - front_transparent
+                        - back_shiny
+
+                silver:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_shiny
+                        - front_transparent
+                        - back_shiny
+
+            generation_iii:
+                emerald:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - front_shiny
+
+                firered_and_leafgreen:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_shiny
+                        - back_shiny
+
+                ruby_and_sapphire:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_shiny
+                        - back_shiny
+
+            generation_iv:
+                diamond_and_pearl:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_female
+                        - front_shiny
+                        - back_female
+                        - back_shiny
+                        - front_shiny_female
+                        - back_shiny_female
+
+                heartgold_and_soulsilver:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_female
+                        - front_shiny
+                        - back_female
+                        - back_shiny
+                        - front_shiny_female
+                        - back_shiny_female
+
+                platinum:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_female
+                        - front_shiny
+                        - back_female
+                        - back_shiny
+                        - front_shiny_female
+                        - back_shiny_female
+
+            generation_v:
+                black_and_white:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - back_default
+                        - front_female
+                        - front_shiny
+                        - back_female
+                        - back_shiny
+                        - front_shiny_female
+                        - back_shiny_female
+                    animated:
+                        format: GIF
+                        variants:
+                            - front_default
+                            - front_shiny
+
+            generation_vi:
+                omega_ruby_and_alpha_sapphire:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - front_female
+                        - front_shiny
+                        - front_shiny_female
+
+                x_and_y:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - front_female
+                        - front_shiny
+                        - front_shiny_female
+
+            generation_vii:
+                ultra_sun_and_ultra_moon:
+                    format: PNG
+                    variants:
+                        - front_default
+                        - front_female
+                        - front_shiny
+                        - front_shiny_female
+
+                # icons:
+                #     format: PNG
+                #     variants:
+                #         - front_default
+
+            # generation_viii:
+            # icons:
+            #     format: PNG
+            #     variants:
+            #         - front_default
+            #         - front_female
+
+        # default_sprites:
+        #     format: PNG
+        #     variants:
+        #         - front_default
+        #         - back_default
+        #         - front_female
+        #         - front_shiny
+        #         - back_female
+        #         - back_shiny
+        #         - front_shiny_female
+        #         - back_shiny_female
+
+    # items:
+    #     default:
+    #         format: PNG
+    #         variants:
+    #             - default

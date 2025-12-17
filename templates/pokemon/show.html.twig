@@ -1,0 +1,266 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ pokemon.name | title }}
+	- Pokefony
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		{{dump(pokemon)}}
+		<div
+			class="row g-4 my-4">
+			{# Section Image #}
+			<div class="col-12 col-lg-4">
+				<section class="p-4 rounded h-100">
+					<div class="d-flex flex-column justify-content-between align-items-center gap-4">
+						<img src="{{ pokemon.sprites.officialArtwork }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name | title }} artwork">
+
+						<div class="w-100 d-flex justify-content-between align-items-center">
+							<div class="d-flex align-items-baseline gap-2">
+								<h2 class="fw-bold mb-2">
+									{{ pokemon.name | title }}
+								</h2>
+							</div>
+
+							<div class="d-flex gap-2">
+								{% for type in pokemon.types %}
+									<span class="badge fs-6" style="background-color: var(--{{ type.name }})">
+										{{ type.name | upper }}
+									</span>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			{# Section Informations #}
+			<div class="col-12 col-lg-8">
+				<section class="p-4 rounded h-100">
+					<h3 class="fw-semibold mb-4">
+						Basic Information
+					</h3>
+
+					<p class="fw-medium">
+						{{ pokemon.species.flavorTextEntries['omega-ruby'] }}
+					</p>
+
+					{% if pokemon.species_info.evolves_from_species is not null %}
+						<p class="mb-3">
+							Evolves from
+							<a class="link-primary text-decoration-none fw-semibold" href="{{ path('app_pokemon_show', { name: pokemon.species_info.evolves_from_species.name }) }}">
+								{{ pokemon.species_info.evolves_from_species.name | title }}
+							</a>
+						</p>
+					{% endif %}
+
+					<table class="table">
+						<tbody>
+							<tr>
+								<th scope="row">
+									Height
+								</th>
+								<td>
+									{{ pokemon.height / 10 }}
+									m
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									Weight
+								</th>
+								<td>
+									{{ pokemon.weight / 10 }}
+									kg
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									Gender Ratio
+								</th>
+								<td class="align-middle">
+									{% if pokemon.species_info.gender_rate == -1 %}
+										<span class="text-muted">
+											Genderless
+										</span>
+									{% else %}
+										{% set femalePercent = (pokemon.species_info.gender_rate / 8 * 100) | number_format(1) %}
+										{% set malePercent = ((8 - pokemon.species_info.gender_rate) / 8 * 100) | number_format(1) %}
+										<div class="progress" style="height: 20px; max-width: 400px;">
+											<div class="progress-bar bg-danger" role="progressbar" style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}" aria-valuemin="0" aria-valuemax="100">
+												{{ femalePercent }}
+												%
+											</div>
+											<div class="progress-bar bg-primary" role="progressbar" style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}" aria-valuemin="0" aria-valuemax="100">
+												{{ malePercent }}
+												%
+											</div>
+										</div>
+									{% endif %}
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									Abilities
+								</th>
+								<td>
+									<div class="d-flex gap-2 flex-wrap">
+										{% for ability in pokemon.abilities %}
+											<span class="badge bg-secondary">
+												{{ ability.ability.name | replace({'-': ' '}) | title }}
+												{% if ability.is_hidden %}
+													(Hidden)
+												{% endif %}
+											</span>
+										{% endfor %}
+									</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									Catch Rate
+								</th>
+								<td>
+									{{ pokemon.species_info.capture_rate }}
+									<span class="text-muted">
+										(
+										{{- pokemon.species_info.capture_rate * (100 / 255) | format_number({rounding_mode: 'floor'})-}}
+										%)
+									</span>
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									Growth Rate
+								</th>
+								<td>
+									{{ pokemon.species_info.growth_rate.name | replace({'-': ' '}) | title }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</div>
+		</div>
+
+		{# Types Section #}
+		<section class="my-4 p-4 rounded">
+			<h3 class="fw-semibold mb-4">
+				Type Effectiveness
+			</h3>
+
+			<table class="table">
+				<tbody>
+					<tr>
+						<th scope="row" class="w-25 align-middle">
+							Weak To
+						</th>
+
+						<td class="align-middle">
+							<div class="d-flex gap-2 flex-wrap">
+								{% if pokemon.effectiveness.weaknesses is empty %}
+									<span class="text-muted">
+										-
+									</span>
+								{% else %}
+									{% for type, multiplier in pokemon.effectiveness.weaknesses %}
+										<span class="badge fs-6" style="background-color: var(--{{ type }})">
+											{{ type | upper }}
+											x
+											{{- multiplier -}}
+										</span>
+									{% endfor %}
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row" class="w-25 align-middle">
+							Resistant To
+						</th>
+
+						<td class="align-middle">
+							<div class="d-flex gap-2 flex-wrap">
+								{% if pokemon.effectiveness.resistances is empty %}
+									<span class="text-muted">
+										-
+									</span>
+								{% else %}
+									{% for type, multiplier in pokemon.effectiveness.resistances %}
+										<span class="badge fs-6" style="background-color: var(--{{ type }})">
+											{{ type | upper }}
+											x
+											{{- multiplier -}}
+										</span>
+									{% endfor %}
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row" class="w-25 align-middle">
+							Immune To
+						</th>
+
+						<td class="align-middle">
+							<div class="d-flex gap-2 flex-wrap">
+								{% if pokemon.effectiveness.immunities is empty %}
+									<span class="text-muted">
+										-
+									</span>
+								{% else %}
+									{% for type in pokemon.effectiveness.immunities %}
+										<span class="badge fs-6" style="background-color: var(--{{ type }})">
+											{{ type | upper }}
+										</span>
+									{% endfor %}
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		{# Section Stats #}
+		<section class="my-4 p-4 rounded">
+			<h3 class="fw-semibold mb-4">
+				Stats
+			</h3>
+
+			<table class="table" style="table-layout: fixed;">
+				<colgroup>
+					<col style="width: 150px;">
+					<col style="width: 60px;">
+					<col>
+				</colgroup>
+				<tbody>
+					{% for stat in pokemon.stats %}
+						<tr>
+							<th scope="row">
+								{{ stat.name | replace({'-': ' '}) | title }}
+							</th>
+							<td class="text-center fw-semibold">
+								{{ stat.baseStat }}
+							</td>
+							<td>
+								<div class="progress" style="height: 18px;">
+									<div class="progress-bar" style="width: {{ stat.baseStat / 2.55 }}%" role="progressbar" aria-valuenow="{{ stat.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+	</div>
+{% endblock %}
