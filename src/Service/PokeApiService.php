@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DTO\PokedexEntryDTO;
 use App\DTO\PokemonDTO;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -44,37 +45,33 @@ class PokeApiService
     }
 
     /**
-     * Récupère tous les pokémons d'une région
+     * @return PokedexEntryDTO[]
      */
-    public function getPokemonsByRegion(string $region, int $pokedexOffset, int $page)
+    public function getPokemonsByRegion(string $region, int $page, int $perPage = 20): array
     {
-        try {
-            $limit = 18;
-            $offset = $pokedexOffset + ($page - 1) * $limit;
+        // Récupère la liste complète du Pokédex de la région
+        $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
+        $pokedexData = $pokedexResponse->toArray();
 
-            $response = $this->httpClient->request(
-                'GET',
-                "{$this->pokeApiUrl}pokemon?offset={$offset}&limit={$limit}"
-            );
+        // Extrait les noms des Pokémon
+        $allNames = array_map(
+            fn($entry) => $entry['pokemon_species']['name'],
+            $pokedexData['pokemon_entries']
+        );
 
-            $pokemonEntries = $response->toArray()['results'];
+        // Pagination
+        $offset = ($page - 1) * $perPage;
+        $pageNames = array_slice($allNames, $offset, $perPage);
 
-            foreach ($pokemonEntries as $entry) {
-                $responses[] = $this->httpClient->request(
-                    'GET',
-                    $entry['url'],
-                );
-            }
-
-            $pokemons = [];
-            foreach ($responses as $response) {
-                $pokemons[] = $response->toArray();
-            }
-
-            return $pokemons;
-        } catch (TransportExceptionInterface $e) {
-            return [];
+        // Récupère les infos nécéssaire à l'affichage de chaque pokémon
+        $pokemons = [];
+        foreach ($pageNames as $name) {
+            $response = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
+            $data = $response->toArray();
+            $pokemons[] = PokedexEntryDTO::fromApiResponse($data);
         }
+
+        return $pokemons;
     }
 
     public function getPokemonByName(string $name): PokemonDTO

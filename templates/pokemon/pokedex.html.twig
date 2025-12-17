@@ -8,12 +8,12 @@
 
 	{# <h2 class="text-center m-4">{{ pokedex.name | capitalize }} Pokédex</h2> #}
 
-	<div class="container my-4">
+	<div class="container my-4" style="display: none;">
 		<div class="row g-5">
 			{% for pokemon in pokemons %}
 				<div class="col-12 col-sm-6 col-md-4 col-lg-2">
 					<div class="card border-0 border-bottom rounded-0 h-100 bg-transparent">
-						<img class="card-img-top" src="{{ pokemon.sprites.other['official-artwork'].front_default }}" alt="{{ pokemon.name | capitalize}} artwork">
+						<img class="card-img-top" src="{{ pokemon.artwork }}" alt="{{ pokemon.name | capitalize}} artwork">
 
 						<div class="card-body">
 							<div class="d-flex justify-content-center align-items-center">
@@ -28,14 +28,136 @@
 				</div>
 			{% endfor %}
 		</div>
-		<div class="container d-flex justify-content-center gap-2 my-5">
-			<a class="btn btn-primary" href="{{ path('app_pokedex_region', { region: region, page: page - 1 }) }}">
-				Previous
-			</a>
 
-			<a class="btn btn-primary" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
-				Next
-			</a>
+		<div class="container d-flex justify-content-center gap-2 my-5">
+			<nav aria-label="Page navigation">
+				<ul
+					class="pagination">
+					{# Previous #}
+					<li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+						<a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', { region: region, page: page - 1 }) : '#' }}">
+							Previous
+						</a>
+					</li>
+
+					{# Pages autour de la page actuelle #}
+					{% for i in range(max(1, page - 2), page + 2) %}
+						<li class="page-item {{ page == i ? 'active' : '' }}">
+							<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: i }) }}">
+								{{ i }}
+							</a>
+						</li>
+					{% endfor %}
+
+					{# Next - toujours actif car on ne connaît pas la dernière page #}
+					<li class="page-item">
+						<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
+							Next
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	<div
+		class="container w-auto my-4">
+		{# Pagination #}
+		<div class="container d-flex justify-content-center gap-2 my-2">
+			<nav aria-label="Page navigation">
+				<ul
+					class="pagination">
+					{# Previous #}
+					<li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+						<a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', { region: region, page: page - 1 }) : '#' }}">
+							Previous
+						</a>
+					</li>
+
+					{# Pages autour de la page actuelle #}
+					{% for i in range(max(1, page - 2), page + 2) %}
+						<li class="page-item {{ page == i ? 'active' : '' }}">
+							<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: i }) }}">
+								{{ i }}
+							</a>
+						</li>
+					{% endfor %}
+
+					{# Next - toujours actif car on ne connaît pas la dernière page #}
+					<li class="page-item">
+						<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
+							Next
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+		<section class="p-4 rounded">
+			<table
+				class="table w-auto mx-auto table-hover table-borderless"
+				style="min-width: 700px;">
+				<tbody>
+					{% for pokemon in pokemons %}
+						<tr class="position-relative px-2">
+							<th scope="row">
+								<img src="{{ pokemon.artwork }}" class="img-fluid" style="width: 64px;" alt="">
+							</th>
+
+							<td class="align-middle fw-bold">
+								<a class="stretched-link text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
+									{{ pokemon.name | title }}
+								</a>
+							</td>
+
+							<td class="align-middle">
+								{% for type in pokemon.types %}
+									<span class="badge fs-10" style="background-color: var(--{{ type }})">
+										{{ type | upper }}
+									</span>
+								{% endfor %}
+							</td>
+
+							<td class="align-middle">
+								#
+								{{- pokemon.id -}}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</section>
+
+		{# Pagination #}
+		<div class="container d-flex justify-content-center gap-2 my-5">
+			<nav aria-label="Page navigation">
+				<ul
+					class="pagination">
+					{# Previous #}
+					<li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+						<a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', { region: region, page: page - 1 }) : '#' }}">
+							Previous
+						</a>
+					</li>
+
+					{# Pages autour de la page actuelle #}
+					{% for i in range(max(1, page - 2), page + 2) %}
+						<li class="page-item {{ page == i ? 'active' : '' }}">
+							<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: i }) }}">
+								{{ i }}
+							</a>
+						</li>
+					{% endfor %}
+
+					{# Next - toujours actif car on ne connaît pas la dernière page #}
+					<li class="page-item">
+						<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
+							Next
+						</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 {% endblock %}

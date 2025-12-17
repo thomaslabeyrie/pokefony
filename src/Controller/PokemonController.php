@@ -35,10 +35,11 @@ final class PokemonController extends AbstractController
         ]);
     }
 
-    #[Route('/pokedex/{region}/{page}', name: 'app_pokedex_region')]
+    #[Route('/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
     public function list(string $region, int $page): Response
     {
-        $data = $this->pokeApi->getPokemonsByRegion($region, $this->pokedexOffsets[$region], $page);
+        // Récupère le nom des pokémons
+        $data = $this->pokeApi->getPokemonsByRegion($region, $page);
 
         return $this->render('pokemon/pokedex.html.twig', [
             'region' => $region,
