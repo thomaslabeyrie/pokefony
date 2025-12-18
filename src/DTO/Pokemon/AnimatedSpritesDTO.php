@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO;
+namespace App\DTO\Pokemon;
 
-class GenerationSpritesDTO
+class AnimatedSpritesDTO
 {
     public function __construct(
         public readonly ?string $frontDefault = null,
@@ -13,7 +13,5 @@ class GenerationSpritesDTO
         public readonly ?string $backShiny = null,
         public readonly ?string $frontShinyFemale = null,
         public readonly ?string $backShinyFemale = null,
-        // Nouveaux champs pour les sprites animés
-        public readonly ?AnimatedSpritesDTO $animated = null,
     ) {}
 }
