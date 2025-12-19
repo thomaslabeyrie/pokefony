@@ -16,14 +16,14 @@ class PokemonDTO
         public readonly SpritesDTO $sprites,
         public readonly TypeEffectivenessDTO $effectiveness,
         public readonly SpeciesDTO $species,
-        public readonly EvolutionChainDTO $evolutionChain,  // ← Nouveau
+        public readonly EvolutionChainDTO $evolutionChain,
     ) {}
 
     public static function fromApiResponse(
         array $data,
         array $speciesData,
         array $typesData,
-        array $evolutionChainData  // ← Nouveau paramètre
+        array $evolutionChainData
     ): self {
         return new self(
             id: $data['id'],

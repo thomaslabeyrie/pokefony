@@ -28,20 +28,48 @@
 				POKEFONY
 			</div>
 
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav gap-2">
 				<li class="nav-item">
-					<a class="nav-link active fw-bold" href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" aria-current="page">
+					<a class="nav-link active fw-semibold" href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" aria-current="page">
 						Pokédex
 						<span class="visually-hidden">
 							(current)
 						</span>
 					</a>
 				</li>
+
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold" href="{{ path('app_logout') }}" aria-current="page">
+							Logout
+							<span class="visually-hidden">
+								(current)
+							</span>
+						</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold" href="{{ path('app_register') }}" aria-current="page">
+							Register
+							<span class="visually-hidden">
+								(current)
+							</span>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold" href="{{ path('app_login') }}" aria-current="page">
+							Login
+							<span class="visually-hidden">
+								(current)
+							</span>
+						</a>
+					</li>
+				{% endif %}
 			</ul>
 		</nav>
 
-		<div class="container d-flex justify-content-center"> {% block body %}{% endblock %}
+		<div class="container d-flex justify-content-center align-items-center"> {% block body %}{% endblock %}
 			</div>
-
 		</body>
 	</html>

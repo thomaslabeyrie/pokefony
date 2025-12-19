@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - Pokefony{% endblock %}
+
+{% block body %}
+    <div class="text-center py-5">
+        <h1 class="display-3 fw-bold mb-4">
+            Welcome to Pokefony{% if app.user %}, {{ app.user.email }}{% endif %}!
+        </h1>
+        <p class="lead mb-4">Your comprehensive Pokédex powered by Symfony and PokéAPI</p>
+        <a href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" class="btn btn-primary btn-lg">
+            Explore Pokédex
+        </a>
+    </div>
+{% endblock %}

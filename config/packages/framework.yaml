@@ -1,12 +1,20 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: '%env(APP_SECRET)%'
-
+    secret: "%env(APP_SECRET)%"
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
     #esi: true
     #fragments: true
+
+    # Cache configuration - using filesystem for simplicity
+    cache:
+        app: cache.adapter.filesystem
+        # You can change to cache.adapter.apcu for better performance if APCu is installed
+
+    http_client:
+        default_options:
+            timeout: 30  # Request timeout in seconds
 
 when@test:
     framework:
