@@ -1,0 +1,14 @@
+<turbo-frame id="favorite-{{ pokemon.id }}">
+	<form method="POST" action="{{ path('app_favorites_toggle', { pokemonId: pokemon.id }) }}">
+		<button
+			type="submit"
+			class="btn btn-link p-0 border-0"
+			style="position: relative; z-index: 10;">
+			{% if isFavorite %}
+				<i class="bi bi-star-fill" style="color: #fbbf24;"></i>
+			{% else %}
+				<i class="bi bi-star" style="color: #d1d5db;"></i>
+			{% endif %}
+		</button>
+	</form>
+</turbo-frame>

@@ -38,7 +38,7 @@
 			</nav>
 		</div>
 
-		<section class="p-0 p-md-4 rounded">
+		<section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
 			<table class="table table-hover border-bottom mb-0">
 				<tbody>
 					{% for pokemon in pokemons %}
@@ -48,10 +48,18 @@
 							</th>
 
 							<td class="align-middle fw-bold py-3">
-								<a class="stretched-link text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
+								<a class="text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
 									{{ pokemon.name | title }}
 								</a>
 							</td>
+
+							{% if app.user %}
+								<td class="align-middle py-3">
+									<turbo-frame id="favorite-{{ pokemon.id }}">
+										{% include 'favorites/_favorite_button.html.twig' with { pokemon: pokemon, isFavorite: pokemon.id in favoriteIds } %}
+									</turbo-frame>
+								</td>
+							{% endif %}
 
 							<td class="align-middle py-3">
 								{% for type in pokemon.types %}

@@ -69,6 +69,18 @@
 			</ul>
 		</nav>
 
+		<!-- Toast Container -->
+		<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+			<div id="favoriteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-header">
+					<i class="bi bi-star-fill me-2" style="color: #fbbf24;"></i>
+					<strong class="me-auto">Favorites</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+				<div class="toast-body"></div>
+			</div>
+		</div>
+
 		<div class="container d-flex justify-content-center align-items-center"> {% block body %}{% endblock %}
 			</div>
 		</body>

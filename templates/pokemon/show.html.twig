@@ -117,7 +117,7 @@
 										{% for ability in pokemon.abilities %}
 											<span class="badge bg-secondary">
 												{{ ability.name | replace({'-': ' '}) | title }}
-												{% if ability.is_hidden %}
+												{% if ability.isHidden %}
 													(Hidden)
 												{% endif %}
 											</span>

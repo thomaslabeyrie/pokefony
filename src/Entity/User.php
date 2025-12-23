@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,6 +35,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Pokemon>
+     */
+    #[ORM\ManyToMany(targetEntity: Pokemon::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'user_pokemon')]
+    private Collection $favoritePokemons;
+
+    public function __construct()
+    {
+        $this->favoritePokemons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,5 +121,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    /**
+     * @return Collection<int, Pokemon>
+     */
+    public function getFavoritePokemons(): Collection
+    {
+        return $this->favoritePokemons;
+    }
+
+    public function addFavoritePokemon(Pokemon $favoritePokemon): static
+    {
+        if (!$this->favoritePokemons->contains($favoritePokemon)) {
+            $this->favoritePokemons->add($favoritePokemon);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoritePokemon(Pokemon $favoritePokemon): static
+    {
+        $this->favoritePokemons->removeElement($favoritePokemon);
+
+        return $this;
     }
 }

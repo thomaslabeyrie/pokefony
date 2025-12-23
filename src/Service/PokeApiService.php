@@ -5,7 +5,6 @@ namespace App\Service;
 use App\DTO\Pokedex\PokedexEntryDTO;
 use App\DTO\Pokemon\PokemonDTO;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -59,16 +58,21 @@ class PokeApiService
         });
     }
 
-    public function getPokemonByName(string $name): PokemonDTO
+    /**
+     * Récupère les données d'un Pokémon depuis PokéApi.
+     *
+     * @param string|int $identifier Nom ou ID du Pokémon
+     */
+    public function getPokemon(string|int $identifier): PokemonDTO
     {
-        $cacheKey = "pokemon_detail_{$name}";
+        $cacheKey = "pokemon_detail_{$identifier}";
 
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($name) {
+        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($identifier) {
             // Cache for 24 hours (86400 seconds) - Pokemon data never changes
             $item->expiresAfter(86400);
 
             // Récupère les données du Pokémon
-            $pokemonResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
+            $pokemonResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
             $pokemonData = $pokemonResponse->toArray();
 
             // Récupère les données de l'espèce
