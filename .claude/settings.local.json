@@ -3,7 +3,8 @@
     "allow": [
       "Bash(cat:*)",
       "Bash(php -v:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(composer dump-autoload:*)"
     ]
   }
 }

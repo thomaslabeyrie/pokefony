@@ -40,6 +40,15 @@
 
 				{% if app.user %}
 					<li class="nav-item">
+						<a class="nav-link active fw-semibold" href="{{ path('app_favorites') }}" aria-current="page">
+							Favorites
+							<span class="visually-hidden">
+								(current)
+							</span>
+						</a>
+					</li>
+
+					<li class="nav-item">
 						<a class="nav-link active fw-semibold" href="{{ path('app_logout') }}" aria-current="page">
 							Logout
 							<span class="visually-hidden">
@@ -70,12 +79,25 @@
 		</nav>
 
 		<!-- Toast Container -->
-		<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
-			<div id="favoriteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div
+			class="toast-container position-fixed top-0 end-0 p-3"
+			style="z-index: 11">
+			<div
+				id="favoriteToast"
+				class="toast"
+				role="alert"
+				aria-live="assertive"
+				aria-atomic="true">
 				<div class="toast-header">
 					<i class="bi bi-star-fill me-2" style="color: #fbbf24;"></i>
-					<strong class="me-auto">Favorites</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+					<strong class="me-auto">
+						Favorites
+					</strong>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="toast"
+						aria-label="Close"></button>
 				</div>
 				<div class="toast-body"></div>
 			</div>
