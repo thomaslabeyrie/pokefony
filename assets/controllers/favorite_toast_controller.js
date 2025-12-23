@@ -36,9 +36,9 @@ export default class extends Controller {
         const toastBody = toastEl.querySelector(".toast-body");
 
         if (isFavorite) {
-            toastBody.textContent = `${pokemonName} added to favorites.`;
+            toastBody.innerHTML = `<i class="bi bi-star-fill me-2" style="color: #fbbf24;"></i>${pokemonName} added to favorites.`;
         } else {
-            toastBody.textContent = `${pokemonName} removed from favorites.`;
+            toastBody.innerHTML = `<i class="bi bi-star-fill me-2" style="color: #fbbf24;"></i>${pokemonName} removed from favorites.`;
         }
 
         // Show the toast
