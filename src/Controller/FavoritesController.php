@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\PokemonManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -38,7 +39,7 @@ final class FavoritesController extends AbstractController
 
     #[Route('/favorites/toggle/{pokemonId}', name: 'app_favorites_toggle', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function toggle(int $pokemonId): Response
+    public function toggle(int $pokemonId, Request $request): Response
     {
         // Get user from database
         $user = $this->getUser();
@@ -60,8 +61,14 @@ final class FavoritesController extends AbstractController
 
         $this->entityManager->flush();
 
+        // Determine which template to use based on style parameter
+        $style = $request->query->get('style', 'icon');
+        $template = $style === 'text'
+            ? 'favorites/_favorite_button_text.html.twig'
+            : 'favorites/_favorite_button.html.twig';
+
         // Return Turbo Frame response to update only the button
-        return $this->render('favorites/_favorite_button.html.twig', [
+        return $this->render($template, [
             'pokemon' => ['id' => $pokemonId],
             'isFavorite' => $isFavorite,
         ]);

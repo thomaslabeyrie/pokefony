@@ -21,12 +21,32 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
+
 	<body>
 		<nav class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-between
 				px-4">
 			<div class="navbar-brand fw-bold">
 				POKEFONY
 			</div>
+
+			{% if app.user %}
+				{# Search form - only for authenticated users #}
+				<form action="{{ path('app_pokemon_search') }}" method="GET" class="d-flex bg-secondary" style="min-width: 300px;">
+					<div class="input-group input-group-sm w-100">
+						<input
+							type="text"
+							name="q"
+							class="form-control"
+							placeholder="Search Pokémon by name or ID..."
+							aria-label="Search Pokémon"
+							value="{{ app.request.query.get('q', '') }}"
+							required>
+						<button class="btn btn-light" type="submit">
+							<i class="bi bi-search"></i>
+						</button>
+					</div>
+				</form>
+			{% endif %}
 
 			<ul class="nav navbar-nav gap-2">
 				<li class="nav-item">
@@ -42,6 +62,15 @@
 					<li class="nav-item">
 						<a class="nav-link active fw-semibold" href="{{ path('app_favorites') }}" aria-current="page">
 							Favorites
+							<span class="visually-hidden">
+								(current)
+							</span>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold" href="{{ path('app_teams') }}" aria-current="page">
+							Teams
 							<span class="visually-hidden">
 								(current)
 							</span>
@@ -77,6 +106,16 @@
 				{% endif %}
 			</ul>
 		</nav>
+
+	{# Flash Messages #}
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show m-3" role="alert">
+				{{ message }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	{% endfor %}
 
 		<!-- Toast Container -->
 		<div

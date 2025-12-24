@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ team.name }}
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.table tbody tr:last-child th,
+		.table tbody tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<a href="{{ path('app_teams') }}" class="text-decoration-none text-muted">
+					<i class="bi bi-arrow-left me-2"></i>Back to Teams
+				</a>
+
+				{# Team Title #}
+				<div class="mt-2 d-flex align-items-center gap-2">
+					<img src="{{ asset('images/poke_ball_icon_active.svg') }}" alt="Pokéball Icon Active" style="height: 26px;">
+
+					{% include 'teams/_team_name.html.twig' with {
+						'team': team,
+						'context': 'show'
+					} %}
+				</div>
+			</div>
+			
+			<span class="badge bg-primary rounded-pill fs-5">
+				{{ team.pokemons|length }}/6
+			</span>
+		</div>
+
+		{% if team.pokemons is empty %}
+			<div class="alert alert-info">
+				<i class="bi bi-info-circle me-2"></i>
+				This team is empty. Add Pokemon from the Pokédex!
+			</div>
+		{% else %}
+			<section class="p-0 p-md-4 rounded">
+				<table class="table table-hover mb-0">
+					<tbody>
+						{% for pokemon in team.pokemons %}
+							<tr class="align-middle">
+								<th scope="row" class="p-3 ps-md-2 text-center">
+									<img src="{{ pokemon.spriteUrl }}" class="img-fluid" style="width: 48px; height: 48px;" alt="{{ pokemon.name }}">
+								</th>
+
+								<td class="align-middle fw-bold py-3">
+									<a class="text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
+										{{ pokemon.name | title }}
+									</a>
+								</td>
+
+								<td class="align-middle py-3">
+									{% for type in pokemon.types %}
+										<span class="badge fs-10 mb-1" style="background-color: var(--{{ type.name }})">
+											{{ type.name | upper }}
+										</span>
+									{% endfor %}
+								</td>
+
+								<td class="small pe-3 pe-md-2 py-3">
+									#
+									{{- pokemon.pokemonId -}}
+								</td>
+
+								<td class="align-middle py-3">
+									<form method="POST" action="{{ path('app_teams_remove_pokemon', { teamId: team.id, pokemonId: pokemon.pokemonId }) }}" onsubmit="return confirm('Remove {{ pokemon.name }} from team?');">
+										<button type="submit" class="btn btn-sm btn-outline-danger">
+											<i class="bi bi-trash"></i>
+										</button>
+									</form>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+		{% endif %}
+
+		<div class="mt-4">
+			<form method="POST" action="{{ path('app_teams_delete', { id: team.id }) }}" onsubmit="return confirm('Are you sure you want to delete this team? This cannot be undone.');">
+				<button type="submit" class="btn btn-outline-danger">
+					Delete
+				</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}

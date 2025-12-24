@@ -4,6 +4,16 @@
 	Pokefony
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.table tbody tr:last-child th,
+		.table tbody tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
 	<div
 		class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
@@ -39,44 +49,11 @@
 		</div>
 
 		<section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
-			<table class="table table-hover border-bottom mb-0">
-				<tbody>
-					{% for pokemon in pokemons %}
-						<tr class="position-relative align-middle">
-							<th scope="row" class="p-3 ps-md-2 text-center">
-								<img src="{{ pokemon.artwork }}" class="img-fluid" style="width: 48px; height: 48px;" alt="{{ pokemon.name }}">
-							</th>
-
-							<td class="align-middle fw-bold py-3">
-								<a class="text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
-									{{ pokemon.name | title }}
-								</a>
-							</td>
-
-							{% if app.user %}
-								<td class="align-middle py-3">
-									<turbo-frame id="favorite-{{ pokemon.id }}">
-										{% include 'favorites/_favorite_button.html.twig' with { pokemon: pokemon, isFavorite: pokemon.id in favoriteIds } %}
-									</turbo-frame>
-								</td>
-							{% endif %}
-
-							<td class="align-middle py-3">
-								{% for type in pokemon.types %}
-									<span class="badge fs-10 mb-1" style="background-color: var(--{{ type }})">
-										{{ type | upper }}
-									</span>
-								{% endfor %}
-							</td>
-
-							<td class="small pe-3 pe-md-2 py-3">
-								#
-								{{- pokemon.id -}}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+			{% include 'pokemon/_pokedex_table.html.twig' with {
+				pokemons: pokemons,
+				favoriteIds: favoriteIds,
+				teamPokemonIds: teamPokemonIds
+			} %}
 		</section>
 
 		{# Pagination #}

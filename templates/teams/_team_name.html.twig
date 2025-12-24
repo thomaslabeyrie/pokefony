@@ -1,0 +1,59 @@
+{# Turbo Frame wrapper for inline team name editing #}
+<turbo-frame
+    id="team-name-{{ team.id }}-{{ context }}"
+    data-controller="team-rename"
+    data-team-rename-team-id-value="{{ team.id }}"
+    data-team-rename-team-name-value="{{ team.name }}"
+    data-team-rename-context-value="{{ context }}">
+
+    <div class="d-flex align-items-center gap-2">
+        {# Display mode #}
+        <span data-team-rename-target="display" class="{% if context == 'show' %}h2 fw-bold mb-0{% else %}h5 card-title mb-0{% endif %}">
+            {{ team.name }}
+        </span>
+
+        {# Edit button #}
+        <button
+            type="button"
+            class="btn btn-link p-0 text-muted"
+            data-team-rename-target="editButton"
+            data-action="click->team-rename#startEdit"
+            title="Rename team">
+            <i class="bi bi-pencil-fill"></i>
+        </button>
+
+        {# Edit mode form (hidden by default) #}
+        <form
+            data-team-rename-target="form"
+            data-action="submit->team-rename#save"
+            class="d-none d-flex align-items-center gap-2 flex-grow-1">
+
+            <input
+                type="text"
+                class="form-control form-control-sm"
+                data-team-rename-target="input"
+                data-action="keydown->team-rename#handleKeydown"
+                maxlength="100"
+                required>
+
+            <div class="btn-group btn-group-sm" role="group">
+                <button
+                    type="submit"
+                    class="btn btn-success btn-sm"
+                    data-team-rename-target="saveButton"
+                    title="Save">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-team-rename-target="cancelButton"
+                    data-action="click->team-rename#cancelEdit"
+                    title="Cancel">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</turbo-frame>

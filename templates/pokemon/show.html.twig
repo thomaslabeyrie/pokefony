@@ -11,7 +11,7 @@
 		class="container">
 		{# {{dump(pokemon)}} #}
 		<div
-			class="row my-4">
+			class="row my-4" data-controller="favorite-toast">
 
 			{# Section Image #}
 			<div class="col-12 col-lg-4">
@@ -46,6 +46,30 @@
 									{{- pokemon.id | upper -}}
 								</h6>
 							</div>
+
+							{# Favorites and Teams buttons #}
+							{% if app.user %}
+								<div class="d-flex gap-3 mt-4">
+									{# Favorites button #}
+									<turbo-frame id="favorite-{{ pokemon.id }}">
+										{% include 'favorites/_favorite_button_text.html.twig' with {
+											pokemon: pokemon,
+											isFavorite: isFavorite
+										} %}
+									</turbo-frame>
+
+									{# Teams button #}
+									<button type="button" class="btn btn-sm btn-primary"
+											data-bs-toggle="modal"
+											data-bs-target="#addToTeamModal-{{ pokemon.id }}"
+											data-controller="team-modal-trigger"
+											data-action="click->team-modal-trigger#loadModal"
+											data-team-modal-trigger-pokemon-id-value="{{ pokemon.id }}"
+											data-team-modal-trigger-pokemon-name-value="{{ pokemon.name }}">
+										Manage Teams
+									</button>
+								</div>
+							{% endif %}
 						</div>
 					</div>
 				</section>
@@ -531,4 +555,7 @@
 			</table>
 		</section>
 	</div>
+
+	{# Modal container for teams - loaded dynamically via Stimulus #}
+	<div id="team-modal-container"></div>
 {% endblock %}

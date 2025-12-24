@@ -1,0 +1,84 @@
+{# Modal content loaded via Turbo Frame #}
+<div class="modal fade" id="addToTeamModal-{{ pokemonId }}" tabindex="-1" aria-labelledby="addToTeamModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addToTeamModalLabel">Add to Team</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" data-controller="team-modal" data-team-modal-pokemon-id-value="{{ pokemonId }}" data-team-modal-pokemon-name-value="{{ pokemonName }}">
+				{# Create new team section #}
+				<div class="mb-4">
+					<h6 class="fw-bold mb-3">Create New Team</h6>
+					<form data-action="submit->team-modal#createTeam">
+						<div class="input-group">
+							<input
+								type="text"
+								name="team_name"
+								class="form-control"
+								placeholder="Team name"
+								required
+								maxlength="100"
+								data-team-modal-target="teamNameInput">
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-plus-circle me-1"></i>Create
+							</button>
+						</div>
+					</form>
+				</div>
+
+				{# Add to existing team section #}
+				{% if teams is not empty %}
+					<hr>
+					<div>
+						<h6 class="fw-bold mb-3">Add to Existing Team</h6>
+						<div class="list-group">
+							{% for team in teams %}
+								<button
+									type="button"
+									class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+									data-action="click->team-modal#addToExistingTeam"
+									data-team-id="{{ team.id }}"
+								data-team-name="{{ team.name }}">
+									<span>
+										<i class="bi bi-people-fill me-2"></i>
+										{{ team.name }}
+									</span>
+									<span class="badge bg-primary rounded-pill">
+										{{ team.pokemons|length }}/6
+									</span>
+								</button>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
+				{# Teams already containing this Pokemon #}
+				{% if teamsWithPokemon is defined and teamsWithPokemon is not empty %}
+					<hr>
+					<div>
+						<h6 class="fw-bold mb-3">Remove from Team</h6>
+						<div class="list-group">
+							{% for team in teamsWithPokemon %}
+								<div class="list-group-item d-flex justify-content-between align-items-center">
+									<span>
+										<i class="bi bi-people-fill me-2"></i>
+										{{ team.name }}
+									</span>
+									<button
+										type="button"
+										class="btn btn-sm btn-outline-danger"
+										data-action="click->team-modal#removeFromTeam"
+										data-team-id="{{ team.id }}"
+										data-team-name="{{ team.name }}">
+										<i class="bi bi-trash"></i>
+									</button>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

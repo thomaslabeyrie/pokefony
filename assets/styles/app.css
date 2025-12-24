@@ -74,6 +74,15 @@ section {
     background-color: #fff;
 }
 
+i {
+    color: rgb(198, 198, 198);
+    transition: 300ms;
+}
+
+i:hover {
+    color: hsl(0, 0%, 20%);
+}
+
 .section-title {
     color: rgb(188, 188, 188);
 }

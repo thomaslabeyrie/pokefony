@@ -1,0 +1,9 @@
+TEAMS:
+- Create a Team entity with a OneToMany relation to User (User <- OneToMany -> Team)
+- Add an "add to team button" (a simple "+" icon from Bootstrap) in pokedex table rows that opens a modal
+    - In the modal, 2 options are available:
+        - Make a new team with the selected pokémon in it
+            - This button would have to make a POST request to a route (something like /teams/create) to create a new team
+        - Add the pokémon to an existing team from a dropdown menu
+    - Validate button that sends the POST request (a route like /teams/{teamId}/add/{pokemonId}) and updates the database
+- The modal closes and the table updates indicating that the pokémon now belongs to a team. Probably a simple UI updated like the + icon changing to another and a listing of all the teams the pokémon belongs to

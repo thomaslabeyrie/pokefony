@@ -4,6 +4,16 @@
 	Pokefony
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.table tbody tr:last-child th,
+		.table tbody tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
 	<div class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
 		<section class="p-0 p-md-4 rounded" data-controller="favorite-toast favorites-list">
@@ -12,7 +22,7 @@
 					You don't have any favorite pokémon yet.
 				</h6>
 			{% else %}
-				<table class="table table-hover border-bottom mb-0">
+				<table class="table table-hover mb-0">
 					<tbody data-favorites-list-target="tableBody">
 						{% for pokemon in pokemons %}
 							<tr class="position-relative align-middle" data-favorites-list-target="row" data-pokemon-id="{{ pokemon.pokemonId }}" style="transition: opacity 0.3s ease-out, transform 0.3s ease-out;">
