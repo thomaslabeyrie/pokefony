@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class PokedexController extends AbstractController
@@ -148,7 +147,6 @@ final class PokedexController extends AbstractController
                 'favoriteIds' => $favoriteIds,
                 'teamPokemonIds' => $teamPokemonIds,
             ]);
-
         } catch (ClientException $e) {
             if ($e->getResponse()->getStatusCode() === 404) {
                 $this->addFlash('error', "Pokémon '{$query}' not found. Please check the name or ID.");

@@ -24,9 +24,8 @@ class PokeApiService
         $cacheKey = "pokedex_{$region}_page_{$page}";
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($region, $page, $perPage) {
-            // Cache for 1 hour (3600 seconds)
-            // Pokemon data is static, so you can increase this to 24 hours (86400) or even longer
-            $item->expiresAfter(86400);
+            // Cache for 24 hour
+            $item->expiresAfter(60 * 60 * 24);
 
             // Récupère la liste complète du Pokédex de la région
             $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
