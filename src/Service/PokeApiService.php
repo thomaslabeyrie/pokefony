@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use App\DTO\ApiPokemon\ApiPokemonDTO;
 use App\DTO\Pokedex\PokedexEntryDTO;
 use App\DTO\Pokemon\PokemonDTO;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -13,20 +15,15 @@ class PokeApiService
     public function __construct(
         private HttpClientInterface $httpClient,
         private CacheInterface $cache,
+        private SerializerInterface $serializer,
         private string $pokeApiUrl = 'https://pokeapi.co/api/v2/'
     ) {}
 
     /**
      * @return PokedexEntryDTO[]
      */
-    public function getPokemonsByRegion(string $region, int $page, int $perPage = 20): array
+    public function getPokemonsByRegion(string $region = "national", int $page = 1, int $perPage = 20): array
     {
-        $cacheKey = "pokedex_{$region}_page_{$page}";
-
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($region, $page, $perPage) {
-            // Cache for 24 hour
-            $item->expiresAfter(60 * 60 * 24);
-
             // Récupère la liste complète du Pokédex de la région
             $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
             $pokedexData = $pokedexResponse->toArray();
@@ -47,14 +44,17 @@ class PokeApiService
                 $responses[] = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
             }
 
-            $pokemons = [];
             foreach ($responses as $response) {
-                $data = $response->toArray();
-                $pokemons[] = PokedexEntryDTO::fromApiResponse($data);
+                $data = $response->getContent();
+                $pokemons[] = $this->serializer->deserialize(
+                    $data,
+                    ApiPokemonDTO::class,
+                    'json',
+                    ['groups' => ['pokedex']]
+                );
             }
 
             return $pokemons;
-        });
     }
 
     /**
@@ -88,6 +88,22 @@ class PokeApiService
             return PokemonDTO::fromApiResponse($pokemonData, $speciesData, $typesData, $evolutionChainData);
         });
     }
+
+    public function getApiPokemon(string|int $identifier): ApiPokemonDTO
+    {
+        $response = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
+        $pokemonData = $response->getContent();
+
+        $pokemon = $this->serializer->deserialize(
+            $pokemonData,
+            ApiPokemonDTO::class,
+            'json',
+            ['groups' => ['pokedex']]
+        );
+
+        return $pokemon;
+    }
+
 
     private function fetchTypesData(array $types): array
     {

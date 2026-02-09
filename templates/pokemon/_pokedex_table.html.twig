@@ -4,7 +4,7 @@
 		{% for pokemon in pokemons %}
 			<tr class="position-relative align-middle">
 				<th scope="row" class="p-3 ps-md-2 text-center">
-					<img src="{{ pokemon.artwork }}" class="img-fluid" style="width: 48px; height: 48px;" alt="{{ pokemon.name }}">
+					<img src="{{ pokemon.sprites.other.officialArtwork.frontDefault }}" class="img-fluid" style="width: 48px; height: 48px;" alt="{{ pokemon.name }}">
 				</th>
 
 				<td class="align-middle fw-bold py-3">
@@ -26,9 +26,9 @@
 				{% endif %}
 
 				<td class="align-middle py-3">
-					{% for type in pokemon.types %}
-						<span class="badge fs-10 mb-1" style="background-color: var(--{{ type }})">
-							{{ type | upper }}
+					{% for entry in pokemon.types %}
+						<span class="badge fs-10 mb-1" style="background-color: var(--{{ entry.type.name }})">
+							{{ entry.type.name | upper }}
 						</span>
 					{% endfor %}
 				</td>

@@ -20,10 +20,10 @@ final class PokedexController extends AbstractController
         private TeamRepository $teamRepository,
     ) {}
 
-    #[Route('/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
+    #[Route('/pokedex/{region}/{page}', name: 'app_pokedex_region')]
     public function list(string $region, int $page)
     {
-        $data = $this->pokeApi->getPokemonsByRegion($region, $page);
+        $pokemons = $this->pokeApi->getPokemonsByRegion($region, $page);
 
         $favoriteIds = [];
         $teamPokemonIds = [];
@@ -48,7 +48,7 @@ final class PokedexController extends AbstractController
         return $this->render('pokemon/pokedex.html.twig', [
             'region' => $region,
             'page' => $page,
-            'pokemons' => $data,
+            'pokemons' => $pokemons,
             'favoriteIds' => $favoriteIds,
             'teamPokemonIds' => $teamPokemonIds,
         ]);
@@ -57,7 +57,7 @@ final class PokedexController extends AbstractController
     #[Route('/pokemon/{name}', name: 'app_pokemon_show')]
     public function show(string $name)
     {
-        $data = $this->pokeApi->getPokemon($name);
+        $data = $this->pokeApi->getApiPokemon($name);
 
         // Initialize data for authenticated users
         $isFavorite = false;
