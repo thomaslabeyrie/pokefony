@@ -2,21 +2,20 @@
 
 namespace App\Service;
 
-use App\DTO\ApiPokemon\ApiPokemonDTO;
+use App\DTO\ApiEvolution\EvolutionChainDTO;
+use App\DTO\ApiPokemon\PokemonDTO;
+use App\DTO\ApiPokemonSpecies\PokemonSpeciesDTO;
+use App\DTO\ApiType\TypeDTO;
 use App\DTO\Pokedex\PokedexEntryDTO;
-use App\DTO\Pokemon\PokemonDTO;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 class PokeApiService
 {
     public function __construct(
-        private HttpClientInterface $httpClient,
-        private CacheInterface $cache,
-        private SerializerInterface $serializer,
-        private string $pokeApiUrl = 'https://pokeapi.co/api/v2/'
+        private readonly HttpClientInterface $httpClient,
+        private readonly SerializerInterface $serializer,
+        private readonly string $pokeApiUrl = 'https://pokeapi.co/api/v2/'
     ) {}
 
     /**
@@ -44,15 +43,17 @@ class PokeApiService
                 $responses[] = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
             }
 
+            $pokemons = [];
             foreach ($responses as $response) {
                 $data = $response->getContent();
                 $pokemons[] = $this->serializer->deserialize(
-                    $data,
-                    ApiPokemonDTO::class,
-                    'json',
-                    ['groups' => ['pokedex']]
-                );
-            }
+                    data: $data,
+                    type: PokemonDTO::class,
+                    format: 'json',
+                    context: [
+                        'groups' => ['pokemon'],
+                    ]
+                );}
 
             return $pokemons;
     }
@@ -62,72 +63,55 @@ class PokeApiService
      *
      * @param string|int $identifier Nom ou ID du Pokémon
      */
-    public function getPokemon(string|int $identifier): PokemonDTO
+    public function getPokemon(string|int $identifier): array
     {
-        $cacheKey = "pokemon_detail_{$identifier}";
-
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($identifier) {
-            // Cache for 24 hours (86400 seconds) - Pokemon data never changes
-            $item->expiresAfter(86400);
-
-            // Récupère les données du Pokémon
-            $pokemonResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
-            $pokemonData = $pokemonResponse->toArray();
-
-            // Récupère les données de l'espèce
-            $speciesResponse = $this->httpClient->request('GET', $pokemonData['species']['url']);
-            $speciesData = $speciesResponse->toArray();
-
-            // Récupère les données des types
-            $typesData = $this->fetchTypesData($pokemonData['types']);
-
-            // Récupère la chaîne d'évolution
-            $evolutionChainResponse = $this->httpClient->request('GET', $speciesData['evolution_chain']['url']);
-            $evolutionChainData = $evolutionChainResponse->toArray();
-
-            return PokemonDTO::fromApiResponse($pokemonData, $speciesData, $typesData, $evolutionChainData);
-        });
-    }
-
-    public function getApiPokemon(string|int $identifier): ApiPokemonDTO
-    {
-        $response = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
-        $pokemonData = $response->getContent();
-
+        // Récupère les données du Pokémon
+        $pokemonResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
         $pokemon = $this->serializer->deserialize(
-            $pokemonData,
-            ApiPokemonDTO::class,
-            'json',
-            ['groups' => ['pokedex']]
+            data: $pokemonResponse->getContent(),
+            type: PokemonDTO::class,
+            format: 'json',
+            context: [
+                'groups' => ['pokemon'],
+            ]
         );
 
-        return $pokemon;
-    }
+        // Récupère les données de l'espèce
+        $speciesResponse = $this->httpClient->request('GET', $pokemon->getSpecies()->getUrl());
+        $species = $this->serializer->deserialize(
+            data: $speciesResponse->getContent(),
+            type: PokemonSpeciesDTO::class,
+            format: 'json'
+        );
 
-
-    private function fetchTypesData(array $types): array
-    {
-        $typesData = [];
-        $responses = [];
-
-        // Lancer toutes les requêtes en parallèle
-        foreach ($types as $typeEntry) {
-            $typeName = $typeEntry['type']['name'];
-            $responses[$typeName] = [
-                'slot' => $typeEntry['slot'],
-                'response' => $this->httpClient->request('GET', $typeEntry['type']['url'])
-            ];
+        // Récupère les données des types
+        $typesResponses = [];
+        foreach ($pokemon->getTypes() as $entry) {
+            $typesResponses[] = $this->httpClient->request('GET', $entry->getType()->getUrl());
         }
 
-        // Attendre toutes les réponses et stocker les données brutes
-        foreach ($responses as $typeName => $data) {
-            $typesData[] = [
-                'slot' => $data['slot'],
-                'name' => $typeName,
-                'details' => $data['response']->toArray()
-            ];
+        $types = [];
+        foreach ($typesResponses as $response) {
+            $types[] = $this->serializer->deserialize(
+                data: $response->getContent(),
+                type: TypeDTO::class,
+                format: 'json'
+            );
         }
 
-        return $typesData;
+        // Récupère les données de la chaîne d'évolution
+        $evolutionChainResponse = $this->httpClient->request('GET', $species->getEvolutionChain()->getUrl());
+        $evolutionChain = $this->serializer->deserialize(
+            data: $evolutionChainResponse->getContent(),
+            type: EvolutionChainDTO::class,
+            format: 'json'
+        );
+
+        return array(
+            'pokemon' => $pokemon,
+            'species' => $species,
+            'types' => $types,
+            'evolutionChain' => $evolutionChain,
+        );
     }
 }

@@ -2,20 +2,36 @@
 
 namespace App\Controller;
 
-use App\DTO\Pokemon\PokemonApiDTO;
-use App\Service\PokeApiService;
+use App\DTO\Test\TestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class TestController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
-    public function test(SerializerInterface $serializer, PokeApiService $pokeApi): Response
+    public function test(SerializerInterface $serializer): Response
     {
-        $pokemon = $pokeApi->getApiPokemon('bulbasaur');
 
-        dd($pokemon);
+// Simple JSON with only a few properties set
+        $json = '{"name": "thomas", "age": null, "height": 176}';
+        $data = json_decode($json, true);
+        $data = array_filter($data, fn($entry) => $entry !== null);
+        $json = json_encode($data);
+
+// Deserialize with skip null values
+        $person = $serializer->deserialize(
+            $json,
+            TestDTO::class,
+            'json',
+            [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => true
+            ]
+        );
+
+        dd($person);
     }
 }

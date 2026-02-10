@@ -6,7 +6,7 @@ class SpritesDTO
 {
     public function __construct(
         public readonly ?string $officialArtwork,
-        public readonly array $versions, // Sprites groupés par génération
+        public readonly array $versions, // PokemonSpritesDTO groupés par génération
     ) {}
 
     public static function fromApiResponse(array $data): self

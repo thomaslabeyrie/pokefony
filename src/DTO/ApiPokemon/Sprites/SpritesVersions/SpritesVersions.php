@@ -2,14 +2,6 @@
 
 namespace App\DTO\ApiPokemon\Sprites\SpritesVersions;
 
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationI\GenerationI;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationII\GenerationII;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationIII\GenerationIII;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationIV\GenerationIV;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationV\GenerationV;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationVI\GenerationVI;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationVII\GenerationVII;
-use App\DTO\ApiPokemon\Sprites\SpritesVersions\GenerationVIII\GenerationVIII;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

@@ -469,7 +469,7 @@
 						</tr>
 					{% endif %}
 
-					{# Known Move - seulement si utilisé #}
+					{# Known PokemonMoveDTO - seulement si utilisé #}
 					{% set hasKnownMove = false %}
 					{% for evolution in pokemon.evolutionChain.evolutions %}
 						{% if evolution.evolutionDetails and evolution.evolutionDetails.knownMove %}
