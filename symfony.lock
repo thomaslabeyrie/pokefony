@@ -35,6 +35,58 @@
             "migrations/.gitignore"
         ]
     },
+    "friendsofphp/php-cs-fixer": {
+        "version": "3.94",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "be2103eb4a20942e28a6dd87736669b757132435"
+        },
+        "files": [
+            ".php-cs-fixer.dist.php"
+        ]
+    },
+    "jane-php/json-schema": {
+        "version": "7.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "035c47bfcd8c56bbf59227f347365c8553953dd6"
+        },
+        "files": [
+            "bin/jane-json-schema-generate",
+            "config/jane/json_schema.php",
+            "config/packages/jane.yaml"
+        ]
+    },
+    "jane-php/open-api-common": {
+        "version": "7.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "4b3b08e3854e5d4e83066fd231246879f6e0eea4"
+        },
+        "files": [
+            "bin/jane-open-api-generate",
+            "config/jane/open_api.php",
+            "config/packages/jane.yaml"
+        ]
+    },
+    "php-http/discovery": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "config/packages/http_discovery.yaml"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "12.5",
         "recipe": {
