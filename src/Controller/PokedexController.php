@@ -16,9 +16,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class PokedexController extends AbstractController
 {
     public function __construct(
-        private PokeApiService $pokeApi,
-        private UserRepository $userRepository,
-        private TeamRepository $teamRepository,
+        private readonly PokeApiService $pokeApi,
+        private readonly UserRepository $userRepository,
+        private readonly TeamRepository $teamRepository,
     ) {}
 
     #[Route(path: '/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
