@@ -7,6 +7,7 @@ use App\DTO\ApiPokemon\PokemonDTO;
 use App\DTO\ApiPokemonSpecies\PokemonSpeciesDTO;
 use App\DTO\ApiType\TypeDTO;
 use App\DTO\Pokedex\PokedexEntryDTO;
+use App\Generated\PokeApi\Client;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -15,47 +16,49 @@ class PokeApiService
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly SerializerInterface $serializer,
-        private readonly string $pokeApiUrl = 'https://pokeapi.co/api/v2/'
-    ) {}
+        private readonly string $pokeApiUrl = 'https://pokeapi.co/api/v2/',
+    ) {
+    }
 
     /**
      * @return PokedexEntryDTO[]
      */
-    public function getPokemonsByRegion(string $region = "national", int $page = 1, int $perPage = 20): array
+    public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
-            // Récupère la liste complète du Pokédex de la région
-            $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
-            $pokedexData = $pokedexResponse->toArray();
+        // Récupère la liste complète du Pokédex de la région
+        $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
+        $pokedexData = $pokedexResponse->toArray();
 
-            // Extrait les noms des Pokémon
-            $allNames = array_map(
-                fn($entry) => $entry['pokemon_species']['name'],
-                $pokedexData['pokemon_entries']
+        // Extrait les noms des Pokémon
+        $allNames = array_map(
+            fn ($entry) => $entry['pokemon_species']['name'],
+            $pokedexData['pokemon_entries']
+        );
+
+        // Pagination
+        $offset = ($page - 1) * $perPage;
+        $pageNames = array_slice($allNames, $offset, $perPage);
+
+        // Récupère les infos nécéssaires à l'affichage de chaque pokémon
+        $responses = [];
+        foreach ($pageNames as $name) {
+            $responses[] = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
+        }
+
+        $pokemons = [];
+        foreach ($responses as $response) {
+            $data = $response->getContent();
+            $pokemons[] = $this->serializer->deserialize(
+                data: $data,
+                type: PokemonDTO::class,
+                format: 'json',
+                context: [
+                    'groups' => ['pokemon'],
+                ]
             );
+        }
 
-            // Pagination
-            $offset = ($page - 1) * $perPage;
-            $pageNames = array_slice($allNames, $offset, $perPage);
-
-            // Récupère les infos nécéssaires à l'affichage de chaque pokémon
-            $responses = [];
-            foreach ($pageNames as $name) {
-                $responses[] = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
-            }
-
-            $pokemons = [];
-            foreach ($responses as $response) {
-                $data = $response->getContent();
-                $pokemons[] = $this->serializer->deserialize(
-                    data: $data,
-                    type: PokemonDTO::class,
-                    format: 'json',
-                    context: [
-                        'groups' => ['pokemon'],
-                    ]
-                );}
-
-            return $pokemons;
+        return $pokemons;
     }
 
     /**
@@ -65,6 +68,11 @@ class PokeApiService
      */
     public function getPokemon(string|int $identifier): array
     {
+        $apiClient = Client::create();
+        $pokemonJane = $apiClient->apiV2PokemonRetrieve(1);
+
+        dd($pokemonJane);
+
         // Récupère les données du Pokémon
         $pokemonResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$identifier}");
         $pokemon = $this->serializer->deserialize(
@@ -107,11 +115,11 @@ class PokeApiService
             format: 'json'
         );
 
-        return array(
+        return [
             'pokemon' => $pokemon,
             'species' => $species,
             'types' => $types,
             'evolutionChain' => $evolutionChain,
-        );
+        ];
     }
 }

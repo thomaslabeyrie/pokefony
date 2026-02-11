@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Generated\PokeApi\Endpoint;
+
+class ApiV2LocationRetrieve extends \App\Generated\PokeApi\Runtime\Client\BaseEndpoint implements \App\Generated\PokeApi\Runtime\Client\Endpoint
+{
+    protected $id;
+    /**
+     * Locations that can be visited within the games. Locations make up sizable portions of regions, like cities or routes.
+     * @param string $id This parameter can be a string or an integer.
+     */
+    public function __construct(string $id)
+    {
+        $this->id = $id;
+    }
+    use \App\Generated\PokeApi\Runtime\Client\EndpointTrait;
+    public function getMethod(): string
+    {
+        return 'GET';
+    }
+    public function getUri(): string
+    {
+        return str_replace(['{id}'], [$this->id], '/api/v2/location/{id}/');
+    }
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    {
+        return [[], null];
+    }
+    public function getExtraHeaders(): array
+    {
+        return ['Accept' => ['application/json']];
+    }
+    /**
+     * {@inheritdoc}
+     *
+     *
+     * @return null|\App\Generated\PokeApi\Model\LocationDetail
+     */
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
+            return $serializer->deserialize($body, 'App\Generated\PokeApi\Model\LocationDetail', 'json');
+        }
+    }
+    public function getAuthenticationScopes(): array
+    {
+        return ['cookieAuth', 'basicAuth'];
+    }
+}
