@@ -1,0 +1,36 @@
+<?php
+
+namespace App\PokeApiClient\DTO\Type;
+
+use App\PokeApiClient\DTO\Common\GenerationGameIndexDTO;
+use App\PokeApiClient\DTO\Common\NamedResourceDTO;
+use Symfony\Component\Serializer\Attribute\SerializedName;
+
+class TypeDTO
+{
+    public int $id;
+
+    public string $name;
+
+    #[SerializedName('damage_relations')]
+    public TypeRelationsDTO $damageRelations;
+
+    /** @var TypeRelationsPastDTO[] */
+    #[SerializedName('past_damage_relations')]
+    public array $pastDamageRelations;
+
+    /** @var GenerationGameIndexDTO[] */
+    #[SerializedName('game_indices')]
+    public array $gameIndices;
+
+    public NamedResourceDTO $generation;
+
+    #[SerializedName('move_damage_class')]
+    public NamedResourceDTO $moveDamageClass;
+
+    /** @var TypePokemonDTO[] */
+    public array $pokemon;
+
+    /** @var NamedResourceDTO[] */
+    public array $moves;
+}
