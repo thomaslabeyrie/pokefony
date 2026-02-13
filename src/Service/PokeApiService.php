@@ -2,11 +2,10 @@
 
 namespace App\Service;
 
-use App\DTO\ApiEvolution\EvolutionChainDTO;
-use App\DTO\ApiPokemon\PokemonDTO;
-use App\DTO\ApiPokemonSpecies\PokemonSpeciesDTO;
-use App\DTO\ApiType\TypeDTO;
-use App\DTO\Pokedex\PokedexEntryDTO;
+use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
+use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
+use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
+use App\PokeApiClient\DTO\Type\TypeDTO;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -18,9 +17,6 @@ class PokeApiService
         private readonly string $pokeApiUrl = 'https://pokeapi.co/api/v2/'
     ) {}
 
-    /**
-     * @return PokedexEntryDTO[]
-     */
     public function getPokemonsByRegion(string $region = "national", int $page = 1, int $perPage = 20): array
     {
             // Récupère la liste complète du Pokédex de la région
