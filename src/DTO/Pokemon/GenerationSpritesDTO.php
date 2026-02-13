@@ -15,5 +15,6 @@ class GenerationSpritesDTO
         public readonly ?string $backShinyFemale = null,
         // Nouveaux champs pour les sprites animés
         public readonly ?AnimatedSpritesDTO $animated = null,
-    ) {}
+    ) {
+    }
 }

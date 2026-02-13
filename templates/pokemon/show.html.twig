@@ -9,7 +9,7 @@
 
 	<div
 		class="container">
-		{# {{dump(pokemon)}} #}
+		{{dump(pokemon, types, species, evolutionChain)}}
 		<div
 			class="row my-4" data-controller="favorite-toast">
 
@@ -18,7 +18,7 @@
 				<section class="p-4 rounded h-100">
 					<div class="d-flex h-100 flex-column justify-content-between align-items-center">
 						<div class="h-100 d-flex align-items-center">
-							<img src="{{ pokemon.sprites.officialArtwork }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name | title }} artwork">
+							<img src="{{ pokemon.sprites.frontDefault }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name | title }} artwork">
 						</div>
 
 						<div class="w-100">
@@ -28,7 +28,7 @@
 								</h2>
 
 								<div class="d-flex gap-2">
-									{% for type in pokemon.types %}
+									{% for type in types %}
 										<span class="badge fs-6" style="background-color: var(--{{ type.name }})">
 											{{ type.name | upper }}
 										</span>
@@ -38,7 +38,7 @@
 
 							<div class="w-100 d-flex justify-content-between align-items-center">
 								<h6 class="fw-medium m-0">
-									{{ pokemon.species.genera.genus | title }}
+{#									{{ species.genera.genus | title }}#}
 								</h6>
 
 								<h6 class="text-muted m-0">
@@ -110,13 +110,13 @@
 									Gender Ratio
 								</th>
 								<td class="align-middle">
-									{% if pokemon.species.genderRate == -1 %}
+									{% if species.genderRate == -1 %}
 										<span class="text-muted">
 											Genderless
 										</span>
 									{% else %}
-										{% set femalePercent = (pokemon.species.genderRate / 8 * 100) | number_format(1) %}
-										{% set malePercent = ((8 - pokemon.species.genderRate) / 8 * 100) | number_format(1) %}
+										{% set femalePercent = (species.genderRate / 8 * 100) | number_format(1) %}
+										{% set malePercent = ((8 - species.genderRate) / 8 * 100) | number_format(1) %}
 										<div class="progress rounded-5" style="height: 20px; max-width: 400px;">
 											<div class="progress-bar bg-danger fw-medium" role="progressbar" style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}" aria-valuemin="0" aria-valuemax="100">
 												{{ femalePercent }}
@@ -138,10 +138,10 @@
 
 								<td class="align-middle">
 									<div class="d-flex gap-2 flex-wrap">
-										{% for ability in pokemon.abilities %}
+										{% for entry in pokemon.abilities %}
 											<span class="badge bg-secondary">
-												{{ ability.name | replace({'-': ' '}) | title }}
-												{% if ability.isHidden %}
+												{{ entry.ability.name | replace({'-': ' '}) | title }}
+												{% if entry.isHidden %}
 													(Hidden)
 												{% endif %}
 											</span>
@@ -155,10 +155,10 @@
 									Catch Rate
 								</th>
 								<td>
-									{{ pokemon.species.captureRate }}
+									{{ species.captureRate }}
 									<span class="text-muted">
 										(
-										{{- pokemon.species.captureRate * (100 / 255) | format_number({rounding_mode: 'floor'})-}}
+										{{- species.captureRate * (100 / 255) | format_number({rounding_mode: 'floor'})-}}
 										%)
 									</span>
 								</td>
@@ -169,7 +169,7 @@
 									Growth Rate
 								</th>
 								<td>
-									{{ pokemon.species.growthRate | replace({'-': ' '}) | title }}
+									{{ species.growthRate.name | replace({'-': ' '}) | title }}
 								</td>
 							</tr>
 
@@ -187,34 +187,6 @@
 									Evolution Chain
 								</th>
 								<td>
-									{% set evolutions = pokemon.evolutionChain.evolutions %}
-									{% for index, evolution in evolutions %}
-										{% if evolution.name != pokemon.name  %}
-											<a class="link-primary text-decoration-none fw-semibold mx-1" href="{{ path('app_pokemon_show', { name: evolution.name }) }}">
-												{{ evolution.name | title }}
-											</a>
-										{% else %}
-											<span class="fw-semibold mx-1">
-												{{ evolution.name | title }}
-											</span>
-										{% endif %}
-
-										{% if index != evolutions | length - 1 %}
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="18"
-												height="18"
-												viewbox="0 0 24 24"
-												fill="none"
-												stroke="currentColor"
-												stroke-width="2"
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												class="lucide lucide-chevron-right-icon lucide-chevron-right">
-												<path d="m9 18 6-6-6-6"/>
-											</svg>
-										{% endif %}
-									{% endfor %}
 								</td>
 							</tr>
 						</tbody>
@@ -226,7 +198,7 @@
 					</h6>
 
 					<p class="fst-italic fw-medium my-1">
-						{{ pokemon.species.flavorTextEntries['omega-ruby'] }}
+						{{ species.flavorTextEntries[0].flavorText }}
 					</p>
 				</section>
 			</div>
@@ -247,19 +219,13 @@
 
 						<td class="align-middle">
 							<div class="d-flex gap-2 flex-wrap">
-								{% if pokemon.effectiveness.weaknesses is empty %}
-									<span class="text-muted">
-										-
-									</span>
-								{% else %}
-									{% for type, multiplier in pokemon.effectiveness.weaknesses %}
-										<span class="badge fs-6" style="background-color: var(--{{ type }})">
-											{{ type | upper }}
-											x
-											{{- multiplier -}}
-										</span>
-									{% endfor %}
-								{% endif %}
+                                {% for type in types %}
+                                    {% for weakness in type.damageRelations.doubleDamageFrom %}
+                                        <span class="badge fs-6" style="background-color: var(--{{ weakness.name }})">
+                                            {{ weakness.name | upper }} x 2
+                                        </span>
+                                    {% endfor %}
+                                {% endfor %}
 							</div>
 						</td>
 					</tr>
@@ -270,21 +236,13 @@
 						</th>
 
 						<td class="align-middle">
-							<div class="d-flex gap-2 flex-wrap">
-								{% if pokemon.effectiveness.resistances is empty %}
-									<span class="text-muted">
-										-
-									</span>
-								{% else %}
-									{% for type, multiplier in pokemon.effectiveness.resistances %}
-										<span class="badge fs-6" style="background-color: var(--{{ type }})">
-											{{ type | upper }}
-											x
-											{{- multiplier -}}
-										</span>
-									{% endfor %}
-								{% endif %}
-							</div>
+                            {% for type in types %}
+                                {% for resistance in type.damageRelations.halfDamageFrom %}
+                                    <span class="badge fs-6" style="background-color: var(--{{ resistance.name }})">
+                                            {{ resistance.name | upper }} x 0.5
+                                        </span>
+                                {% endfor %}
+                            {% endfor %}
 						</td>
 					</tr>
 
@@ -295,17 +253,13 @@
 
 						<td class="align-middle">
 							<div class="d-flex gap-2 flex-wrap">
-								{% if pokemon.effectiveness.immunities is empty %}
-									<span class="text-muted">
-										-
-									</span>
-								{% else %}
-									{% for type in pokemon.effectiveness.immunities %}
-										<span class="badge fs-6" style="background-color: var(--{{ type }})">
-											{{ type | upper }}
-										</span>
-									{% endfor %}
-								{% endif %}
+                                {% for type in types %}
+                                    {% for immunity in type.damageRelations.noDamageFrom %}
+                                        <span class="badge fs-6" style="background-color: var(--{{ immunity.name }})">
+                                                {{ immunity.name | upper }} x 0.5
+                                            </span>
+                                    {% endfor %}
+                                {% endfor %}
 							</div>
 						</td>
 					</tr>
@@ -326,17 +280,7 @@
 						<th scope="row">
 							Evolution
 						</th>
-						{% for evolution in pokemon.evolutionChain.evolutions %}
-							<td class="fw-bold">
-								{% if evolution.name != pokemon.name %}
-									<a href="{{ path('app_pokemon_show', { name: evolution.name }) }}" class="text-decoration-none">
-										{{ evolution.name | title }}
-									</a>
-								{% else %}
-									{{ evolution.name | title }}
-								{% endif %}
-							</td>
-						{% endfor %}
+                        {% include 'pokemon/_evolution_chain.html.twig' with { node: evolutionChain.chain } %}
 					</tr>
 
 					{# Trigger - toujours affiché #}

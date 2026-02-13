@@ -8,6 +8,7 @@ class PokemonFormDetailSprites extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -16,22 +17,17 @@ class PokemonFormDetailSprites extends \ArrayObject
      * @var string
      */
     protected $default;
-    /**
-     * @return string
-     */
+
     public function getDefault(): string
     {
         return $this->default;
     }
-    /**
-     * @param string $default
-     *
-     * @return self
-     */
+
     public function setDefault(string $default): self
     {
         $this->initialized['default'] = true;
         $this->default = $default;
+
         return $this;
     }
 }

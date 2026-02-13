@@ -14,6 +14,7 @@ class ResourceDTO
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
         return $this;
     }
 }

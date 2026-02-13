@@ -14,10 +14,11 @@ class TeamManager
         private EntityManagerInterface $entityManager,
         private TeamRepository $teamRepository,
         private PokemonManager $pokemonManager,
-    ) {}
+    ) {
+    }
 
     /**
-     * Create a new team with initial Pokemon
+     * Create a new team with initial Pokemon.
      *
      * @throws \RuntimeException If Pokemon cannot be fetched
      */
@@ -37,7 +38,7 @@ class TeamManager
     }
 
     /**
-     * Add Pokemon to existing team
+     * Add Pokemon to existing team.
      *
      * @throws \RuntimeException If team is full or Pokemon already in team
      */
@@ -58,7 +59,7 @@ class TeamManager
     }
 
     /**
-     * Remove Pokemon from team
+     * Remove Pokemon from team.
      */
     public function removePokemonFromTeam(Team $team, int $pokemonId): void
     {
@@ -68,7 +69,7 @@ class TeamManager
     }
 
     /**
-     * Rename an existing team
+     * Rename an existing team.
      *
      * @throws \RuntimeException If validation fails
      */
@@ -94,7 +95,7 @@ class TeamManager
     }
 
     /**
-     * Get teams that can accept a Pokemon (not full, not already containing it)
+     * Get teams that can accept a Pokemon (not full, not already containing it).
      *
      * @return Team[]
      */
@@ -103,7 +104,7 @@ class TeamManager
         $allTeams = $user->getTeams()->toArray();
         $teamsWithPokemon = $this->teamRepository->findTeamsContainingPokemon($user, $pokemonId);
 
-        return array_filter($allTeams, function($team) use ($teamsWithPokemon) {
+        return array_filter($allTeams, function ($team) use ($teamsWithPokemon) {
             return $team->canAddPokemon() && !in_array($team, $teamsWithPokemon, true);
         });
     }

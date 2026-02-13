@@ -20,8 +20,8 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'placeholder' => 'your@email.com'
-                ]
+                    'placeholder' => 'your@email.com',
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -29,7 +29,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'placeholder' => 'Secure password'
+                    'placeholder' => 'Secure password',
                 ],
                 'help' => 'Must be at least 6 characters long',
                 'constraints' => [
@@ -49,7 +49,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new IsTrue(
                         message: 'You should agree to our terms.'
-                    )
+                    ),
                 ],
             ])
         ;

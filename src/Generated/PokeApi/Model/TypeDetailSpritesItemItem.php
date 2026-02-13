@@ -8,6 +8,7 @@ class TypeDetailSpritesItemItem extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -16,22 +17,17 @@ class TypeDetailSpritesItemItem extends \ArrayObject
      * @var string
      */
     protected $nameIcon;
-    /**
-     * @return string
-     */
+
     public function getNameIcon(): string
     {
         return $this->nameIcon;
     }
-    /**
-     * @param string $nameIcon
-     *
-     * @return self
-     */
+
     public function setNameIcon(string $nameIcon): self
     {
         $this->initialized['nameIcon'] = true;
         $this->nameIcon = $nameIcon;
+
         return $this;
     }
 }

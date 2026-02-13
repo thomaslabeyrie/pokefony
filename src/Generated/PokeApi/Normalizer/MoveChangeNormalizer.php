@@ -2,29 +2,33 @@
 
 namespace App\Generated\PokeApi\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use App\Generated\PokeApi\Runtime\Normalizer\CheckArray;
 use App\Generated\PokeApi\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class MoveChangeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
     use CheckArray;
     use ValidatorTrait;
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \App\Generated\PokeApi\Model\MoveChange::class;
+        return \App\Generated\PokeApi\Model\MoveChange::class === $type;
     }
+
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \App\Generated\PokeApi\Model\MoveChange::class;
+        return is_object($data) && \App\Generated\PokeApi\Model\MoveChange::class === get_class($data);
     }
+
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if (isset($data['$ref'])) {
@@ -37,25 +41,22 @@ class MoveChangeNormalizer implements DenormalizerInterface, NormalizerInterface
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('accuracy', $data) && $data['accuracy'] !== null) {
+        if (\array_key_exists('accuracy', $data) && null !== $data['accuracy']) {
             $object->setAccuracy($data['accuracy']);
             unset($data['accuracy']);
-        }
-        elseif (\array_key_exists('accuracy', $data) && $data['accuracy'] === null) {
+        } elseif (\array_key_exists('accuracy', $data) && null === $data['accuracy']) {
             $object->setAccuracy(null);
         }
-        if (\array_key_exists('power', $data) && $data['power'] !== null) {
+        if (\array_key_exists('power', $data) && null !== $data['power']) {
             $object->setPower($data['power']);
             unset($data['power']);
-        }
-        elseif (\array_key_exists('power', $data) && $data['power'] === null) {
+        } elseif (\array_key_exists('power', $data) && null === $data['power']) {
             $object->setPower(null);
         }
-        if (\array_key_exists('pp', $data) && $data['pp'] !== null) {
+        if (\array_key_exists('pp', $data) && null !== $data['pp']) {
             $object->setPp($data['pp']);
             unset($data['pp']);
-        }
-        elseif (\array_key_exists('pp', $data) && $data['pp'] === null) {
+        } elseif (\array_key_exists('pp', $data) && null === $data['pp']) {
             $object->setPp(null);
         }
         if (\array_key_exists('effect_chance', $data)) {
@@ -83,8 +84,10 @@ class MoveChangeNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
@@ -105,8 +108,10 @@ class MoveChangeNormalizer implements DenormalizerInterface, NormalizerInterface
                 $dataArray[$key] = $value;
             }
         }
+
         return $dataArray;
     }
+
     public function getSupportedTypes(?string $format = null): array
     {
         return [\App\Generated\PokeApi\Model\MoveChange::class => false];

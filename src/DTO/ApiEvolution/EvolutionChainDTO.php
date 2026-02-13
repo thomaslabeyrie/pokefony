@@ -22,6 +22,7 @@ class EvolutionChainDTO
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -33,6 +34,7 @@ class EvolutionChainDTO
     public function setBabyTriggerItem(?NamedResourceDTO $babyTriggerItem): self
     {
         $this->babyTriggerItem = $babyTriggerItem;
+
         return $this;
     }
 
@@ -44,6 +46,7 @@ class EvolutionChainDTO
     public function setChain(ChainLinkDTO $chain): self
     {
         $this->chain = $chain;
+
         return $this;
     }
 }

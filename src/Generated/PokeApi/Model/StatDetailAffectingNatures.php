@@ -8,6 +8,7 @@ class StatDetailAffectingNatures extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -20,6 +21,7 @@ class StatDetailAffectingNatures extends \ArrayObject
      * @var list<StatDetailAffectingNaturesDecreaseItem>
      */
     protected $decrease;
+
     /**
      * @return list<StatDetailAffectingNaturesIncreaseItem>
      */
@@ -27,17 +29,18 @@ class StatDetailAffectingNatures extends \ArrayObject
     {
         return $this->increase;
     }
+
     /**
      * @param list<StatDetailAffectingNaturesIncreaseItem> $increase
-     *
-     * @return self
      */
     public function setIncrease(array $increase): self
     {
         $this->initialized['increase'] = true;
         $this->increase = $increase;
+
         return $this;
     }
+
     /**
      * @return list<StatDetailAffectingNaturesDecreaseItem>
      */
@@ -45,15 +48,15 @@ class StatDetailAffectingNatures extends \ArrayObject
     {
         return $this->decrease;
     }
+
     /**
      * @param list<StatDetailAffectingNaturesDecreaseItem> $decrease
-     *
-     * @return self
      */
     public function setDecrease(array $decrease): self
     {
         $this->initialized['decrease'] = true;
         $this->decrease = $decrease;
+
         return $this;
     }
 }

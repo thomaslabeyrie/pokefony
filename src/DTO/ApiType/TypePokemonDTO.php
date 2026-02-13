@@ -18,6 +18,7 @@ class TypePokemonDTO
     public function setSlot(int $slot): self
     {
         $this->slot = $slot;
+
         return $this;
     }
 
@@ -29,6 +30,7 @@ class TypePokemonDTO
     public function setPokemon(NamedResourceDTO $pokemon): self
     {
         $this->pokemon = $pokemon;
+
         return $this;
     }
 }

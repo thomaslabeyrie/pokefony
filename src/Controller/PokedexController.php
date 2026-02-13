@@ -7,8 +7,8 @@ use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Service\PokeApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -19,7 +19,8 @@ final class PokedexController extends AbstractController
         private readonly PokeApiService $pokeApi,
         private readonly UserRepository $userRepository,
         private readonly TeamRepository $teamRepository,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
     public function list(string $region, int $page): Response
@@ -35,7 +36,7 @@ final class PokedexController extends AbstractController
             // Reload user from database to get fresh favoritePokemons collection
             $freshUser = $this->userRepository->find($user->getId());
             if ($freshUser) {
-                $favoriteIds = array_values($freshUser->getFavoritePokemons()->map(fn($p) => $p->getPokemonId())->toArray());
+                $favoriteIds = array_values($freshUser->getFavoritePokemons()->map(fn ($p) => $p->getPokemonId())->toArray());
 
                 // Get teams containing each Pokemon
                 foreach ($pokemons as $pokemon) {
@@ -71,7 +72,7 @@ final class PokedexController extends AbstractController
             $freshUser = $this->userRepository->find($user->getId());
             if ($freshUser) {
                 // Check if pokemon is in favorites
-                $favoriteIds = $freshUser->getFavoritePokemons()->map(fn($p) => $p->getPokemonId())->toArray();
+                $favoriteIds = $freshUser->getFavoritePokemons()->map(fn ($p) => $p->getPokemonId())->toArray();
                 $isFavorite = in_array($data->getId(), $favoriteIds);
 
                 // Get teams containing this pokemon
@@ -79,8 +80,13 @@ final class PokedexController extends AbstractController
             }
         }
 
+        dump($data['evolutionChain']);
+
         return $this->render('pokemon/show.html.twig', [
-            'pokemon' => $data,
+            'pokemon' => $data['pokemon'],
+            'types' => $data['types'],
+            'evolutionChain' => $data['evolutionChain'],
+            'species' => $data['species'],
             'isFavorite' => $isFavorite,
             'teams' => $teams,
         ]);
@@ -95,9 +101,10 @@ final class PokedexController extends AbstractController
 
         if (empty($query)) {
             $this->addFlash('warning', 'Please enter a Pokémon name or ID to search.');
+
             return $this->redirectToRoute('app_pokedex_region', [
                 'region' => 'national',
-                'page' => 1
+                'page' => 1,
             ]);
         }
 
@@ -113,7 +120,7 @@ final class PokedexController extends AbstractController
                 'id' => $pokemonDTO->id,
                 'name' => $pokemonDTO->name,
                 'artwork' => $pokemonDTO->sprites->officialArtwork,
-                'types' => array_map(fn($type) => $type->name, $pokemonDTO->types),
+                'types' => array_map(fn ($type) => $type->name, $pokemonDTO->types),
             ];
 
             // Wrap in array for template iteration
@@ -130,7 +137,7 @@ final class PokedexController extends AbstractController
                 if ($freshUser) {
                     // Get favorite IDs
                     $favoriteIds = array_values($freshUser->getFavoritePokemons()
-                        ->map(fn($p) => $p->getPokemonId())->toArray());
+                        ->map(fn ($p) => $p->getPokemonId())->toArray());
 
                     // Get teams for this specific Pokémon
                     $teams = $this->teamRepository->findTeamsContainingPokemon(
@@ -150,19 +157,21 @@ final class PokedexController extends AbstractController
                 'teamPokemonIds' => $teamPokemonIds,
             ]);
         } catch (ClientException $e) {
-            if ($e->getResponse()->getStatusCode() === 404) {
+            if (404 === $e->getResponse()->getStatusCode()) {
                 $this->addFlash('error', "Pokémon '$query' not found. Please check the name or ID.");
+
                 return $this->redirectToRoute('app_pokedex_region', [
                     'region' => 'national',
-                    'page' => 1
+                    'page' => 1,
                 ]);
             }
             throw $e; // Re-throw other client errors
         } catch (\Exception $e) {
             $this->addFlash('error', 'An error occurred while searching. Please try again.');
+
             return $this->redirectToRoute('app_pokedex_region', [
                 'region' => 'national',
-                'page' => 1
+                'page' => 1,
             ]);
         }
     }

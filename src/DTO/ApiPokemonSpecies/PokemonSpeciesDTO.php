@@ -64,7 +64,7 @@ class PokemonSpeciesDTO
     private ResourceDTO $evolutionChain;
 
     private ?NamedResourceDTO $habitat = null;
-    
+
     private NamedResourceDTO $generation;
 
     /** @var FlavorTextDTO[] */
@@ -81,6 +81,7 @@ class PokemonSpeciesDTO
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -92,6 +93,7 @@ class PokemonSpeciesDTO
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -103,6 +105,7 @@ class PokemonSpeciesDTO
     public function setOrder(int $order): self
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -114,6 +117,7 @@ class PokemonSpeciesDTO
     public function setGenderRate(int $genderRate): self
     {
         $this->genderRate = $genderRate;
+
         return $this;
     }
 
@@ -125,6 +129,7 @@ class PokemonSpeciesDTO
     public function setCaptureRate(int $captureRate): self
     {
         $this->captureRate = $captureRate;
+
         return $this;
     }
 
@@ -136,6 +141,7 @@ class PokemonSpeciesDTO
     public function setBaseHappiness(int $baseHappiness): self
     {
         $this->baseHappiness = $baseHappiness;
+
         return $this;
     }
 
@@ -147,6 +153,7 @@ class PokemonSpeciesDTO
     public function setIsBaby(bool $isBaby): self
     {
         $this->isBaby = $isBaby;
+
         return $this;
     }
 
@@ -158,6 +165,7 @@ class PokemonSpeciesDTO
     public function setIsLegendary(bool $isLegendary): self
     {
         $this->isLegendary = $isLegendary;
+
         return $this;
     }
 
@@ -169,6 +177,7 @@ class PokemonSpeciesDTO
     public function setIsMythical(bool $isMythical): self
     {
         $this->isMythical = $isMythical;
+
         return $this;
     }
 
@@ -180,6 +189,7 @@ class PokemonSpeciesDTO
     public function setHatchCounter(int $hatchCounter): self
     {
         $this->hatchCounter = $hatchCounter;
+
         return $this;
     }
 
@@ -191,6 +201,7 @@ class PokemonSpeciesDTO
     public function setHasGenderDifferences(bool $hasGenderDifferences): self
     {
         $this->hasGenderDifferences = $hasGenderDifferences;
+
         return $this;
     }
 
@@ -202,6 +213,7 @@ class PokemonSpeciesDTO
     public function setFormsSwitchable(bool $formsSwitchable): self
     {
         $this->formsSwitchable = $formsSwitchable;
+
         return $this;
     }
 
@@ -213,6 +225,7 @@ class PokemonSpeciesDTO
     public function setGrowthRate(NamedResourceDTO $growthRate): self
     {
         $this->growthRate = $growthRate;
+
         return $this;
     }
 
@@ -224,6 +237,7 @@ class PokemonSpeciesDTO
     public function setPokedexNumbers(array $pokedexNumbers): self
     {
         $this->pokedexNumbers = $pokedexNumbers;
+
         return $this;
     }
 
@@ -235,6 +249,7 @@ class PokemonSpeciesDTO
     public function setEggGroups(array $eggGroups): self
     {
         $this->eggGroups = $eggGroups;
+
         return $this;
     }
 
@@ -246,6 +261,7 @@ class PokemonSpeciesDTO
     public function setColor(NamedResourceDTO $color): self
     {
         $this->color = $color;
+
         return $this;
     }
 
@@ -257,6 +273,7 @@ class PokemonSpeciesDTO
     public function setShape(NamedResourceDTO $shape): self
     {
         $this->shape = $shape;
+
         return $this;
     }
 
@@ -268,6 +285,7 @@ class PokemonSpeciesDTO
     public function setEvolvesFromSpecies(?NamedResourceDTO $evolvesFromSpecies): self
     {
         $this->evolvesFromSpecies = $evolvesFromSpecies;
+
         return $this;
     }
 
@@ -279,6 +297,7 @@ class PokemonSpeciesDTO
     public function setEvolutionChain(ResourceDTO $evolutionChain): self
     {
         $this->evolutionChain = $evolutionChain;
+
         return $this;
     }
 
@@ -290,6 +309,7 @@ class PokemonSpeciesDTO
     public function setHabitat(?NamedResourceDTO $habitat): self
     {
         $this->habitat = $habitat;
+
         return $this;
     }
 
@@ -301,6 +321,7 @@ class PokemonSpeciesDTO
     public function setGeneration(NamedResourceDTO $generation): self
     {
         $this->generation = $generation;
+
         return $this;
     }
 
@@ -312,6 +333,7 @@ class PokemonSpeciesDTO
     public function setFlavorTextEntries(array $flavorTextEntries): self
     {
         $this->flavorTextEntries = $flavorTextEntries;
+
         return $this;
     }
 }

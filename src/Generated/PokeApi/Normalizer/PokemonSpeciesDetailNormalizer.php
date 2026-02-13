@@ -2,29 +2,33 @@
 
 namespace App\Generated\PokeApi\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use App\Generated\PokeApi\Runtime\Normalizer\CheckArray;
 use App\Generated\PokeApi\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PokemonSpeciesDetailNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
     use CheckArray;
     use ValidatorTrait;
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \App\Generated\PokeApi\Model\PokemonSpeciesDetail::class;
+        return \App\Generated\PokeApi\Model\PokemonSpeciesDetail::class === $type;
     }
+
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \App\Generated\PokeApi\Model\PokemonSpeciesDetail::class;
+        return is_object($data) && \App\Generated\PokeApi\Model\PokemonSpeciesDetail::class === get_class($data);
     }
+
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if (isset($data['$ref'])) {
@@ -60,32 +64,28 @@ class PokemonSpeciesDetailNormalizer implements DenormalizerInterface, Normalize
             $object->setName($data['name']);
             unset($data['name']);
         }
-        if (\array_key_exists('order', $data) && $data['order'] !== null) {
+        if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($data['order']);
             unset($data['order']);
-        }
-        elseif (\array_key_exists('order', $data) && $data['order'] === null) {
+        } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
         }
-        if (\array_key_exists('gender_rate', $data) && $data['gender_rate'] !== null) {
+        if (\array_key_exists('gender_rate', $data) && null !== $data['gender_rate']) {
             $object->setGenderRate($data['gender_rate']);
             unset($data['gender_rate']);
-        }
-        elseif (\array_key_exists('gender_rate', $data) && $data['gender_rate'] === null) {
+        } elseif (\array_key_exists('gender_rate', $data) && null === $data['gender_rate']) {
             $object->setGenderRate(null);
         }
-        if (\array_key_exists('capture_rate', $data) && $data['capture_rate'] !== null) {
+        if (\array_key_exists('capture_rate', $data) && null !== $data['capture_rate']) {
             $object->setCaptureRate($data['capture_rate']);
             unset($data['capture_rate']);
-        }
-        elseif (\array_key_exists('capture_rate', $data) && $data['capture_rate'] === null) {
+        } elseif (\array_key_exists('capture_rate', $data) && null === $data['capture_rate']) {
             $object->setCaptureRate(null);
         }
-        if (\array_key_exists('base_happiness', $data) && $data['base_happiness'] !== null) {
+        if (\array_key_exists('base_happiness', $data) && null !== $data['base_happiness']) {
             $object->setBaseHappiness($data['base_happiness']);
             unset($data['base_happiness']);
-        }
-        elseif (\array_key_exists('base_happiness', $data) && $data['base_happiness'] === null) {
+        } elseif (\array_key_exists('base_happiness', $data) && null === $data['base_happiness']) {
             $object->setBaseHappiness(null);
         }
         if (\array_key_exists('is_baby', $data)) {
@@ -100,11 +100,10 @@ class PokemonSpeciesDetailNormalizer implements DenormalizerInterface, Normalize
             $object->setIsMythical($data['is_mythical']);
             unset($data['is_mythical']);
         }
-        if (\array_key_exists('hatch_counter', $data) && $data['hatch_counter'] !== null) {
+        if (\array_key_exists('hatch_counter', $data) && null !== $data['hatch_counter']) {
             $object->setHatchCounter($data['hatch_counter']);
             unset($data['hatch_counter']);
-        }
-        elseif (\array_key_exists('hatch_counter', $data) && $data['hatch_counter'] === null) {
+        } elseif (\array_key_exists('hatch_counter', $data) && null === $data['hatch_counter']) {
             $object->setHatchCounter(null);
         }
         if (\array_key_exists('has_gender_differences', $data)) {
@@ -212,8 +211,10 @@ class PokemonSpeciesDetailNormalizer implements DenormalizerInterface, Normalize
                 $object[$key] = $value_8;
             }
         }
+
         return $object;
     }
+
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
@@ -260,8 +261,10 @@ class PokemonSpeciesDetailNormalizer implements DenormalizerInterface, Normalize
                 $dataArray[$key] = $value;
             }
         }
+
         return $dataArray;
     }
+
     public function getSupportedTypes(?string $format = null): array
     {
         return [\App\Generated\PokeApi\Model\PokemonSpeciesDetail::class => false];

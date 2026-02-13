@@ -16,7 +16,8 @@ final class FavoritesController extends AbstractController
     public function __construct(
         private PokemonManager $pokemonManager,
         private EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     #[Route('/favorites', name: 'app_favorites')]
     #[IsGranted('ROLE_USER')]
@@ -63,7 +64,7 @@ final class FavoritesController extends AbstractController
 
         // Determine which template to use based on style parameter
         $style = $request->query->get('style', 'icon');
-        $template = $style === 'text'
+        $template = 'text' === $style
             ? 'favorites/_favorite_button_text.html.twig'
             : 'favorites/_favorite_button.html.twig';
 

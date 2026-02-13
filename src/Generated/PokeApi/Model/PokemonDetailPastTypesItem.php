@@ -8,6 +8,7 @@ class PokemonDetailPastTypesItem extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -20,24 +21,20 @@ class PokemonDetailPastTypesItem extends \ArrayObject
      * @var list<PokemonDetailPastTypesItemTypesItem>
      */
     protected $types;
-    /**
-     * @return PokemonDetailPastTypesItemGeneration
-     */
+
     public function getGeneration(): PokemonDetailPastTypesItemGeneration
     {
         return $this->generation;
     }
-    /**
-     * @param PokemonDetailPastTypesItemGeneration $generation
-     *
-     * @return self
-     */
+
     public function setGeneration(PokemonDetailPastTypesItemGeneration $generation): self
     {
         $this->initialized['generation'] = true;
         $this->generation = $generation;
+
         return $this;
     }
+
     /**
      * @return list<PokemonDetailPastTypesItemTypesItem>
      */
@@ -45,15 +42,15 @@ class PokemonDetailPastTypesItem extends \ArrayObject
     {
         return $this->types;
     }
+
     /**
      * @param list<PokemonDetailPastTypesItemTypesItem> $types
-     *
-     * @return self
      */
     public function setTypes(array $types): self
     {
         $this->initialized['types'] = true;
         $this->types = $types;
+
         return $this;
     }
 }

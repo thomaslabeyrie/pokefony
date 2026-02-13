@@ -8,6 +8,7 @@ class RegionDetail extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -40,42 +41,33 @@ class RegionDetail extends \ArrayObject
      * @var list<RegionDetailVersionGroupsItem>
      */
     protected $versionGroups;
-    /**
-     * @return int
-     */
+
     public function getId(): int
     {
         return $this->id;
     }
-    /**
-     * @param int $id
-     *
-     * @return self
-     */
+
     public function setId(int $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * @return string
-     */
+
     public function getName(): string
     {
         return $this->name;
     }
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
+
     public function setName(string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
         return $this;
     }
+
     /**
      * @return list<LocationSummary>
      */
@@ -83,35 +75,31 @@ class RegionDetail extends \ArrayObject
     {
         return $this->locations;
     }
+
     /**
      * @param list<LocationSummary> $locations
-     *
-     * @return self
      */
     public function setLocations(array $locations): self
     {
         $this->initialized['locations'] = true;
         $this->locations = $locations;
+
         return $this;
     }
-    /**
-     * @return RegionDetailMainGeneration
-     */
+
     public function getMainGeneration(): RegionDetailMainGeneration
     {
         return $this->mainGeneration;
     }
-    /**
-     * @param RegionDetailMainGeneration $mainGeneration
-     *
-     * @return self
-     */
+
     public function setMainGeneration(RegionDetailMainGeneration $mainGeneration): self
     {
         $this->initialized['mainGeneration'] = true;
         $this->mainGeneration = $mainGeneration;
+
         return $this;
     }
+
     /**
      * @return list<RegionName>
      */
@@ -119,17 +107,18 @@ class RegionDetail extends \ArrayObject
     {
         return $this->names;
     }
+
     /**
      * @param list<RegionName> $names
-     *
-     * @return self
      */
     public function setNames(array $names): self
     {
         $this->initialized['names'] = true;
         $this->names = $names;
+
         return $this;
     }
+
     /**
      * @return list<PokedexSummary>
      */
@@ -137,17 +126,18 @@ class RegionDetail extends \ArrayObject
     {
         return $this->pokedexes;
     }
+
     /**
      * @param list<PokedexSummary> $pokedexes
-     *
-     * @return self
      */
     public function setPokedexes(array $pokedexes): self
     {
         $this->initialized['pokedexes'] = true;
         $this->pokedexes = $pokedexes;
+
         return $this;
     }
+
     /**
      * @return list<RegionDetailVersionGroupsItem>
      */
@@ -155,15 +145,15 @@ class RegionDetail extends \ArrayObject
     {
         return $this->versionGroups;
     }
+
     /**
      * @param list<RegionDetailVersionGroupsItem> $versionGroups
-     *
-     * @return self
      */
     public function setVersionGroups(array $versionGroups): self
     {
         $this->initialized['versionGroups'] = true;
         $this->versionGroups = $versionGroups;
+
         return $this;
     }
 }

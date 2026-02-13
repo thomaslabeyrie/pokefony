@@ -20,6 +20,7 @@ class TypeRelationsPastDTO
     public function setGeneration(NamedResourceDTO $generation): self
     {
         $this->generation = $generation;
+
         return $this;
     }
 
@@ -31,6 +32,7 @@ class TypeRelationsPastDTO
     public function setDamageRelations(TypeRelationsDTO $damageRelations): self
     {
         $this->damageRelations = $damageRelations;
+
         return $this;
     }
 }

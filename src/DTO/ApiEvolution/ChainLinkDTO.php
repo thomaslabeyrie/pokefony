@@ -28,6 +28,7 @@ class ChainLinkDTO
     public function setIsBaby(bool $isBaby): self
     {
         $this->isBaby = $isBaby;
+
         return $this;
     }
 
@@ -39,6 +40,7 @@ class ChainLinkDTO
     public function setSpecies(NamedResourceDTO $species): self
     {
         $this->species = $species;
+
         return $this;
     }
 
@@ -56,6 +58,7 @@ class ChainLinkDTO
     public function setEvolutionDetails(array $evolutionDetails): self
     {
         $this->evolutionDetails = $evolutionDetails;
+
         return $this;
     }
 
@@ -73,6 +76,7 @@ class ChainLinkDTO
     public function setEvolvesTo(array $evolvesTo): self
     {
         $this->evolvesTo = $evolvesTo;
+
         return $this;
     }
 }

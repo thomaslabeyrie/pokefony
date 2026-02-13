@@ -9,7 +9,8 @@ class PokedexEntryDTO
         public readonly int $id,
         public readonly string $artwork,
         public readonly array $types,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(
         array $pokemonData,
@@ -18,7 +19,7 @@ class PokedexEntryDTO
             name: $pokemonData['name'],
             id: $pokemonData['id'],
             artwork: $pokemonData['sprites']['other']['official-artwork']['front_default'],
-            types: array_map(fn($entry) => $entry['type']['name'], $pokemonData['types']),
+            types: array_map(fn ($entry) => $entry['type']['name'], $pokemonData['types']),
         );
     }
 }

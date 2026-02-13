@@ -42,6 +42,7 @@ class TypeDTO
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class TypeDTO
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -64,6 +66,7 @@ class TypeDTO
     public function setDamageRelations(TypeRelationsDTO $damageRelations): self
     {
         $this->damageRelations = $damageRelations;
+
         return $this;
     }
 
@@ -81,6 +84,7 @@ class TypeDTO
     public function setPastDamageRelations(array $pastDamageRelations): self
     {
         $this->pastDamageRelations = $pastDamageRelations;
+
         return $this;
     }
 
@@ -98,6 +102,7 @@ class TypeDTO
     public function setGameIndices(array $gameIndices): self
     {
         $this->gameIndices = $gameIndices;
+
         return $this;
     }
 
@@ -109,6 +114,7 @@ class TypeDTO
     public function setGeneration(NamedResourceDTO $generation): self
     {
         $this->generation = $generation;
+
         return $this;
     }
 
@@ -120,6 +126,7 @@ class TypeDTO
     public function setMoveDamageClass(NamedResourceDTO $moveDamageClass): self
     {
         $this->moveDamageClass = $moveDamageClass;
+
         return $this;
     }
 
@@ -137,6 +144,7 @@ class TypeDTO
     public function setPokemon(array $pokemon): self
     {
         $this->pokemon = $pokemon;
+
         return $this;
     }
 
@@ -154,6 +162,7 @@ class TypeDTO
     public function setMoves(array $moves): self
     {
         $this->moves = $moves;
+
         return $this;
     }
 }

@@ -7,7 +7,8 @@ class SpritesDTO
     public function __construct(
         public readonly ?string $officialArtwork,
         public readonly array $versions, // PokemonSpritesDTO groupés par génération
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $data): self
     {
@@ -23,7 +24,6 @@ class SpritesDTO
 
         foreach ($versions as $genKey => $genData) {
             foreach ($genData as $gameKey => $sprites) {
-
                 $gameName = str_replace('-', '_', $gameKey);
 
                 // Gestion spéciale pour les sprites animés

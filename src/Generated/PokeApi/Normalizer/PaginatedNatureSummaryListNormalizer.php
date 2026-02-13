@@ -2,29 +2,33 @@
 
 namespace App\Generated\PokeApi\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use App\Generated\PokeApi\Runtime\Normalizer\CheckArray;
 use App\Generated\PokeApi\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PaginatedNatureSummaryListNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
     use CheckArray;
     use ValidatorTrait;
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \App\Generated\PokeApi\Model\PaginatedNatureSummaryList::class;
+        return \App\Generated\PokeApi\Model\PaginatedNatureSummaryList::class === $type;
     }
+
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \App\Generated\PokeApi\Model\PaginatedNatureSummaryList::class;
+        return is_object($data) && \App\Generated\PokeApi\Model\PaginatedNatureSummaryList::class === get_class($data);
     }
+
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if (isset($data['$ref'])) {
@@ -41,18 +45,16 @@ class PaginatedNatureSummaryListNormalizer implements DenormalizerInterface, Nor
             $object->setCount($data['count']);
             unset($data['count']);
         }
-        if (\array_key_exists('next', $data) && $data['next'] !== null) {
+        if (\array_key_exists('next', $data) && null !== $data['next']) {
             $object->setNext($data['next']);
             unset($data['next']);
-        }
-        elseif (\array_key_exists('next', $data) && $data['next'] === null) {
+        } elseif (\array_key_exists('next', $data) && null === $data['next']) {
             $object->setNext(null);
         }
-        if (\array_key_exists('previous', $data) && $data['previous'] !== null) {
+        if (\array_key_exists('previous', $data) && null !== $data['previous']) {
             $object->setPrevious($data['previous']);
             unset($data['previous']);
-        }
-        elseif (\array_key_exists('previous', $data) && $data['previous'] === null) {
+        } elseif (\array_key_exists('previous', $data) && null === $data['previous']) {
             $object->setPrevious(null);
         }
         if (\array_key_exists('results', $data)) {
@@ -68,8 +70,10 @@ class PaginatedNatureSummaryListNormalizer implements DenormalizerInterface, Nor
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
@@ -94,8 +98,10 @@ class PaginatedNatureSummaryListNormalizer implements DenormalizerInterface, Nor
                 $dataArray[$key] = $value_1;
             }
         }
+
         return $dataArray;
     }
+
     public function getSupportedTypes(?string $format = null): array
     {
         return [\App\Generated\PokeApi\Model\PaginatedNatureSummaryList::class => false];

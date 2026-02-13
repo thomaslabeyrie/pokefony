@@ -2,29 +2,33 @@
 
 namespace App\Generated\PokeApi\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use App\Generated\PokeApi\Runtime\Normalizer\CheckArray;
 use App\Generated\PokeApi\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
     use CheckArray;
     use ValidatorTrait;
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItem::class;
+        return \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItem::class === $type;
     }
+
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItem::class;
+        return is_object($data) && \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItem::class === get_class($data);
     }
+
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if (isset($data['$ref'])) {
@@ -46,141 +50,122 @@ class EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemNormalizer imple
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('gender', $data) && $data['gender'] !== null) {
+        if (\array_key_exists('gender', $data) && null !== $data['gender']) {
             $object->setGender($this->denormalizer->denormalize($data['gender'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemGender::class, 'json', $context));
             unset($data['gender']);
-        }
-        elseif (\array_key_exists('gender', $data) && $data['gender'] === null) {
+        } elseif (\array_key_exists('gender', $data) && null === $data['gender']) {
             $object->setGender(null);
         }
-        if (\array_key_exists('held_item', $data) && $data['held_item'] !== null) {
+        if (\array_key_exists('held_item', $data) && null !== $data['held_item']) {
             $object->setHeldItem($this->denormalizer->denormalize($data['held_item'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemHeldItem::class, 'json', $context));
             unset($data['held_item']);
-        }
-        elseif (\array_key_exists('held_item', $data) && $data['held_item'] === null) {
+        } elseif (\array_key_exists('held_item', $data) && null === $data['held_item']) {
             $object->setHeldItem(null);
         }
-        if (\array_key_exists('item', $data) && $data['item'] !== null) {
+        if (\array_key_exists('item', $data) && null !== $data['item']) {
             $object->setItem($this->denormalizer->denormalize($data['item'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemItem::class, 'json', $context));
             unset($data['item']);
-        }
-        elseif (\array_key_exists('item', $data) && $data['item'] === null) {
+        } elseif (\array_key_exists('item', $data) && null === $data['item']) {
             $object->setItem(null);
         }
-        if (\array_key_exists('known_move', $data) && $data['known_move'] !== null) {
+        if (\array_key_exists('known_move', $data) && null !== $data['known_move']) {
             $object->setKnownMove($data['known_move']);
             unset($data['known_move']);
-        }
-        elseif (\array_key_exists('known_move', $data) && $data['known_move'] === null) {
+        } elseif (\array_key_exists('known_move', $data) && null === $data['known_move']) {
             $object->setKnownMove(null);
         }
-        if (\array_key_exists('known_move_type', $data) && $data['known_move_type'] !== null) {
+        if (\array_key_exists('known_move_type', $data) && null !== $data['known_move_type']) {
             $object->setKnownMoveType($data['known_move_type']);
             unset($data['known_move_type']);
-        }
-        elseif (\array_key_exists('known_move_type', $data) && $data['known_move_type'] === null) {
+        } elseif (\array_key_exists('known_move_type', $data) && null === $data['known_move_type']) {
             $object->setKnownMoveType(null);
         }
-        if (\array_key_exists('location', $data) && $data['location'] !== null) {
+        if (\array_key_exists('location', $data) && null !== $data['location']) {
             $object->setLocation($this->denormalizer->denormalize($data['location'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemLocation::class, 'json', $context));
             unset($data['location']);
-        }
-        elseif (\array_key_exists('location', $data) && $data['location'] === null) {
+        } elseif (\array_key_exists('location', $data) && null === $data['location']) {
             $object->setLocation(null);
         }
-        if (\array_key_exists('min_affection', $data) && $data['min_affection'] !== null) {
+        if (\array_key_exists('min_affection', $data) && null !== $data['min_affection']) {
             $object->setMinAffection($data['min_affection']);
             unset($data['min_affection']);
-        }
-        elseif (\array_key_exists('min_affection', $data) && $data['min_affection'] === null) {
+        } elseif (\array_key_exists('min_affection', $data) && null === $data['min_affection']) {
             $object->setMinAffection(null);
         }
-        if (\array_key_exists('min_beauty', $data) && $data['min_beauty'] !== null) {
+        if (\array_key_exists('min_beauty', $data) && null !== $data['min_beauty']) {
             $object->setMinBeauty($data['min_beauty']);
             unset($data['min_beauty']);
-        }
-        elseif (\array_key_exists('min_beauty', $data) && $data['min_beauty'] === null) {
+        } elseif (\array_key_exists('min_beauty', $data) && null === $data['min_beauty']) {
             $object->setMinBeauty(null);
         }
-        if (\array_key_exists('min_damage_taken', $data) && $data['min_damage_taken'] !== null) {
+        if (\array_key_exists('min_damage_taken', $data) && null !== $data['min_damage_taken']) {
             $object->setMinDamageTaken($data['min_damage_taken']);
             unset($data['min_damage_taken']);
-        }
-        elseif (\array_key_exists('min_damage_taken', $data) && $data['min_damage_taken'] === null) {
+        } elseif (\array_key_exists('min_damage_taken', $data) && null === $data['min_damage_taken']) {
             $object->setMinDamageTaken(null);
         }
-        if (\array_key_exists('min_happiness', $data) && $data['min_happiness'] !== null) {
+        if (\array_key_exists('min_happiness', $data) && null !== $data['min_happiness']) {
             $object->setMinHappiness($data['min_happiness']);
             unset($data['min_happiness']);
-        }
-        elseif (\array_key_exists('min_happiness', $data) && $data['min_happiness'] === null) {
+        } elseif (\array_key_exists('min_happiness', $data) && null === $data['min_happiness']) {
             $object->setMinHappiness(null);
         }
-        if (\array_key_exists('min_level', $data) && $data['min_level'] !== null) {
+        if (\array_key_exists('min_level', $data) && null !== $data['min_level']) {
             $object->setMinLevel($data['min_level']);
             unset($data['min_level']);
-        }
-        elseif (\array_key_exists('min_level', $data) && $data['min_level'] === null) {
+        } elseif (\array_key_exists('min_level', $data) && null === $data['min_level']) {
             $object->setMinLevel(null);
         }
-        if (\array_key_exists('min_move_count', $data) && $data['min_move_count'] !== null) {
+        if (\array_key_exists('min_move_count', $data) && null !== $data['min_move_count']) {
             $object->setMinMoveCount($data['min_move_count']);
             unset($data['min_move_count']);
-        }
-        elseif (\array_key_exists('min_move_count', $data) && $data['min_move_count'] === null) {
+        } elseif (\array_key_exists('min_move_count', $data) && null === $data['min_move_count']) {
             $object->setMinMoveCount(null);
         }
-        if (\array_key_exists('min_steps', $data) && $data['min_steps'] !== null) {
+        if (\array_key_exists('min_steps', $data) && null !== $data['min_steps']) {
             $object->setMinSteps($data['min_steps']);
             unset($data['min_steps']);
-        }
-        elseif (\array_key_exists('min_steps', $data) && $data['min_steps'] === null) {
+        } elseif (\array_key_exists('min_steps', $data) && null === $data['min_steps']) {
             $object->setMinSteps(null);
         }
-        if (\array_key_exists('needs_multiplayer', $data) && $data['needs_multiplayer'] !== null) {
+        if (\array_key_exists('needs_multiplayer', $data) && null !== $data['needs_multiplayer']) {
             $object->setNeedsMultiplayer($data['needs_multiplayer']);
             unset($data['needs_multiplayer']);
-        }
-        elseif (\array_key_exists('needs_multiplayer', $data) && $data['needs_multiplayer'] === null) {
+        } elseif (\array_key_exists('needs_multiplayer', $data) && null === $data['needs_multiplayer']) {
             $object->setNeedsMultiplayer(null);
         }
-        if (\array_key_exists('needs_overworld_rain', $data) && $data['needs_overworld_rain'] !== null) {
+        if (\array_key_exists('needs_overworld_rain', $data) && null !== $data['needs_overworld_rain']) {
             $object->setNeedsOverworldRain($data['needs_overworld_rain']);
             unset($data['needs_overworld_rain']);
-        }
-        elseif (\array_key_exists('needs_overworld_rain', $data) && $data['needs_overworld_rain'] === null) {
+        } elseif (\array_key_exists('needs_overworld_rain', $data) && null === $data['needs_overworld_rain']) {
             $object->setNeedsOverworldRain(null);
         }
-        if (\array_key_exists('party_species', $data) && $data['party_species'] !== null) {
+        if (\array_key_exists('party_species', $data) && null !== $data['party_species']) {
             $object->setPartySpecies($data['party_species']);
             unset($data['party_species']);
-        }
-        elseif (\array_key_exists('party_species', $data) && $data['party_species'] === null) {
+        } elseif (\array_key_exists('party_species', $data) && null === $data['party_species']) {
             $object->setPartySpecies(null);
         }
-        if (\array_key_exists('party_type', $data) && $data['party_type'] !== null) {
+        if (\array_key_exists('party_type', $data) && null !== $data['party_type']) {
             $object->setPartyType($data['party_type']);
             unset($data['party_type']);
-        }
-        elseif (\array_key_exists('party_type', $data) && $data['party_type'] === null) {
+        } elseif (\array_key_exists('party_type', $data) && null === $data['party_type']) {
             $object->setPartyType(null);
         }
-        if (\array_key_exists('relative_physical_stats', $data) && $data['relative_physical_stats'] !== null) {
+        if (\array_key_exists('relative_physical_stats', $data) && null !== $data['relative_physical_stats']) {
             $object->setRelativePhysicalStats($data['relative_physical_stats']);
             unset($data['relative_physical_stats']);
-        }
-        elseif (\array_key_exists('relative_physical_stats', $data) && $data['relative_physical_stats'] === null) {
+        } elseif (\array_key_exists('relative_physical_stats', $data) && null === $data['relative_physical_stats']) {
             $object->setRelativePhysicalStats(null);
         }
         if (\array_key_exists('time_of_day', $data)) {
             $object->setTimeOfDay($data['time_of_day']);
             unset($data['time_of_day']);
         }
-        if (\array_key_exists('trade_species', $data) && $data['trade_species'] !== null) {
+        if (\array_key_exists('trade_species', $data) && null !== $data['trade_species']) {
             $object->setTradeSpecies($data['trade_species']);
             unset($data['trade_species']);
-        }
-        elseif (\array_key_exists('trade_species', $data) && $data['trade_species'] === null) {
+        } elseif (\array_key_exists('trade_species', $data) && null === $data['trade_species']) {
             $object->setTradeSpecies(null);
         }
         if (\array_key_exists('trigger', $data)) {
@@ -191,25 +176,22 @@ class EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemNormalizer imple
             $object->setTurnUpsideDown($data['turn_upside_down']);
             unset($data['turn_upside_down']);
         }
-        if (\array_key_exists('used_move', $data) && $data['used_move'] !== null) {
+        if (\array_key_exists('used_move', $data) && null !== $data['used_move']) {
             $object->setUsedMove($data['used_move']);
             unset($data['used_move']);
-        }
-        elseif (\array_key_exists('used_move', $data) && $data['used_move'] === null) {
+        } elseif (\array_key_exists('used_move', $data) && null === $data['used_move']) {
             $object->setUsedMove(null);
         }
-        if (\array_key_exists('region_id', $data) && $data['region_id'] !== null) {
+        if (\array_key_exists('region_id', $data) && null !== $data['region_id']) {
             $object->setRegionId($this->denormalizer->denormalize($data['region_id'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemRegionId::class, 'json', $context));
             unset($data['region_id']);
-        }
-        elseif (\array_key_exists('region_id', $data) && $data['region_id'] === null) {
+        } elseif (\array_key_exists('region_id', $data) && null === $data['region_id']) {
             $object->setRegionId(null);
         }
-        if (\array_key_exists('base_form_id', $data) && $data['base_form_id'] !== null) {
+        if (\array_key_exists('base_form_id', $data) && null !== $data['base_form_id']) {
             $object->setBaseFormId($this->denormalizer->denormalize($data['base_form_id'], \App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemBaseFormId::class, 'json', $context));
             unset($data['base_form_id']);
-        }
-        elseif (\array_key_exists('base_form_id', $data) && $data['base_form_id'] === null) {
+        } elseif (\array_key_exists('base_form_id', $data) && null === $data['base_form_id']) {
             $object->setBaseFormId(null);
         }
         foreach ($data as $key => $value) {
@@ -217,8 +199,10 @@ class EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemNormalizer imple
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
@@ -252,8 +236,10 @@ class EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItemNormalizer imple
                 $dataArray[$key] = $value;
             }
         }
+
         return $dataArray;
     }
+
     public function getSupportedTypes(?string $format = null): array
     {
         return [\App\Generated\PokeApi\Model\EvolutionChainDetailChainEvolvesToItemEvolutionDetailsItem::class => false];

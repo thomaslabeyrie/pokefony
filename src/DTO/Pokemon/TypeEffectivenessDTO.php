@@ -8,10 +8,11 @@ class TypeEffectivenessDTO
         public readonly array $weaknesses,
         public readonly array $resistances,
         public readonly array $immunities,
-    ) {}
+    ) {
+    }
 
     /**
-     * Calcule l'efficacité depuis les données brutes de l'API
+     * Calcule l'efficacité depuis les données brutes de l'API.
      */
     public static function fromTypes(array $typesData): self
     {
@@ -47,7 +48,7 @@ class TypeEffectivenessDTO
         foreach ($multipliers as $type => $multiplier) {
             if ($multiplier > 1) {
                 $weaknesses[$type] = $multiplier;
-            } elseif ($multiplier == 0) {
+            } elseif (0 == $multiplier) {
                 $immunities[] = $type;
             } elseif ($multiplier < 1) {
                 $resistances[$type] = $multiplier;
@@ -63,7 +64,7 @@ class TypeEffectivenessDTO
 
     /**
      * Calcule l'efficacité depuis des TypeDTO déjà créés
-     * (utile si tu as déjà les TypeDTO ailleurs)
+     * (utile si tu as déjà les TypeDTO ailleurs).
      */
     public static function fromTypeDTOs(array $types): self
     {
@@ -90,7 +91,7 @@ class TypeEffectivenessDTO
         foreach ($multipliers as $type => $multiplier) {
             if ($multiplier > 1) {
                 $weaknesses[$type] = $multiplier;
-            } elseif ($multiplier == 0) {
+            } elseif (0 == $multiplier) {
                 $immunities[] = $type;
             } elseif ($multiplier < 1) {
                 $resistances[$type] = $multiplier;

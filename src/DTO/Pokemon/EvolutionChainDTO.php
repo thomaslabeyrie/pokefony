@@ -6,7 +6,8 @@ class EvolutionChainDTO
 {
     public function __construct(
         public readonly array $evolutions,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $data): self
     {
@@ -16,7 +17,7 @@ class EvolutionChainDTO
     }
 
     /**
-     * Transforme la structure récursive en liste plate
+     * Transforme la structure récursive en liste plate.
      */
     private static function flattenChain(array $chainData): array
     {
@@ -38,7 +39,7 @@ class EvolutionChainDTO
     }
 
     /**
-     * Parse une évolution et ses sous-évolutions
+     * Parse une évolution et ses sous-évolutions.
      */
     private static function flattenEvolution(array $evolutionData): array
     {
@@ -70,13 +71,13 @@ class EvolutionChainDTO
     }
 
     /**
-     * Retourne le Pokémon précédent dans la chaîne
+     * Retourne le Pokémon précédent dans la chaîne.
      */
     public function getPreviousEvolution(string $currentName): ?array
     {
         $index = $this->findPokemonIndex($currentName);
 
-        if ($index === null || $index === 0) {
+        if (null === $index || 0 === $index) {
             return null;
         }
 
@@ -84,13 +85,13 @@ class EvolutionChainDTO
     }
 
     /**
-     * Retourne le(s) Pokémon suivant(s) dans la chaîne
+     * Retourne le(s) Pokémon suivant(s) dans la chaîne.
      */
     public function getNextEvolutions(string $currentName): array
     {
         $index = $this->findPokemonIndex($currentName);
 
-        if ($index === null || $index >= count($this->evolutions) - 1) {
+        if (null === $index || $index >= count($this->evolutions) - 1) {
             return [];
         }
 
@@ -100,7 +101,7 @@ class EvolutionChainDTO
     }
 
     /**
-     * Trouve l'index d'un Pokémon dans la chaîne
+     * Trouve l'index d'un Pokémon dans la chaîne.
      */
     private function findPokemonIndex(string $name): ?int
     {

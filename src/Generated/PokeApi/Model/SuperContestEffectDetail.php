@@ -8,6 +8,7 @@ class SuperContestEffectDetail extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -28,42 +29,33 @@ class SuperContestEffectDetail extends \ArrayObject
      * @var list<MoveSummary>
      */
     protected $moves;
-    /**
-     * @return int
-     */
+
     public function getId(): int
     {
         return $this->id;
     }
-    /**
-     * @param int $id
-     *
-     * @return self
-     */
+
     public function setId(int $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * @return int
-     */
+
     public function getAppeal(): int
     {
         return $this->appeal;
     }
-    /**
-     * @param int $appeal
-     *
-     * @return self
-     */
+
     public function setAppeal(int $appeal): self
     {
         $this->initialized['appeal'] = true;
         $this->appeal = $appeal;
+
         return $this;
     }
+
     /**
      * @return list<SuperContestEffectFlavorText>
      */
@@ -71,17 +63,18 @@ class SuperContestEffectDetail extends \ArrayObject
     {
         return $this->flavorTextEntries;
     }
+
     /**
      * @param list<SuperContestEffectFlavorText> $flavorTextEntries
-     *
-     * @return self
      */
     public function setFlavorTextEntries(array $flavorTextEntries): self
     {
         $this->initialized['flavorTextEntries'] = true;
         $this->flavorTextEntries = $flavorTextEntries;
+
         return $this;
     }
+
     /**
      * @return list<MoveSummary>
      */
@@ -89,15 +82,15 @@ class SuperContestEffectDetail extends \ArrayObject
     {
         return $this->moves;
     }
+
     /**
      * @param list<MoveSummary> $moves
-     *
-     * @return self
      */
     public function setMoves(array $moves): self
     {
         $this->initialized['moves'] = true;
         $this->moves = $moves;
+
         return $this;
     }
 }

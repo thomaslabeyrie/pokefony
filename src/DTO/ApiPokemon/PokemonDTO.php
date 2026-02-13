@@ -217,42 +217,49 @@ class PokemonDTO
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setBaseExperience(int $baseExperience): self
     {
         $this->baseExperience = $baseExperience;
+
         return $this;
     }
 
     public function setHeight(int $height): self
     {
         $this->height = $height;
+
         return $this;
     }
 
     public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
+
         return $this;
     }
 
     public function setOrder(int $order): self
     {
         $this->order = $order;
+
         return $this;
     }
 
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
         return $this;
     }
 
@@ -262,6 +269,7 @@ class PokemonDTO
     public function setAbilities(array $abilities): self
     {
         $this->abilities = $abilities;
+
         return $this;
     }
 
@@ -271,6 +279,7 @@ class PokemonDTO
     public function setForms(array $forms): self
     {
         $this->forms = $forms;
+
         return $this;
     }
 
@@ -280,6 +289,7 @@ class PokemonDTO
     public function setGameIndices(array $gameIndices): self
     {
         $this->gameIndices = $gameIndices;
+
         return $this;
     }
 
@@ -289,12 +299,14 @@ class PokemonDTO
     public function setHeldItems(array $heldItems): self
     {
         $this->heldItems = $heldItems;
+
         return $this;
     }
 
     public function setLocationAreaEncounters(string $locationAreaEncounters): self
     {
         $this->locationAreaEncounters = $locationAreaEncounters;
+
         return $this;
     }
 
@@ -304,24 +316,28 @@ class PokemonDTO
     public function setMoves(array $moves): self
     {
         $this->moves = $moves;
+
         return $this;
     }
 
     public function setSpecies(NamedResourceDTO $species): self
     {
         $this->species = $species;
+
         return $this;
     }
 
     public function setSprites(PokemonSpritesDTO $sprites): self
     {
         $this->sprites = $sprites;
+
         return $this;
     }
 
     public function setCries(PokemonCriesDTO $cries): self
     {
         $this->cries = $cries;
+
         return $this;
     }
 
@@ -331,6 +347,7 @@ class PokemonDTO
     public function setStats(array $stats): self
     {
         $this->stats = $stats;
+
         return $this;
     }
 
@@ -340,6 +357,7 @@ class PokemonDTO
     public function setTypes(array $types): self
     {
         $this->types = $types;
+
         return $this;
     }
 
@@ -349,6 +367,7 @@ class PokemonDTO
     public function setPastTypes(array $pastTypes): self
     {
         $this->pastTypes = $pastTypes;
+
         return $this;
     }
 
@@ -358,6 +377,7 @@ class PokemonDTO
     public function setPastAbilities(array $pastAbilities): self
     {
         $this->pastAbilities = $pastAbilities;
+
         return $this;
     }
 }

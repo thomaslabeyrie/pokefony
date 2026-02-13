@@ -8,6 +8,7 @@ class AbilityChange extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -20,24 +21,20 @@ class AbilityChange extends \ArrayObject
      * @var list<AbilityChangeEffectText>
      */
     protected $effectEntries;
-    /**
-     * @return VersionGroupSummary
-     */
+
     public function getVersionGroup(): VersionGroupSummary
     {
         return $this->versionGroup;
     }
-    /**
-     * @param VersionGroupSummary $versionGroup
-     *
-     * @return self
-     */
+
     public function setVersionGroup(VersionGroupSummary $versionGroup): self
     {
         $this->initialized['versionGroup'] = true;
         $this->versionGroup = $versionGroup;
+
         return $this;
     }
+
     /**
      * @return list<AbilityChangeEffectText>
      */
@@ -45,15 +42,15 @@ class AbilityChange extends \ArrayObject
     {
         return $this->effectEntries;
     }
+
     /**
      * @param list<AbilityChangeEffectText> $effectEntries
-     *
-     * @return self
      */
     public function setEffectEntries(array $effectEntries): self
     {
         $this->initialized['effectEntries'] = true;
         $this->effectEntries = $effectEntries;
+
         return $this;
     }
 }

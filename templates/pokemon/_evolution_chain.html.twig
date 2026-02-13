@@ -1,0 +1,11 @@
+<li>
+    {{ node.species.name }}
+
+    {% if node.evolvesTo is not empty %}
+        <ul>
+            {% for child in node.evolvesTo %}
+                {% include 'pokemon/_evolution_chain.html.twig' with { node: child } %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

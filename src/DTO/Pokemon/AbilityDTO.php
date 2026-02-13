@@ -8,7 +8,8 @@ class AbilityDTO
         public readonly string $name,
         public readonly bool $isHidden,
         public readonly int $slot,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $data): self
     {

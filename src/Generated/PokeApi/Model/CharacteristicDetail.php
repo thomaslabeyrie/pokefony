@@ -8,6 +8,7 @@ class CharacteristicDetail extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -32,42 +33,33 @@ class CharacteristicDetail extends \ArrayObject
      * @var list<CharacteristicDescription>
      */
     protected $descriptions;
-    /**
-     * @return int
-     */
+
     public function getId(): int
     {
         return $this->id;
     }
-    /**
-     * @param int $id
-     *
-     * @return self
-     */
+
     public function setId(int $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * @return int
-     */
+
     public function getGeneModulo(): int
     {
         return $this->geneModulo;
     }
-    /**
-     * @param int $geneModulo
-     *
-     * @return self
-     */
+
     public function setGeneModulo(int $geneModulo): self
     {
         $this->initialized['geneModulo'] = true;
         $this->geneModulo = $geneModulo;
+
         return $this;
     }
+
     /**
      * @return list<int>
      */
@@ -75,35 +67,31 @@ class CharacteristicDetail extends \ArrayObject
     {
         return $this->possibleValues;
     }
+
     /**
      * @param list<int> $possibleValues
-     *
-     * @return self
      */
     public function setPossibleValues(array $possibleValues): self
     {
         $this->initialized['possibleValues'] = true;
         $this->possibleValues = $possibleValues;
+
         return $this;
     }
-    /**
-     * @return StatSummary
-     */
+
     public function getHighestStat(): StatSummary
     {
         return $this->highestStat;
     }
-    /**
-     * @param StatSummary $highestStat
-     *
-     * @return self
-     */
+
     public function setHighestStat(StatSummary $highestStat): self
     {
         $this->initialized['highestStat'] = true;
         $this->highestStat = $highestStat;
+
         return $this;
     }
+
     /**
      * @return list<CharacteristicDescription>
      */
@@ -111,15 +99,15 @@ class CharacteristicDetail extends \ArrayObject
     {
         return $this->descriptions;
     }
+
     /**
      * @param list<CharacteristicDescription> $descriptions
-     *
-     * @return self
      */
     public function setDescriptions(array $descriptions): self
     {
         $this->initialized['descriptions'] = true;
         $this->descriptions = $descriptions;
+
         return $this;
     }
 }

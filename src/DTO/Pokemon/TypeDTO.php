@@ -8,7 +8,8 @@ class TypeDTO
         public readonly string $name,
         public readonly int $slot,
         public readonly DamageRelationsDTO $damageRelations,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $type): self
     {

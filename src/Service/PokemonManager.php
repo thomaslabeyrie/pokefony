@@ -11,8 +11,9 @@ class PokemonManager
     public function __construct(
         private PokeApiService $pokeApiService,
         private EntityManagerInterface $entityManager,
-        private PokemonRepository $pokemonRepository
-    ) {}
+        private PokemonRepository $pokemonRepository,
+    ) {
+    }
 
     public function getOrCreatePokemon(string|int $identifier)
     {
@@ -32,9 +33,9 @@ class PokemonManager
         $pokemon->setPokemonId($pokemonDTO->id);
         $pokemon->setSpriteUrl($pokemonDTO->sprites->officialArtwork);
         $pokemon->setTypes(array_map(
-            fn($type) => [
+            fn ($type) => [
                 'name' => $type->name,
-                'slot' => $type->slot
+                'slot' => $type->slot,
             ],
             $pokemonDTO->types
         ));

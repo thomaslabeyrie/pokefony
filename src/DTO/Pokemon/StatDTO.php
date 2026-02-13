@@ -8,7 +8,8 @@ class StatDTO
         public readonly string $name,
         public readonly int $baseStat,
         public readonly int $effort,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $data): self
     {

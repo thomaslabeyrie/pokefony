@@ -45,6 +45,7 @@ class TypeRelationsDTO
     public function setNoDamageTo(array $noDamageTo): self
     {
         $this->noDamageTo = $noDamageTo;
+
         return $this;
     }
 
@@ -62,6 +63,7 @@ class TypeRelationsDTO
     public function setHalfDamageTo(array $halfDamageTo): self
     {
         $this->halfDamageTo = $halfDamageTo;
+
         return $this;
     }
 
@@ -79,6 +81,7 @@ class TypeRelationsDTO
     public function setDoubleDamageTo(array $doubleDamageTo): self
     {
         $this->doubleDamageTo = $doubleDamageTo;
+
         return $this;
     }
 
@@ -96,6 +99,7 @@ class TypeRelationsDTO
     public function setNoDamageFrom(array $noDamageFrom): self
     {
         $this->noDamageFrom = $noDamageFrom;
+
         return $this;
     }
 
@@ -113,6 +117,7 @@ class TypeRelationsDTO
     public function setHalfDamageFrom(array $halfDamageFrom): self
     {
         $this->halfDamageFrom = $halfDamageFrom;
+
         return $this;
     }
 
@@ -130,6 +135,7 @@ class TypeRelationsDTO
     public function setDoubleDamageFrom(array $doubleDamageFrom): self
     {
         $this->doubleDamageFrom = $doubleDamageFrom;
+
         return $this;
     }
 }

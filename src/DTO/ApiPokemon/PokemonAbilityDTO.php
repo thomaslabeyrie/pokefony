@@ -26,6 +26,7 @@ class PokemonAbilityDTO
     public function setIsHidden(bool $isHidden): self
     {
         $this->isHidden = $isHidden;
+
         return $this;
     }
 
@@ -37,6 +38,7 @@ class PokemonAbilityDTO
     public function setSlot(int $slot): self
     {
         $this->slot = $slot;
+
         return $this;
     }
 
@@ -48,6 +50,7 @@ class PokemonAbilityDTO
     public function setAbility(NamedResourceDTO $ability): self
     {
         $this->ability = $ability;
+
         return $this;
     }
 }

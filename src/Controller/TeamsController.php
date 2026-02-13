@@ -18,10 +18,11 @@ final class TeamsController extends AbstractController
         private TeamManager $teamManager,
         private TeamRepository $teamRepository,
         private EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     /**
-     * Display all user's teams
+     * Display all user's teams.
      */
     #[Route('/teams', name: 'app_teams')]
     #[IsGranted('ROLE_USER')]
@@ -43,7 +44,7 @@ final class TeamsController extends AbstractController
     }
 
     /**
-     * Show individual team details
+     * Show individual team details.
      */
     #[Route('/teams/{id}', name: 'app_teams_show', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
@@ -69,7 +70,7 @@ final class TeamsController extends AbstractController
 
     /**
      * Return modal content for adding Pokemon to team
-     * This endpoint is called via Turbo Frame
+     * This endpoint is called via Turbo Frame.
      */
     #[Route('/teams/modal/{pokemonId}', name: 'app_teams_modal')]
     #[IsGranted('ROLE_USER')]
@@ -93,7 +94,7 @@ final class TeamsController extends AbstractController
     }
 
     /**
-     * Create new team with Pokemon
+     * Create new team with Pokemon.
      */
     #[Route('/teams/create', name: 'app_teams_create', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -127,7 +128,7 @@ final class TeamsController extends AbstractController
     }
 
     /**
-     * Add Pokemon to existing team
+     * Add Pokemon to existing team.
      */
     #[Route('/teams/{teamId}/add/{pokemonId}', name: 'app_teams_add_pokemon', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -160,7 +161,7 @@ final class TeamsController extends AbstractController
     }
 
     /**
-     * Remove Pokemon from team
+     * Remove Pokemon from team.
      */
     #[Route('/teams/{teamId}/remove/{pokemonId}', name: 'app_teams_remove_pokemon', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -183,11 +184,10 @@ final class TeamsController extends AbstractController
             // If called from modal (via fetch), return updated button HTML
             // Check if it's an AJAX request (XMLHttpRequest or Fetch API)
             if (
-                $request->headers->get('X-Requested-With') === 'XMLHttpRequest' ||
-                $request->getContentTypeFormat() === 'json' ||
-                !$request->isMethod('GET')
+                'XMLHttpRequest' === $request->headers->get('X-Requested-With')
+                || 'json' === $request->getContentTypeFormat()
+                || !$request->isMethod('GET')
             ) {
-
                 // Return updated button showing remaining teams containing this Pokemon
                 $teams = $this->teamRepository->findTeamsContainingPokemon($user, $pokemonId);
                 $pokemonName = $request->query->get('name', '');
@@ -204,20 +204,21 @@ final class TeamsController extends AbstractController
         } catch (\Exception $e) {
             // For AJAX requests, return JSON error
             if (
-                $request->headers->get('X-Requested-With') === 'XMLHttpRequest' ||
-                $request->getContentTypeFormat() === 'json'
+                'XMLHttpRequest' === $request->headers->get('X-Requested-With')
+                || 'json' === $request->getContentTypeFormat()
             ) {
                 return $this->json(['error' => $e->getMessage()], 400);
             }
 
             // For traditional requests, use flash message and redirect
             $this->addFlash('error', $e->getMessage());
+
             return $this->redirectToRoute('app_teams_show', ['id' => $teamId]);
         }
     }
 
     /**
-     * Rename a team (AJAX endpoint for inline editing)
+     * Rename a team (AJAX endpoint for inline editing).
      */
     #[Route('/teams/{id}/rename', name: 'app_teams_rename', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -257,12 +258,13 @@ final class TeamsController extends AbstractController
             if (str_contains($e->getMessage(), 'already have a team')) {
                 return $this->json(['error' => 'You already have a team with this name'], 400);
             }
+
             return $this->json(['error' => $e->getMessage()], 400);
         }
     }
 
     /**
-     * Delete entire team
+     * Delete entire team.
      */
     #[Route('/teams/{id}/delete', name: 'app_teams_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('ROLE_USER')]

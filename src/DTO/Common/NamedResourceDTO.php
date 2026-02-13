@@ -25,12 +25,14 @@ class NamedResourceDTO
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
         return $this;
     }
 }

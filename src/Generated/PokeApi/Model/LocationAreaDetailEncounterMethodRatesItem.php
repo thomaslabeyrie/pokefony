@@ -8,6 +8,7 @@ class LocationAreaDetailEncounterMethodRatesItem extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -20,24 +21,20 @@ class LocationAreaDetailEncounterMethodRatesItem extends \ArrayObject
      * @var list<LocationAreaDetailEncounterMethodRatesItemVersionDetailsItem>
      */
     protected $versionDetails;
-    /**
-     * @return LocationAreaDetailEncounterMethodRatesItemEncounterMethod
-     */
+
     public function getEncounterMethod(): LocationAreaDetailEncounterMethodRatesItemEncounterMethod
     {
         return $this->encounterMethod;
     }
-    /**
-     * @param LocationAreaDetailEncounterMethodRatesItemEncounterMethod $encounterMethod
-     *
-     * @return self
-     */
+
     public function setEncounterMethod(LocationAreaDetailEncounterMethodRatesItemEncounterMethod $encounterMethod): self
     {
         $this->initialized['encounterMethod'] = true;
         $this->encounterMethod = $encounterMethod;
+
         return $this;
     }
+
     /**
      * @return list<LocationAreaDetailEncounterMethodRatesItemVersionDetailsItem>
      */
@@ -45,15 +42,15 @@ class LocationAreaDetailEncounterMethodRatesItem extends \ArrayObject
     {
         return $this->versionDetails;
     }
+
     /**
      * @param list<LocationAreaDetailEncounterMethodRatesItemVersionDetailsItem> $versionDetails
-     *
-     * @return self
      */
     public function setVersionDetails(array $versionDetails): self
     {
         $this->initialized['versionDetails'] = true;
         $this->versionDetails = $versionDetails;
+
         return $this;
     }
 }

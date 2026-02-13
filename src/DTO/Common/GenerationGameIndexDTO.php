@@ -19,6 +19,7 @@ class GenerationGameIndexDTO
     public function setGameIndex(int $gameIndex): self
     {
         $this->gameIndex = $gameIndex;
+
         return $this;
     }
 
@@ -30,6 +31,7 @@ class GenerationGameIndexDTO
     public function setGeneration(NamedResourceDTO $generation): self
     {
         $this->generation = $generation;
+
         return $this;
     }
 }

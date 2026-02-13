@@ -8,6 +8,7 @@ class TypeDetail extends \ArrayObject
      * @var array
      */
     protected $initialized = [];
+
     public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
@@ -56,60 +57,46 @@ class TypeDetail extends \ArrayObject
      * @var array<string, array<string, TypeDetailSpritesItemItem>>
      */
     protected $sprites;
-    /**
-     * @return int
-     */
+
     public function getId(): int
     {
         return $this->id;
     }
-    /**
-     * @param int $id
-     *
-     * @return self
-     */
+
     public function setId(int $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * @return string
-     */
+
     public function getName(): string
     {
         return $this->name;
     }
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
+
     public function setName(string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
         return $this;
     }
-    /**
-     * @return TypeDetailDamageRelations
-     */
+
     public function getDamageRelations(): TypeDetailDamageRelations
     {
         return $this->damageRelations;
     }
-    /**
-     * @param TypeDetailDamageRelations $damageRelations
-     *
-     * @return self
-     */
+
     public function setDamageRelations(TypeDetailDamageRelations $damageRelations): self
     {
         $this->initialized['damageRelations'] = true;
         $this->damageRelations = $damageRelations;
+
         return $this;
     }
+
     /**
      * @return list<TypeDetailPastDamageRelationsItem>
      */
@@ -117,17 +104,18 @@ class TypeDetail extends \ArrayObject
     {
         return $this->pastDamageRelations;
     }
+
     /**
      * @param list<TypeDetailPastDamageRelationsItem> $pastDamageRelations
-     *
-     * @return self
      */
     public function setPastDamageRelations(array $pastDamageRelations): self
     {
         $this->initialized['pastDamageRelations'] = true;
         $this->pastDamageRelations = $pastDamageRelations;
+
         return $this;
     }
+
     /**
      * @return list<TypeGameIndex>
      */
@@ -135,53 +123,44 @@ class TypeDetail extends \ArrayObject
     {
         return $this->gameIndices;
     }
+
     /**
      * @param list<TypeGameIndex> $gameIndices
-     *
-     * @return self
      */
     public function setGameIndices(array $gameIndices): self
     {
         $this->initialized['gameIndices'] = true;
         $this->gameIndices = $gameIndices;
+
         return $this;
     }
-    /**
-     * @return GenerationSummary
-     */
+
     public function getGeneration(): GenerationSummary
     {
         return $this->generation;
     }
-    /**
-     * @param GenerationSummary $generation
-     *
-     * @return self
-     */
+
     public function setGeneration(GenerationSummary $generation): self
     {
         $this->initialized['generation'] = true;
         $this->generation = $generation;
+
         return $this;
     }
-    /**
-     * @return MoveDamageClassSummary
-     */
+
     public function getMoveDamageClass(): MoveDamageClassSummary
     {
         return $this->moveDamageClass;
     }
-    /**
-     * @param MoveDamageClassSummary $moveDamageClass
-     *
-     * @return self
-     */
+
     public function setMoveDamageClass(MoveDamageClassSummary $moveDamageClass): self
     {
         $this->initialized['moveDamageClass'] = true;
         $this->moveDamageClass = $moveDamageClass;
+
         return $this;
     }
+
     /**
      * @return list<AbilityName>
      */
@@ -189,17 +168,18 @@ class TypeDetail extends \ArrayObject
     {
         return $this->names;
     }
+
     /**
      * @param list<AbilityName> $names
-     *
-     * @return self
      */
     public function setNames(array $names): self
     {
         $this->initialized['names'] = true;
         $this->names = $names;
+
         return $this;
     }
+
     /**
      * @return list<TypeDetailPokemonItem>
      */
@@ -207,17 +187,18 @@ class TypeDetail extends \ArrayObject
     {
         return $this->pokemon;
     }
+
     /**
      * @param list<TypeDetailPokemonItem> $pokemon
-     *
-     * @return self
      */
     public function setPokemon(array $pokemon): self
     {
         $this->initialized['pokemon'] = true;
         $this->pokemon = $pokemon;
+
         return $this;
     }
+
     /**
      * @return list<MoveSummary>
      */
@@ -225,17 +206,18 @@ class TypeDetail extends \ArrayObject
     {
         return $this->moves;
     }
+
     /**
      * @param list<MoveSummary> $moves
-     *
-     * @return self
      */
     public function setMoves(array $moves): self
     {
         $this->initialized['moves'] = true;
         $this->moves = $moves;
+
         return $this;
     }
+
     /**
      * @return array<string, array<string, TypeDetailSpritesItemItem>>
      */
@@ -243,15 +225,15 @@ class TypeDetail extends \ArrayObject
     {
         return $this->sprites;
     }
+
     /**
      * @param array<string, array<string, TypeDetailSpritesItemItem>> $sprites
-     *
-     * @return self
      */
     public function setSprites(iterable $sprites): self
     {
         $this->initialized['sprites'] = true;
         $this->sprites = $sprites;
+
         return $this;
     }
 }

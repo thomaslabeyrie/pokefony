@@ -55,6 +55,7 @@ class Team
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -66,6 +67,7 @@ class Team
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -82,12 +84,14 @@ class Team
         if (!$this->pokemons->contains($pokemon)) {
             $this->pokemons->add($pokemon);
         }
+
         return $this;
     }
 
     public function removePokemon(Pokemon $pokemon): static
     {
         $this->pokemons->removeElement($pokemon);
+
         return $this;
     }
 
@@ -99,11 +103,12 @@ class Team
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
     /**
-     * Check if team can accept more Pokemon (max 6)
+     * Check if team can accept more Pokemon (max 6).
      */
     public function canAddPokemon(): bool
     {
@@ -111,7 +116,7 @@ class Team
     }
 
     /**
-     * Check if team contains a specific Pokemon
+     * Check if team contains a specific Pokemon.
      */
     public function hasPokemon(Pokemon $pokemon): bool
     {

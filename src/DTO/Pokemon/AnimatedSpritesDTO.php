@@ -13,5 +13,6 @@ class AnimatedSpritesDTO
         public readonly ?string $backShiny = null,
         public readonly ?string $frontShinyFemale = null,
         public readonly ?string $backShinyFemale = null,
-    ) {}
+    ) {
+    }
 }

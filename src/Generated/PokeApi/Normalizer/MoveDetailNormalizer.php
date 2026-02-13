@@ -2,29 +2,33 @@
 
 namespace App\Generated\PokeApi\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use App\Generated\PokeApi\Runtime\Normalizer\CheckArray;
 use App\Generated\PokeApi\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class MoveDetailNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
     use CheckArray;
     use ValidatorTrait;
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \App\Generated\PokeApi\Model\MoveDetail::class;
+        return \App\Generated\PokeApi\Model\MoveDetail::class === $type;
     }
+
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \App\Generated\PokeApi\Model\MoveDetail::class;
+        return is_object($data) && \App\Generated\PokeApi\Model\MoveDetail::class === get_class($data);
     }
+
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if (isset($data['$ref'])) {
@@ -45,36 +49,32 @@ class MoveDetailNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setName($data['name']);
             unset($data['name']);
         }
-        if (\array_key_exists('accuracy', $data) && $data['accuracy'] !== null) {
+        if (\array_key_exists('accuracy', $data) && null !== $data['accuracy']) {
             $object->setAccuracy($data['accuracy']);
             unset($data['accuracy']);
-        }
-        elseif (\array_key_exists('accuracy', $data) && $data['accuracy'] === null) {
+        } elseif (\array_key_exists('accuracy', $data) && null === $data['accuracy']) {
             $object->setAccuracy(null);
         }
         if (\array_key_exists('effect_chance', $data)) {
             $object->setEffectChance($data['effect_chance']);
             unset($data['effect_chance']);
         }
-        if (\array_key_exists('pp', $data) && $data['pp'] !== null) {
+        if (\array_key_exists('pp', $data) && null !== $data['pp']) {
             $object->setPp($data['pp']);
             unset($data['pp']);
-        }
-        elseif (\array_key_exists('pp', $data) && $data['pp'] === null) {
+        } elseif (\array_key_exists('pp', $data) && null === $data['pp']) {
             $object->setPp(null);
         }
-        if (\array_key_exists('priority', $data) && $data['priority'] !== null) {
+        if (\array_key_exists('priority', $data) && null !== $data['priority']) {
             $object->setPriority($data['priority']);
             unset($data['priority']);
-        }
-        elseif (\array_key_exists('priority', $data) && $data['priority'] === null) {
+        } elseif (\array_key_exists('priority', $data) && null === $data['priority']) {
             $object->setPriority(null);
         }
-        if (\array_key_exists('power', $data) && $data['power'] !== null) {
+        if (\array_key_exists('power', $data) && null !== $data['power']) {
             $object->setPower($data['power']);
             unset($data['power']);
-        }
-        elseif (\array_key_exists('power', $data) && $data['power'] === null) {
+        } elseif (\array_key_exists('power', $data) && null === $data['power']) {
             $object->setPower(null);
         }
         if (\array_key_exists('contest_combos', $data)) {
@@ -182,8 +182,10 @@ class MoveDetailNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key] = $value_8;
             }
         }
+
         return $object;
     }
+
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
@@ -213,8 +215,10 @@ class MoveDetailNormalizer implements DenormalizerInterface, NormalizerInterface
                 $dataArray[$key] = $value;
             }
         }
+
         return $dataArray;
     }
+
     public function getSupportedTypes(?string $format = null): array
     {
         return [\App\Generated\PokeApi\Model\MoveDetail::class => false];

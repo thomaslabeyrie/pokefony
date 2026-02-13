@@ -15,5 +15,4 @@ class PokemonMoveDTO
     #[Groups(['pokemon'])]
     #[SerializedName('version_group_details')]
     public array $versionGroupDetails;
-
 }

@@ -11,7 +11,8 @@ class SpeciesDTO
         public readonly ?string $evolvesFrom,
         public readonly array $flavorTextEntries,
         public readonly array $genera,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $data): self
     {
@@ -21,8 +22,7 @@ class SpeciesDTO
             growthRate: $data['growth_rate']['name'],
             evolvesFrom: $data['evolves_from_species']['name'] ?? null,
             flavorTextEntries: self::formatFlavorTexts($data['flavor_text_entries']),
-            genera: array_find($data['genera'], fn($entry) => $entry['language']['name'] === 'en'),
-
+            genera: array_find($data['genera'], fn ($entry) => 'en' === $entry['language']['name']),
         );
     }
 
@@ -30,7 +30,7 @@ class SpeciesDTO
     {
         $formatted = [];
         foreach ($entries as $entry) {
-            if ($entry['language']['name'] === 'en') {
+            if ('en' === $entry['language']['name']) {
                 $formatted[$entry['version']['name']] = $entry['flavor_text'];
             }
         }

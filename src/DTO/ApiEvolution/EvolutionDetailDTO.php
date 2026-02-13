@@ -85,6 +85,7 @@ class EvolutionDetailDTO
     public function setItem(?NamedResourceDTO $item): self
     {
         $this->item = $item;
+
         return $this;
     }
 
@@ -96,6 +97,7 @@ class EvolutionDetailDTO
     public function setTrigger(NamedResourceDTO $trigger): self
     {
         $this->trigger = $trigger;
+
         return $this;
     }
 
@@ -107,6 +109,7 @@ class EvolutionDetailDTO
     public function setGender(?int $gender): self
     {
         $this->gender = $gender;
+
         return $this;
     }
 
@@ -118,6 +121,7 @@ class EvolutionDetailDTO
     public function setHeldItem(?NamedResourceDTO $heldItem): self
     {
         $this->heldItem = $heldItem;
+
         return $this;
     }
 
@@ -129,6 +133,7 @@ class EvolutionDetailDTO
     public function setKnownMove(?NamedResourceDTO $knownMove): self
     {
         $this->knownMove = $knownMove;
+
         return $this;
     }
 
@@ -140,6 +145,7 @@ class EvolutionDetailDTO
     public function setKnownMoveType(?NamedResourceDTO $knownMoveType): self
     {
         $this->knownMoveType = $knownMoveType;
+
         return $this;
     }
 
@@ -151,6 +157,7 @@ class EvolutionDetailDTO
     public function setLocation(?NamedResourceDTO $location): self
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -162,6 +169,7 @@ class EvolutionDetailDTO
     public function setMinLevel(?int $minLevel): self
     {
         $this->minLevel = $minLevel;
+
         return $this;
     }
 
@@ -173,6 +181,7 @@ class EvolutionDetailDTO
     public function setMinHappiness(?int $minHappiness): self
     {
         $this->minHappiness = $minHappiness;
+
         return $this;
     }
 
@@ -184,6 +193,7 @@ class EvolutionDetailDTO
     public function setMinBeauty(?int $minBeauty): self
     {
         $this->minBeauty = $minBeauty;
+
         return $this;
     }
 
@@ -195,6 +205,7 @@ class EvolutionDetailDTO
     public function setMinAffection(?int $minAffection): self
     {
         $this->minAffection = $minAffection;
+
         return $this;
     }
 
@@ -206,6 +217,7 @@ class EvolutionDetailDTO
     public function setNeedsMultiplayer(bool $needsMultiplayer): self
     {
         $this->needsMultiplayer = $needsMultiplayer;
+
         return $this;
     }
 
@@ -217,6 +229,7 @@ class EvolutionDetailDTO
     public function setNeedsOverworldRain(bool $needsOverworldRain): self
     {
         $this->needsOverworldRain = $needsOverworldRain;
+
         return $this;
     }
 
@@ -228,6 +241,7 @@ class EvolutionDetailDTO
     public function setPartySpecies(?NamedResourceDTO $partySpecies): self
     {
         $this->partySpecies = $partySpecies;
+
         return $this;
     }
 
@@ -239,6 +253,7 @@ class EvolutionDetailDTO
     public function setPartyType(?NamedResourceDTO $partyType): self
     {
         $this->partyType = $partyType;
+
         return $this;
     }
 
@@ -250,6 +265,7 @@ class EvolutionDetailDTO
     public function setRelativePhysicalStats(?int $relativePhysicalStats): self
     {
         $this->relativePhysicalStats = $relativePhysicalStats;
+
         return $this;
     }
 
@@ -261,6 +277,7 @@ class EvolutionDetailDTO
     public function setTimeOfDay(string $timeOfDay): self
     {
         $this->timeOfDay = $timeOfDay;
+
         return $this;
     }
 
@@ -272,6 +289,7 @@ class EvolutionDetailDTO
     public function setTradeSpecies(?NamedResourceDTO $tradeSpecies): self
     {
         $this->tradeSpecies = $tradeSpecies;
+
         return $this;
     }
 
@@ -283,6 +301,7 @@ class EvolutionDetailDTO
     public function setTurnUpsideDown(bool $turnUpsideDown): self
     {
         $this->turnUpsideDown = $turnUpsideDown;
+
         return $this;
     }
 
@@ -294,6 +313,7 @@ class EvolutionDetailDTO
     public function setRegion(?NamedResourceDTO $region): self
     {
         $this->region = $region;
+
         return $this;
     }
 
@@ -305,6 +325,7 @@ class EvolutionDetailDTO
     public function setBaseForm(?NamedResourceDTO $baseForm): self
     {
         $this->baseForm = $baseForm;
+
         return $this;
     }
 
@@ -316,6 +337,7 @@ class EvolutionDetailDTO
     public function setUsedMove(?NamedResourceDTO $usedMove): self
     {
         $this->usedMove = $usedMove;
+
         return $this;
     }
 
@@ -327,6 +349,7 @@ class EvolutionDetailDTO
     public function setMinMoveCount(?int $minMoveCount): self
     {
         $this->minMoveCount = $minMoveCount;
+
         return $this;
     }
 
@@ -338,6 +361,7 @@ class EvolutionDetailDTO
     public function setMinSteps(?int $minSteps): self
     {
         $this->minSteps = $minSteps;
+
         return $this;
     }
 
@@ -349,6 +373,7 @@ class EvolutionDetailDTO
     public function setMinDamageTaken(?int $minDamageTaken): self
     {
         $this->minDamageTaken = $minDamageTaken;
+
         return $this;
     }
 }

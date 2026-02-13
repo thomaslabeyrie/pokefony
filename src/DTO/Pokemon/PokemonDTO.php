@@ -17,13 +17,14 @@ class PokemonDTO
         public readonly TypeEffectivenessDTO $effectiveness,
         public readonly SpeciesDTO $species,
         public readonly EvolutionChainDTO $evolutionChain,
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(
         array $data,
         array $speciesData,
         array $typesData,
-        array $evolutionChainData
+        array $evolutionChainData,
     ): self {
         return new self(
             id: $data['id'],
@@ -31,9 +32,9 @@ class PokemonDTO
             height: $data['height'],
             weight: $data['weight'],
             baseExperience: $data['base_experience'] ?? 0,
-            types: array_map(fn($type) => TypeDTO::fromApiResponse($type), $typesData),
-            abilities: array_map(fn($ability) => AbilityDTO::fromApiResponse($ability), $data['abilities']),
-            stats: array_map(fn($stat) => StatDTO::fromApiResponse($stat), $data['stats']),
+            types: array_map(fn ($type) => TypeDTO::fromApiResponse($type), $typesData),
+            abilities: array_map(fn ($ability) => AbilityDTO::fromApiResponse($ability), $data['abilities']),
+            stats: array_map(fn ($stat) => StatDTO::fromApiResponse($stat), $data['stats']),
             sprites: SpritesDTO::fromApiResponse($data['sprites']),
             effectiveness: TypeEffectivenessDTO::fromTypes($typesData),
             species: SpeciesDTO::fromApiResponse($speciesData),
@@ -42,7 +43,7 @@ class PokemonDTO
     }
 
     /**
-     * Retourne l'évolution précédente
+     * Retourne l'évolution précédente.
      */
     public function getPreviousEvolution(): ?array
     {
@@ -50,7 +51,7 @@ class PokemonDTO
     }
 
     /**
-     * Retourne les évolutions suivantes
+     * Retourne les évolutions suivantes.
      */
     public function getNextEvolutions(): array
     {

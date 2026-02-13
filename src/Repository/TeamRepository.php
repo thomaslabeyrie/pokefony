@@ -19,9 +19,7 @@ class TeamRepository extends ServiceEntityRepository
 
     /**
      * Find teams by user with Pokemon count
-     * Useful for displaying teams with member count
-     *
-     * @return array
+     * Useful for displaying teams with member count.
      */
     public function findByUserWithPokemonCount(User $user): array
     {
@@ -37,7 +35,7 @@ class TeamRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find teams that contain a specific Pokemon
+     * Find teams that contain a specific Pokemon.
      *
      * @return Team[]
      */
