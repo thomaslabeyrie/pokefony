@@ -1,18 +1,18 @@
 <turbo-frame id="team-button-{{ pokemonId }}">
-	{% if teams is empty %}
-		{# Show + button to open modal #}
-		<button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#addToTeamModal-{{ pokemonId }}" data-controller="team-modal-trigger" data-action="click->team-modal-trigger#loadModal" data-team-modal-trigger-pokemon-id-value="{{ pokemonId }}" data-team-modal-trigger-pokemon-name-value="{{ pokemonName | default('') }}" style="position: relative; z-index: 10;">
-			<i class="bi bi-plus-circle" style="color: #d1d5db;"></i>
-		</button>
-	{% else %}
-		{# Show badge with team count #}
-		<div class="d-flex align-items-center gap-2">
-			<button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#addToTeamModal-{{ pokemonId }}" data-controller="team-modal-trigger" data-action="click->team-modal-trigger#loadModal" data-team-modal-trigger-pokemon-id-value="{{ pokemonId }}" data-team-modal-trigger-pokemon-name-value="{{ pokemonName | default('') }}">
-				<img src="{{ asset('images/poke_ball_icon_active.svg') }}" alt="Pokéball Icon Active" style="height: 16px;">
-			</button>
-			{# <span class="badge bg-primary rounded-pill" style="font-size: 0.7rem;">
-				{{ teams|length }}
-			</span> #}
-		</div>
-	{% endif %}
+    {% if teams is empty %}
+        {# Show + button to open modal #}
+        <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#addToTeamModal-{{ pokemonId }}" data-controller="team-modal-trigger" data-action="click->team-modal-trigger#loadModal" data-team-modal-trigger-pokemon-id-value="{{ pokemonId }}" data-team-modal-trigger-pokemon-name-value="{{ pokemonName|default('') }}" style="position: relative; z-index: 10;">
+            <i class="bi bi-plus-circle" style="color: #d1d5db;"></i>
+        </button>
+    {% else %}
+        {# Show badge with team count #}
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#addToTeamModal-{{ pokemonId }}" data-controller="team-modal-trigger" data-action="click->team-modal-trigger#loadModal" data-team-modal-trigger-pokemon-id-value="{{ pokemonId }}" data-team-modal-trigger-pokemon-name-value="{{ pokemonName|default('') }}">
+                <img src="{{ asset('images/poke_ball_icon_active.svg') }}" alt="Pokéball Icon Active" style="height: 16px;">
+            </button>
+            {# <span class="badge bg-primary rounded-pill" style="font-size: 0.7rem;">
+                {{ teams|length }}
+            </span> #}
+        </div>
+    {% endif %}
 </turbo-frame>

@@ -1,90 +1,90 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Pokefony
+    Pokefony
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<style>
-		.table tbody tr:last-child th,
-		.table tbody tr:last-child td {
-			border-bottom: none;
-		}
-	</style>
+    {{ parent() }}
+    <style>
+        .table tbody tr:last-child th,
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-	<div
-		class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
-		{# Pagination #}
-		<div class="d-flex justify-content-center gap-2 my-2">
-			<nav aria-label="Page navigation">
-				<ul
-					class="pagination">
-					{# Previous #}
-					<li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
-						<a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', { region: region, page: page - 1 }) : '#' }}">
-							Previous
-						</a>
-					</li>
+    <div
+        class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
+        {# Pagination #}
+        <div class="d-flex justify-content-center gap-2 my-2">
+            <nav aria-label="Page navigation">
+                <ul
+                    class="pagination">
+                    {# Previous #}
+                    <li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', {region: region, page: page - 1}) : '#' }}">
+                            Previous
+                        </a>
+                    </li>
 
-					{# Pages autour de la page actuelle #}
-					{% for i in range(max(1, page - 2), page + 2) %}
-						<li class="page-item {{ page == i ? 'active' : '' }}">
-							<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: i }) }}">
-								{{ i }}
-							</a>
-						</li>
-					{% endfor %}
+                    {# Pages autour de la page actuelle #}
+                    {% for i in range(max(1, page - 2), page + 2) %}
+                        <li class="page-item {{ page == i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ path('app_pokedex_region', {region: region, page: i}) }}">
+                                {{ i }}
+                            </a>
+                        </li>
+                    {% endfor %}
 
-					{# Next - toujours actif car on ne connaît pas la dernière page #}
-					<li class="page-item">
-						<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
-							Next
-						</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+                    {# Next - toujours actif car on ne connaît pas la dernière page #}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path('app_pokedex_region', {region: region, page: page + 1}) }}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-		<section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
-			{% include 'pokemon/_pokedex_table.html.twig' with {
-				pokemons: pokemons,
-				favoriteIds: favoriteIds,
-				teamPokemonIds: teamPokemonIds
-			} %}
-		</section>
+        <section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
+            {{ include('pokemon/_pokedex_table.html.twig', {
+                pokemons: pokemons,
+                favoriteIds: favoriteIds,
+                teamPokemonIds: teamPokemonIds,
+            }) }}
+        </section>
 
-		{# Pagination #}
-		<div class="d-flex justify-content-center gap-2 my-5">
-			<nav aria-label="Page navigation">
-				<ul
-					class="pagination">
-					{# Previous #}
-					<li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
-						<a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', { region: region, page: page - 1 }) : '#' }}">
-							Previous
-						</a>
-					</li>
+        {# Pagination #}
+        <div class="d-flex justify-content-center gap-2 my-5">
+            <nav aria-label="Page navigation">
+                <ul
+                    class="pagination">
+                    {# Previous #}
+                    <li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ page > 1 ? path('app_pokedex_region', {region: region, page: page - 1}) : '#' }}">
+                            Previous
+                        </a>
+                    </li>
 
-					{# Pages autour de la page actuelle #}
-					{% for i in range(max(1, page - 2), page + 2) %}
-						<li class="page-item {{ page == i ? 'active' : '' }}">
-							<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: i }) }}">
-								{{ i }}
-							</a>
-						</li>
-					{% endfor %}
+                    {# Pages autour de la page actuelle #}
+                    {% for i in range(max(1, page - 2), page + 2) %}
+                        <li class="page-item {{ page == i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ path('app_pokedex_region', {region: region, page: i}) }}">
+                                {{ i }}
+                            </a>
+                        </li>
+                    {% endfor %}
 
-					{# Next - toujours actif car on ne connaît pas la dernière page #}
-					<li class="page-item">
-						<a class="page-link" href="{{ path('app_pokedex_region', { region: region, page: page + 1 }) }}">
-							Next
-						</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
+                    {# Next - toujours actif car on ne connaît pas la dernière page #}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path('app_pokedex_region', {region: region, page: page + 1}) }}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 {% endblock %}

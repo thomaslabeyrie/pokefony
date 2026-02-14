@@ -1,505 +1,513 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ pokemon.name | title }}
-	- Pokefony
+    {{ pokemon.name|title }}
+    - Pokefony
 {% endblock %}
 
 {% block body %}
 
-	<div
-		class="container">
-		{{dump(pokemon, types, species, evolutionChain)}}
-		<div
-			class="row my-4" data-controller="favorite-toast">
+    {# @var pokemon App\PokeApiClient\DTO\Pokemon\PokemonDTO #}
 
-			{# Section Image #}
-			<div class="col-12 col-lg-4">
-				<section class="p-4 rounded h-100">
-					<div class="d-flex h-100 flex-column justify-content-between align-items-center">
-						<div class="h-100 d-flex align-items-center">
-							<img src="{{ pokemon.sprites.frontDefault }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name | title }} artwork">
-						</div>
+    <div
+        class="container">
+        <div
+            class="row my-4" data-controller="favorite-toast">
 
-						<div class="w-100">
-							<div class="w-100 d-flex justify-content-between align-items-center">
-								<h2 class="fw-bold">
-									{{ pokemon.name | title }}
-								</h2>
+            {# Section Image #}
+            <div class="col-12 col-lg-4">
+                <section class="p-4 rounded h-100">
+                    <div class="d-flex h-100 flex-column justify-content-between align-items-center">
+                        <div class="h-100 d-flex align-items-center">
+                            <img src="{{ pokemon.sprites.other.officialArtwork.frontDefault }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name|title }} artwork">
+                        </div>
 
-								<div class="d-flex gap-2">
-									{% for type in types %}
-										<span class="badge fs-6" style="background-color: var(--{{ type.name }})">
-											{{ type.name | upper }}
-										</span>
-									{% endfor %}
-								</div>
-							</div>
+                        <div class="w-100">
+                            <div class="w-100 d-flex justify-content-between align-items-center">
+                                <h2 class="fw-bold">
+                                    {{ pokemon.name|title }}
+                                </h2>
 
-							<div class="w-100 d-flex justify-content-between align-items-center">
-								<h6 class="fw-medium m-0">
-{#									{{ species.genera.genus | title }}#}
-								</h6>
+                                <div class="d-flex gap-2">
+                                    {% for type in types %}
+                                        <span class="badge fs-6" style="background-color: var(--{{ type.name }})">
+                                            {{ type.name|upper }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
 
-								<h6 class="text-muted m-0">
-									#
-									{{- pokemon.id | upper -}}
-								</h6>
-							</div>
+                            <div class="w-100 d-flex justify-content-between align-items-center">
+                                <h6 class="fw-medium m-0">
+                                    {# {{ species.genera.genus | title }} #}
+                                </h6>
 
-							{# Favorites and Teams buttons #}
-							{% if app.user %}
-								<div class="d-flex gap-3 mt-4">
-									{# Favorites button #}
-									<turbo-frame id="favorite-{{ pokemon.id }}">
-										{% include 'favorites/_favorite_button_text.html.twig' with {
-											pokemon: pokemon,
-											isFavorite: isFavorite
-										} %}
-									</turbo-frame>
+                                <h6 class="text-muted m-0">
+                                    #
+                                    {{- pokemon.id|upper -}}
+                                </h6>
+                            </div>
 
-									{# Teams button #}
-									<button type="button" class="btn btn-sm btn-primary"
-											data-bs-toggle="modal"
-											data-bs-target="#addToTeamModal-{{ pokemon.id }}"
-											data-controller="team-modal-trigger"
-											data-action="click->team-modal-trigger#loadModal"
-											data-team-modal-trigger-pokemon-id-value="{{ pokemon.id }}"
-											data-team-modal-trigger-pokemon-name-value="{{ pokemon.name }}">
-										Manage Teams
-									</button>
-								</div>
-							{% endif %}
-						</div>
-					</div>
-				</section>
-			</div>
+                            {# Favorites and Teams buttons #}
+                            {% if app.user %}
+                                <div class="d-flex gap-3 mt-4">
+                                    {# Favorites button #}
+                                    <turbo-frame id="favorite-{{ pokemon.id }}">
+                                        {{ include('favorites/_favorite_button_text.html.twig', {
+                                            pokemon: pokemon,
+                                            isFavorite: isFavorite,
+                                        }) }}
+                                    </turbo-frame>
 
-			{# Section Informations #}
-			<div class="col-12 col-lg-8">
-				<section class="p-4 rounded h-100">
-					<h6 class="section-title">
-						Basic Information
-					</h6>
+                                    {# Teams button #}
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addToTeamModal-{{ pokemon.id }}"
+                                            data-controller="team-modal-trigger"
+                                            data-action="click->team-modal-trigger#loadModal"
+                                            data-team-modal-trigger-pokemon-id-value="{{ pokemon.id }}"
+                                            data-team-modal-trigger-pokemon-name-value="{{ pokemon.name }}">
+                                        Manage Teams
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </div>
 
+            {# Section Informations #}
+            <div class="col-12 col-lg-8">
+                <section class="p-4 rounded h-100">
+                    <h6 class="section-title">
+                        Basic Information
+                    </h6>
 
-					<table class="table mb-4">
-						<tbody>
-							<tr>
-								<th scope="row">
-									Height
-								</th>
-								<td>
-									{{ pokemon.height / 10 }}
-									m
-								</td>
-							</tr>
+                    <table class="table mb-4">
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    Height
+                                </th>
+                                <td>
+                                    {{ pokemon.height / 10 }}
+                                    m
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Weight
-								</th>
-								<td>
-									{{ pokemon.weight / 10 }}
-									kg
-								</td>
-							</tr>
+                            <tr>
+                                <th scope="row">
+                                    Weight
+                                </th>
+                                <td>
+                                    {{ pokemon.weight / 10 }}
+                                    kg
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Gender Ratio
-								</th>
-								<td class="align-middle">
-									{% if species.genderRate == -1 %}
-										<span class="text-muted">
-											Genderless
-										</span>
-									{% else %}
-										{% set femalePercent = (species.genderRate / 8 * 100) | number_format(1) %}
-										{% set malePercent = ((8 - species.genderRate) / 8 * 100) | number_format(1) %}
-										<div class="progress rounded-5" style="height: 20px; max-width: 400px;">
-											<div class="progress-bar bg-danger fw-medium" role="progressbar" style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}" aria-valuemin="0" aria-valuemax="100">
-												{{ femalePercent }}
-												%
-											</div>
-											<div class="progress-bar bg-primary fw-medium" role="progressbar" style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}" aria-valuemin="0" aria-valuemax="100">
-												{{ malePercent }}
-												%
-											</div>
-										</div>
-									{% endif %}
-								</td>
-							</tr>
+                            <tr>
+                                <th scope="row">
+                                    Gender Ratio
+                                </th>
+                                <td class="align-middle">
+                                    {% if species.genderRate == -1 %}
+                                        <span class="text-muted">
+                                            Genderless
+                                        </span>
+                                    {% else %}
+                                        {% set femalePercent = (species.genderRate / 8 * 100)|number_format(1) %}
+                                        {% set malePercent = ((8 - species.genderRate) / 8 * 100)|number_format(1) %}
+                                        <div class="progress rounded-5" style="height: 20px; max-width: 400px;">
+                                            <div class="progress-bar bg-danger fw-medium" role="progressbar" style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ femalePercent }}
+                                                %
+                                            </div>
+                                            <div class="progress-bar bg-primary fw-medium" role="progressbar" style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ malePercent }}
+                                                %
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Abilities
-								</th>
+                            <tr>
+                                <th scope="row">
+                                    Abilities
+                                </th>
 
-								<td class="align-middle">
-									<div class="d-flex gap-2 flex-wrap">
-										{% for entry in pokemon.abilities %}
-											<span class="badge bg-secondary">
-												{{ entry.ability.name | replace({'-': ' '}) | title }}
-												{% if entry.isHidden %}
-													(Hidden)
-												{% endif %}
-											</span>
-										{% endfor %}
-									</div>
-								</td>
-							</tr>
+                                <td class="align-middle">
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        {% for entry in pokemon.abilities %}
+                                            <span class="badge bg-secondary">
+                                                {{ entry.ability.name|replace({'-': ' '})|title }}
+                                                {% if entry.isHidden %}
+                                                    (Hidden)
+                                                {% endif %}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Catch Rate
-								</th>
-								<td>
-									{{ species.captureRate }}
-									<span class="text-muted">
-										(
-										{{- species.captureRate * (100 / 255) | format_number({rounding_mode: 'floor'})-}}
-										%)
-									</span>
-								</td>
-							</tr>
+                            <tr>
+                                <th scope="row">
+                                    Catch Rate
+                                </th>
+                                <td>
+                                    {{ species.captureRate }}
+                                    <span class="text-muted">
+                                        (
+                                        {{- species.captureRate * (100 / 255)|format_number({rounding_mode: 'floor'}) -}}
+                                        %)
+                                    </span>
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Growth Rate
-								</th>
-								<td>
-									{{ species.growthRate.name | replace({'-': ' '}) | title }}
-								</td>
-							</tr>
+                            <tr>
+                                <th scope="row">
+                                    Growth Rate
+                                </th>
+                                <td>
+                                    {{ species.growthRate.name|replace({'-': ' '})|title }}
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Base Experience
-								</th>
-								<td>
-									{{ pokemon.baseExperience }}
-								</td>
-							</tr>
+                            <tr>
+                                <th scope="row">
+                                    Base Experience
+                                </th>
+                                <td>
+                                    {{ pokemon.baseExperience }}
+                                </td>
+                            </tr>
 
-							<tr>
-								<th scope="row">
-									Evolution Chain
-								</th>
-								<td>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+                            <tr>
+                                <th scope="row">
+                                    Evolution Chain
+                                </th>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
+                    <h6 class="section-title">
+                        Flavor Text
+                    </h6>
 
-					<h6 class="section-title">
-						Flavor Text
-					</h6>
+                    <p class="fst-italic fw-medium my-1">
+                        {{ species.flavorTextEntries[0].flavorText }}
+                    </p>
+                </section>
+            </div>
+        </div>
 
-					<p class="fst-italic fw-medium my-1">
-						{{ species.flavorTextEntries[0].flavorText }}
-					</p>
-				</section>
-			</div>
-		</div>
+        {# Types Section #}
+        <section class="my-4 p-4 rounded">
+            <h6 class="section-title">
+                Type Effectiveness
+            </h6>
 
-		{# Types Section #}
-		<section class="my-4 p-4 rounded">
-			<h6 class="section-title">
-				Type Effectiveness
-			</h6>
+            <table class="table  m-0">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="w-25 align-middle">
+                            Weak To
+                        </th>
 
-			<table class="table  m-0">
-				<tbody>
-					<tr>
-						<th scope="row" class="w-25 align-middle">
-							Weak To
-						</th>
-
-						<td class="align-middle">
-							<div class="d-flex gap-2 flex-wrap">
+                        <td class="align-middle">
+                            <div class="d-flex gap-2 flex-wrap">
                                 {% for type in types %}
                                     {% for weakness in type.damageRelations.doubleDamageFrom %}
                                         <span class="badge fs-6" style="background-color: var(--{{ weakness.name }})">
-                                            {{ weakness.name | upper }} x 2
+                                            {{ weakness.name|upper }} x 2
                                         </span>
                                     {% endfor %}
                                 {% endfor %}
-							</div>
-						</td>
-					</tr>
+                            </div>
+                        </td>
+                    </tr>
 
-					<tr>
-						<th scope="row" class="w-25 align-middle">
-							Resistant To
-						</th>
+                    <tr>
+                        <th scope="row" class="w-25 align-middle">
+                            Resistant To
+                        </th>
 
-						<td class="align-middle">
+                        <td class="align-middle">
                             {% for type in types %}
                                 {% for resistance in type.damageRelations.halfDamageFrom %}
                                     <span class="badge fs-6" style="background-color: var(--{{ resistance.name }})">
-                                            {{ resistance.name | upper }} x 0.5
+                                            {{ resistance.name|upper }} x 0.5
                                         </span>
                                 {% endfor %}
                             {% endfor %}
-						</td>
-					</tr>
+                        </td>
+                    </tr>
 
-					<tr>
-						<th scope="row" class="w-25 align-middle">
-							Immune To
-						</th>
+                    <tr>
+                        <th scope="row" class="w-25 align-middle">
+                            Immune To
+                        </th>
 
-						<td class="align-middle">
-							<div class="d-flex gap-2 flex-wrap">
+                        <td class="align-middle">
+                            <div class="d-flex gap-2 flex-wrap">
                                 {% for type in types %}
                                     {% for immunity in type.damageRelations.noDamageFrom %}
                                         <span class="badge fs-6" style="background-color: var(--{{ immunity.name }})">
-                                                {{ immunity.name | upper }} x 0.5
+                                                {{ immunity.name|upper }} x 0.5
                                             </span>
                                     {% endfor %}
                                 {% endfor %}
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-		{# Section Evolution Chain #}
-		<section class="my-4 p-4 rounded">
-			<h6 class="section-title">
-				Evolution Chain
-			</h6>
+        {# Section Evolution Chain #}
+        <section class="my-4 p-4 rounded">
+            <h6 class="section-title">
+                Evolution Chain
+            </h6>
 
-			<table class="table">
-				<tbody>
-					{# Ligne des noms #}
-					<tr>
-						<th scope="row">
-							Evolution
-						</th>
-                        {% include 'pokemon/_evolution_chain.html.twig' with { node: evolutionChain.chain } %}
-					</tr>
+            <table class="table">
+                <tbody>
+                    {# Ligne des noms #}
+                    <tr>
+                        <th scope="row">
+                            Evolution
+                        </th>
 
-					{# Trigger - toujours affiché #}
-					<tr>
-						<th scope="row">
-							Trigger
-						</th>
-						{% for evolution in pokemon.evolutionChain.evolutions %}
-							<td>
-								{% if evolution.evolutionDetails %}
-									{{ evolution.evolutionDetails.trigger | replace({'-': ' '}) | title }}
-								{% endif %}
-							</td>
-						{% endfor %}
-					</tr>
+                        <td>
+                            {{ evolutionChain.chain.species.name | title}}
+                        </td>
 
-					{# Min Level - seulement si au moins un Pokémon l'utilise #}
-					{% set hasMinLevel = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.minLevel %}
-							{% set hasMinLevel = true %}
-						{% endif %}
-					{% endfor %}
+                        <td>
+                            {{ evolutionChain.chain.evolvesTo[0].species.name | title}}
+                        </td>
 
-					{% if hasMinLevel %}
-						<tr>
-							<th scope="row">
-								Min Level
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.minLevel %}
-										{{ evolution.evolutionDetails.minLevel }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+                        <td>
+                            {{ evolutionChain.chain.evolvesTo[0].evolvesTo[0].species.name | title}}
+                        </td>
+                    </tr>
 
-					{# Item - seulement si utilisé #}
-					{% set hasItem = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.item %}
-							{% set hasItem = true %}
-						{% endif %}
-					{% endfor %}
+{#                    #}{# Trigger - toujours affiché #}
+{#                    <tr>#}
+{#                        <th scope="row">#}
+{#                            Trigger#}
+{#                        </th>#}
+{#                        {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                            <td>#}
+{#                                {% if evolution.evolutionDetails %}#}
+{#                                    {{ evolution.evolutionDetails.trigger|replace({'-': ' '})|title }}#}
+{#                                {% endif %}#}
+{#                            </td>#}
+{#                        {% endfor %}#}
+{#                    </tr>#}
 
-					{% if hasItem %}
-						<tr>
-							<th scope="row">
-								Item
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.item %}
-										{{ evolution.evolutionDetails.item | replace({'-': ' '}) | title }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Min Level - seulement si au moins un Pokémon l'utilise #}
+{#                    {% set hasMinLevel = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.minLevel %}#}
+{#                            {% set hasMinLevel = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-					{# Min Happiness - seulement si utilisé #}
-					{% set hasMinHappiness = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.minHappiness %}
-							{% set hasMinHappiness = true %}
-						{% endif %}
-					{% endfor %}
+{#                    {% if hasMinLevel %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Min Level#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.minLevel %}#}
+{#                                        {{ evolution.evolutionDetails.minLevel }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-					{% if hasMinHappiness %}
-						<tr>
-							<th scope="row">
-								Happiness
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.minHappiness %}
-										{{- evolution.evolutionDetails.minHappiness | replace({'-': ' '}) | title -}}
-										+
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Item - seulement si utilisé #}
+{#                    {% set hasItem = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.item %}#}
+{#                            {% set hasItem = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-					{# Time Of Day - seulement si utilisé #}
-					{% set hasTimeOfDay = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.timeOfDay %}
-							{% set hasTimeOfDay = true %}
-						{% endif %}
-					{% endfor %}
+{#                    {% if hasItem %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Item#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.item %}#}
+{#                                        {{ evolution.evolutionDetails.item|replace({'-': ' '})|title }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-					{% if hasTimeOfDay %}
-						<tr>
-							<th scope="row">
-								Time
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.timeOfDay %}
-										{{ evolution.evolutionDetails.timeOfDay | replace({'-': ' '}) | title }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Min Happiness - seulement si utilisé #}
+{#                    {% set hasMinHappiness = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.minHappiness %}#}
+{#                            {% set hasMinHappiness = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-					{# Held Item - seulement si utilisé #}
-					{% set hasHeldItem = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.heldItem %}
-							{% set hasHeldItem = true %}
-						{% endif %}
-					{% endfor %}
+{#                    {% if hasMinHappiness %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Happiness#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.minHappiness %}#}
+{#                                        {{- evolution.evolutionDetails.minHappiness|replace({'-': ' '})|title -}}#}
+{#                                        +#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-					{% if hasHeldItem %}
-						<tr>
-							<th scope="row">
-								Held Item
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.heldItem %}
-										{{ evolution.evolutionDetails.heldItem | replace({'-': ' '}) | title }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Time Of Day - seulement si utilisé #}
+{#                    {% set hasTimeOfDay = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.timeOfDay %}#}
+{#                            {% set hasTimeOfDay = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-					{# Known PokemonMoveDTO - seulement si utilisé #}
-					{% set hasKnownMove = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.knownMove %}
-							{% set hasKnownMove = true %}
-						{% endif %}
-					{% endfor %}
+{#                    {% if hasTimeOfDay %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Time#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.timeOfDay %}#}
+{#                                        {{ evolution.evolutionDetails.timeOfDay|replace({'-': ' '})|title }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-					{% if hasKnownMove %}
-						<tr>
-							<th scope="row">
-								Known Move
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.knownMove %}
-										{{ evolution.evolutionDetails.knownMove | replace({'-': ' '}) | title }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Held Item - seulement si utilisé #}
+{#                    {% set hasHeldItem = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.heldItem %}#}
+{#                            {% set hasHeldItem = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-					{# Location - seulement si utilisé #}
-					{% set hasLocation = false %}
-					{% for evolution in pokemon.evolutionChain.evolutions %}
-						{% if evolution.evolutionDetails and evolution.evolutionDetails.location %}
-							{% set hasLocation = true %}
-						{% endif %}
-					{% endfor %}
+{#                    {% if hasHeldItem %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Held Item#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.heldItem %}#}
+{#                                        {{ evolution.evolutionDetails.heldItem|replace({'-': ' '})|title }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-					{% if hasLocation %}
-						<tr>
-							<th scope="row">
-								Location
-							</th>
-							{% for evolution in pokemon.evolutionChain.evolutions %}
-								<td>
-									{% if evolution.evolutionDetails and evolution.evolutionDetails.location %}
-										{{ evolution.evolutionDetails.location | replace({'-': ' '}) | title }}
-									{% endif %}
-								</td>
-							{% endfor %}
-						</tr>
-					{% endif %}
+{#                    #}{# Known PokemonMoveDTO - seulement si utilisé #}
+{#                    {% set hasKnownMove = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.knownMove %}#}
+{#                            {% set hasKnownMove = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
+{#                    {% if hasKnownMove %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Known Move#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.knownMove %}#}
+{#                                        {{ evolution.evolutionDetails.knownMove|replace({'-': ' '})|title }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-				</tbody>
-			</table>
-		</section>
+{#                    #}{# Location - seulement si utilisé #}
+{#                    {% set hasLocation = false %}#}
+{#                    {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                        {% if evolution.evolutionDetails and evolution.evolutionDetails.location %}#}
+{#                            {% set hasLocation = true %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
 
-		{# Section Stats #}
-		<section class="my-4 p-4 rounded">
-			<h6 class="section-title">
-				Stats
-			</h6>
+{#                    {% if hasLocation %}#}
+{#                        <tr>#}
+{#                            <th scope="row">#}
+{#                                Location#}
+{#                            </th>#}
+{#                            {% for evolution in pokemon.evolutionChain.evolutions %}#}
+{#                                <td>#}
+{#                                    {% if evolution.evolutionDetails and evolution.evolutionDetails.location %}#}
+{#                                        {{ evolution.evolutionDetails.location|replace({'-': ' '})|title }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endif %}#}
 
-			<table class="table table-borderless m-0" style="table-layout: fixed;">
-				<colgroup>
-					<col style="width: 80px;">
-					<col style="width: 60px;">
-					<col>
-				</colgroup>
+                </tbody>
+            </table>
+        </section>
 
-				<tbody>
-					{% for stat in pokemon.stats %}
-						<tr>
-							<th scope="row">
-								{{ stat.name | replace({'-': ' ', 'defense': 'def', 'attack': 'atk', 'special': 'spe'}) | title | replace({'Hp': 'HP'})}}
-							</th>
+        {# Section Stats #}
+        <section class="my-4 p-4 rounded">
+            <h6 class="section-title">
+                Stats
+            </h6>
 
-							<td class="text-center fw-semibold">
-								{{ stat.baseStat }}
-							</td>
+            <table class="table table-borderless m-0" style="table-layout: fixed;">
+                <colgroup>
+                    <col style="width: 80px;">
+                    <col style="width: 60px;">
+                    <col>
+                </colgroup>
 
-							<td class="align-middle">
-								<div class="progress" style="height: 12px;">
-									<div class="progress-bar" style="width: {{ stat.baseStat / 2.55 }}%" role="progressbar" aria-valuenow="{{ stat.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
-								</div>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</section>
-	</div>
+                <tbody>
+                    {% for entry in pokemon.stats %}
+                        <tr>
+                            <th scope="row">
+                                {{ entry.stat.name|replace({'-': ' ', defense: 'def', attack: 'atk', special: 'spe'})|title|replace({Hp: 'HP'}) }}
+                            </th>
 
-	{# Modal container for teams - loaded dynamically via Stimulus #}
-	<div id="team-modal-container"></div>
+                            <td class="text-center fw-semibold">
+                                {{ entry.baseStat }}
+                            </td>
+                            <td class="align-middle">
+                                <div class="progress" style="height: 12px;">
+                                    <div class="progress-bar" style="width: {{ entry.baseStat / 2.55 }}%" role="progressbar" aria-valuenow="{{ entry.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    {# Modal container for teams - loaded dynamically via Stimulus #}
+    <div id="team-modal-container"></div>
 {% endblock %}

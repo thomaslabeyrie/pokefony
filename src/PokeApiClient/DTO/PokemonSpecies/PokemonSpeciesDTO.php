@@ -2,12 +2,13 @@
 
 namespace App\PokeApiClient\DTO\PokemonSpecies;
 
+use App\PokeApiClient\DTO\Common\FlavorTextDTO;
 use App\PokeApiClient\DTO\Common\NamedResourceDTO;
 use App\PokeApiClient\DTO\Common\ResourceDTO;
-use App\PokeApiClient\DTO\Common\FlavorTextDTO;
+use App\PokeApiClient\DTO\PokeApiEndpointDtoInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-class PokemonSpeciesDTO
+class PokemonSpeciesDTO implements PokeApiEndpointDtoInterface
 {
     public int $id;
 
@@ -70,4 +71,9 @@ class PokemonSpeciesDTO
     /** @var FlavorTextDTO[] */
     #[SerializedName('flavor_text_entries')]
     public array $flavorTextEntries = [];
+
+    public static function getEndpoint(): string
+    {
+        return 'pokemon-species';
+    }
 }

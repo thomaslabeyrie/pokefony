@@ -1,77 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	My Teams
+    My Teams
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid container-md w-100 my-4" style="max-width: 1000px;">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h2 class="fw-bold">My Teams</h2>
-		</div>
+    <div class="container-fluid container-md w-100 my-4" style="max-width: 1000px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">My Teams</h2>
+        </div>
 
-		{% if teams is empty %}
-			<div class="alert alert-info">
-				<i class="bi bi-info-circle me-2"></i>
-				You haven't created any teams yet. Add Pokemon to teams from the Pokédex!
-			</div>
-		{% else %}
-			<div class="row row-cols-1 row-cols-md-2 g-4">
-				{% for team in teams %}
-					<div class="col">
-						<div class="card h-100">
-							<div class="card-body">
-								<div class="d-flex justify-content-between align-items-start mb-3">
-									{% include 'teams/_team_name.html.twig' with {
-										'team': team,
-										'context': 'index'
-									} %}
+        {% if teams is empty %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                You haven't created any teams yet. Add Pokemon to teams from the Pokédex!
+            </div>
+        {% else %}
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for team in teams %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    {{ include('teams/_team_name.html.twig', {
+                                        team: team,
+                                        context: 'index',
+                                    }) }}
 
-									<span class="badge bg-primary rounded-pill">
-										{{ team.pokemons|length }}/6
-									</span>
-								</div>
+                                    <span class="badge bg-primary rounded-pill">
+                                        {{ team.pokemons|length }}/6
+                                    </span>
+                                </div>
 
-								{# Pokemon grid #}
-								<div class="d-flex flex-wrap gap-2 mb-3">
-									{% for pokemon in team.pokemons %}
-										<div class="position-relative">
-											<a href="{{ path('app_pokemon_show', { name: pokemon.name }) }}">
-												<img
-													src="{{ pokemon.spriteUrl }}"
-													alt="{{ pokemon.name }}"
-													class="rounded border"
-													style="width: 64px; height: 64px; object-fit: contain;">
-											</a>
-										</div>
-									{% endfor %}
+                                {# Pokemon grid #}
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    {% for pokemon in team.pokemons %}
+                                        <div class="position-relative">
+                                            <a href="{{ path('app_pokemon_show', {name: pokemon.name}) }}">
+                                                <img
+                                                    src="{{ pokemon.spriteUrl }}"
+                                                    alt="{{ pokemon.name }}"
+                                                    class="rounded border"
+                                                    style="width: 64px; height: 64px; object-fit: contain;">
+                                            </a>
+                                        </div>
+                                    {% endfor %}
 
-									{# Empty slots #}
-									{% for i in 1..(6 - team.pokemons|length) %}
-										<div
-											class="rounded border bg-light d-flex align-items-center justify-content-center"
-											style="width: 64px; height: 64px;">
-											<i class="bi bi-plus" style="color: #9ca3af;"></i>
-										</div>
-									{% endfor %}
-								</div>
+                                    {# Empty slots #}
+                                    {% for i in 1..(6 - team.pokemons|length) %}
+                                        <div
+                                            class="rounded border bg-light d-flex align-items-center justify-content-center"
+                                            style="width: 64px; height: 64px;">
+                                            <i class="bi bi-plus" style="color: #9ca3af;"></i>
+                                        </div>
+                                    {% endfor %}
+                                </div>
 
-								<div class="d-flex justify-content-between">
-									<a href="{{ path('app_teams_show', { id: team.id }) }}" class="btn btn-sm btn-outline-primary">
-										View Details
-									</a>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ path('app_teams_show', {id: team.id}) }}" class="btn btn-sm btn-outline-primary">
+                                        View Details
+                                    </a>
 
-									<form method="POST" action="{{ path('app_teams_delete', { id: team.id }) }}" onsubmit="return confirm('Are you sure you want to delete this team?');">
-										<button type="submit" class="btn btn-sm btn-outline-danger">
-											<i class="bi bi-trash"></i>
-										</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		{% endif %}
-	</div>
+                                    <form method="POST" action="{{ path('app_teams_delete', {id: team.id}) }}" onsubmit="return confirm('Are you sure you want to delete this team?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

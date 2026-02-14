@@ -1,55 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Search Results - Pokefony
+    Search Results - Pokefony
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<style>
-		.table tbody tr:last-child th,
-		.table tbody tr:last-child td {
-			border-bottom: none;
-		}
-	</style>
+    {{ parent() }}
+    <style>
+        .table tbody tr:last-child th,
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-	<div
-		class="container-fluid container-lg w-100 my-4" style="max-width: 800px;">
-		{# Search header #}
-		<div class="mb-3">
-			<h5 class="text-muted">
-				Search results for:
-				<strong>{{ query }}</strong>
-			</h5>
-		</div>
+    <div
+        class="container-fluid container-lg w-100 my-4" style="max-width: 800px;">
+        {# Search header #}
+        <div class="mb-3">
+            <h5 class="text-muted">
+                Search results for:
+                <strong>{{ query }}</strong>
+            </h5>
+        </div>
 
-		<section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
-			{% if pokemons is empty %}
-				{# Empty state #}
-				<div class="text-center py-5">
-					<h6 class="text-muted">No Pokémon found</h6>
-					<p class="text-muted small">Try searching by exact name or ID</p>
-					<a href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" class="btn btn-primary btn-sm mt-2">
-						Back to Pokédex
-					</a>
-				</div>
-			{% else %}
-				{# Include shared table component #}
-				{% include 'pokemon/_pokedex_table.html.twig' with {
-					pokemons: pokemons,
-					favoriteIds: favoriteIds,
-					teamPokemonIds: teamPokemonIds
-				} %}
+        <section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
+            {% if pokemons is empty %}
+                {# Empty state #}
+                <div class="text-center py-5">
+                    <h6 class="text-muted">No Pokémon found</h6>
+                    <p class="text-muted small">Try searching by exact name or ID</p>
+                    <a href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" class="btn btn-primary btn-sm mt-2">
+                        Back to Pokédex
+                    </a>
+                </div>
+            {% else %}
+                {# Include shared table component #}
+                {{ include('pokemon/_pokedex_table.html.twig', {
+                    pokemons: pokemons,
+                    favoriteIds: favoriteIds,
+                    teamPokemonIds: teamPokemonIds,
+                }) }}
 
-				{# Link back to pokedex #}
-				<div class="text-center mt-4">
-					<a href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" class="btn btn-outline-primary btn-sm">
-						Back to Pokédex
-					</a>
-				</div>
-			{% endif %}
-		</section>
-	</div>
+                {# Link back to pokedex #}
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" class="btn btn-outline-primary btn-sm">
+                        Back to Pokédex
+                    </a>
+                </div>
+            {% endif %}
+        </section>
+    </div>
 {% endblock %}

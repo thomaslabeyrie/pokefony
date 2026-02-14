@@ -4,9 +4,10 @@ namespace App\PokeApiClient\DTO\Type;
 
 use App\PokeApiClient\DTO\Common\GenerationGameIndexDTO;
 use App\PokeApiClient\DTO\Common\NamedResourceDTO;
+use App\PokeApiClient\DTO\PokeApiEndpointDtoInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-class TypeDTO
+class TypeDTO implements PokeApiEndpointDtoInterface
 {
     public int $id;
 
@@ -33,4 +34,9 @@ class TypeDTO
 
     /** @var NamedResourceDTO[] */
     public array $moves;
+
+    public static function getEndpoint(): string
+    {
+        return 'type';
+    }
 }

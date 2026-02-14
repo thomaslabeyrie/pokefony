@@ -2,35 +2,31 @@
 
 namespace App\Controller;
 
-use App\DTO\Test\TestDTO;
+use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
+use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
+use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
+use App\PokeApiClient\DTO\Type\TypeDTO;
+use App\PokeApiClient\PokeApiClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class TestController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
-    public function test(SerializerInterface $serializer): Response
+    public function test(PokeApiClient $pokeApiClient): Response
     {
-        // Simple JSON with only a few properties set
-        $json = '{"name": "thomas", "age": null, "height": 176}';
-        $data = json_decode($json, true);
-        $data = array_filter($data, fn ($entry) => null !== $entry);
-        $json = json_encode($data);
+        $pokemon = $pokeApiClient->get(new PokemonDTO(), 'eevee');
 
-        // Deserialize with skip null values
-        $person = $serializer->deserialize(
-            $json,
-            TestDTO::class,
-            'json',
-            [
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => true,
-            ]
-        );
+        $types = [];
+        foreach ($pokemon->types as $slot) {
+            $types[] = $pokeApiClient->get(new TypeDTO(), $slot->type->name);
+        }
 
-        dd($person);
+        $species = $pokeApiClient->get(new PokemonSpeciesDTO(), $pokemon->name);
+
+        $evolutionChain = $pokeApiClient->getFromResource($species->evolutionChain, new EvolutionChainDTO());
+
+        dd($pokemon, $types, $species, $evolutionChain);
     }
 }

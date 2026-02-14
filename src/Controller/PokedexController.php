@@ -60,7 +60,7 @@ final class PokedexController extends AbstractController
     #[Route(path: '/pokemon/{name}', name: 'app_pokemon_show')]
     public function show(string $name): Response
     {
-        $data = $this->pokeApi->getPokemon($name);
+        $data = $this->pokeApi->getFullPokemonData($name);
 
         // Initialize data for authenticated users
         $isFavorite = false;
@@ -73,14 +73,12 @@ final class PokedexController extends AbstractController
             if ($freshUser) {
                 // Check if pokemon is in favorites
                 $favoriteIds = $freshUser->getFavoritePokemons()->map(fn ($p) => $p->getPokemonId())->toArray();
-                $isFavorite = in_array($data->getId(), $favoriteIds);
+                $isFavorite = in_array($data['pokemon']->id, $favoriteIds);
 
                 // Get teams containing this pokemon
-                $teams = $this->teamRepository->findTeamsContainingPokemon($freshUser, $data->getId());
+                $teams = $this->teamRepository->findTeamsContainingPokemon($freshUser, $data['pokemon']->id);
             }
         }
-
-        dump($data['evolutionChain']);
 
         return $this->render('pokemon/show.html.twig', [
             'pokemon' => $data['pokemon'],
