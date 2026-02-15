@@ -72,7 +72,7 @@ class PokemonSpeciesDTO implements PokeApiEndpointDtoInterface
     #[SerializedName('flavor_text_entries')]
     public array $flavorTextEntries = [];
 
-    public static function getEndpoint(): string
+    public function getEndpoint(): string
     {
         return 'pokemon-species';
     }

@@ -15,7 +15,7 @@ class EvolutionChainDTO implements PokeApiEndpointDtoInterface
 
     public ChainLinkDTO $chain;
 
-    public static function getEndpoint(): string
+    public function getEndpoint(): string
     {
         return 'evolution-chain';
     }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
+use App\PokeApiClient\DTO\Pokedex\PokedexDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
 use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 use App\PokeApiClient\DTO\Type\TypeDTO;
@@ -18,36 +19,21 @@ class PokeApiService
     public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
         // Récupère la liste complète du Pokédex de la région
-        $pokedexResponse = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokedex/{$region}");
-        $pokedexData = $pokedexResponse->toArray();
+        $pokedex = $this->pokeApiClient->get(new PokedexDTO(), $region);
 
-        // Extrait les noms des Pokémon
-        $allNames = array_map(
-            fn ($entry) => $entry['pokemon_species']['name'],
-            $pokedexData['pokemon_entries']
-        );
+        $allNames = [];
+        foreach ($pokedex->pokemonEntries as $entry) {
+            $allNames[] = $entry->pokemonSpecies->name;
+        }
 
         // Pagination
         $offset = ($page - 1) * $perPage;
         $pageNames = array_slice($allNames, $offset, $perPage);
 
         // Récupère les infos nécéssaires à l'affichage de chaque pokémon
-        $responses = [];
-        foreach ($pageNames as $name) {
-            $responses[] = $this->httpClient->request('GET', "{$this->pokeApiUrl}pokemon/{$name}");
-        }
-
         $pokemons = [];
-        foreach ($responses as $response) {
-            $data = $response->getContent();
-            $pokemons[] = $this->serializer->deserialize(
-                data: $data,
-                type: PokemonDTO::class,
-                format: 'json',
-                context: [
-                    'groups' => ['pokemon'],
-                ]
-            );
+        foreach ($pageNames as $name) {
+            $pokemons[] = $this->pokeApiClient->get(new PokemonDTO(), $name);
         }
 
         return $pokemons;

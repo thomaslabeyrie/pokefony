@@ -35,7 +35,7 @@ class TypeDTO implements PokeApiEndpointDtoInterface
     /** @var NamedResourceDTO[] */
     public array $moves;
 
-    public static function getEndpoint(): string
+    public function getEndpoint(): string
     {
         return 'type';
     }
