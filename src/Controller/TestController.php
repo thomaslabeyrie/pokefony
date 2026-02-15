@@ -16,7 +16,7 @@ final class TestController extends AbstractController
     #[Route('/test', name: 'app_test')]
     public function test(PokeApiClient $pokeApiClient): Response
     {
-        $pokemon = $pokeApiClient->get(new PokemonDTO(), 'bulbasaurg');
+        $pokemon = $pokeApiClient->get(new PokemonDTO(), 'bulbasaur');
 
         $types = [];
         foreach ($pokemon->types as $slot) {

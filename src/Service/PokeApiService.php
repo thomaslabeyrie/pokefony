@@ -30,7 +30,7 @@ class PokeApiService
         $offset = ($page - 1) * $perPage;
         $pageNames = array_slice($allNames, $offset, $perPage);
 
-        // Récupère les infos nécéssaires à l'affichage de chaque pokémon
+        // Récupère les infos nécessaires à l'affichage de chaque pokémon
         $pokemons = [];
         foreach ($pageNames as $name) {
             $pokemons[] = $this->pokeApiClient->get(new PokemonDTO(), $name);
