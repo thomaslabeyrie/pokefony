@@ -201,61 +201,7 @@
                 Type Effectiveness
             </h6>
 
-            <table class="table  m-0">
-                <tbody>
-                    <tr>
-                        <th scope="row" class="w-25 align-middle">
-                            Weak To
-                        </th>
-
-                        <td class="align-middle">
-                            <div class="d-flex gap-2 flex-wrap">
-                                {% for type in types %}
-                                    {% for weakness in type.damageRelations.doubleDamageFrom %}
-                                        <span class="badge fs-6" style="background-color: var(--{{ weakness.name }})">
-                                            {{ weakness.name|upper }} x 2
-                                        </span>
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="w-25 align-middle">
-                            Resistant To
-                        </th>
-
-                        <td class="align-middle">
-                            {% for type in types %}
-                                {% for resistance in type.damageRelations.halfDamageFrom %}
-                                    <span class="badge fs-6" style="background-color: var(--{{ resistance.name }})">
-                                            {{ resistance.name|upper }} x 0.5
-                                        </span>
-                                {% endfor %}
-                            {% endfor %}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="w-25 align-middle">
-                            Immune To
-                        </th>
-
-                        <td class="align-middle">
-                            <div class="d-flex gap-2 flex-wrap">
-                                {% for type in types %}
-                                    {% for immunity in type.damageRelations.noDamageFrom %}
-                                        <span class="badge fs-6" style="background-color: var(--{{ immunity.name }})">
-                                                {{ immunity.name|upper }} x 0.5
-                                            </span>
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            {{ include('pokemon/_types_table.html.twig', { pokemonTypes: types }) }}
         </section>
 
         {# Section Stats #}

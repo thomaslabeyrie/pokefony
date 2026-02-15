@@ -1,0 +1,75 @@
+{% set types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'] %}
+{% set multipliers = {'normal': 1,'fire': 1,'water': 1,'electric': 1,'grass': 1,'ice': 1,'fighting': 1,'poison': 1, 'ground': 1, 'flying': 1, 'psychic': 1, 'bug': 1, 'rock': 1, 'ghost': 1, 'dragon': 1, 'dark': 1, 'steel': 1, 'fairy': 1} %}
+
+{% for pokemonType in pokemonTypes %}
+    {# Weaknesses (×2) #}
+    {% for weakness in pokemonType.damageRelations.doubleDamageFrom %}
+        {% if weakness.name in multipliers|keys %}
+            {% set multipliers = multipliers|merge({
+                (weakness.name): multipliers[weakness.name] * 2
+            }) %}
+        {% endif %}
+    {% endfor %}
+
+    {# Resistances (×0.5) #}
+    {% for resistance in pokemonType.damageRelations.halfDamageFrom %}
+        {% if resistance.name in multipliers|keys %}
+            {% set multipliers = multipliers|merge({
+                (resistance.name): multipliers[resistance.name] / 2
+            }) %}
+        {% endif %}
+    {% endfor %}
+
+    {# Immunities (×0) #}
+    {% for immunity in pokemonType.damageRelations.noDamageFrom %}
+        {% if immunity.name in multipliers|keys %}
+            {% set multipliers = multipliers|merge({
+                (immunity.name): 0
+            }) %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+{% set firstHalf = types|slice(0, 9) %}
+{% set secondHalf = types|slice(9, 9) %}
+
+<table class="table m-0 text-center" style="table-layout: fixed; width: 100%;">
+    <tr>
+        {% for type in firstHalf %}
+            <th>
+            <span class="badge fs-6" style="background-color: var(--{{ type }})">
+                {{ type|upper }}
+            </span>
+            </th>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for type in firstHalf %}
+            <td>
+                x{{ multipliers[type] }}
+            </td>
+        {% endfor %}
+    </tr>
+</table>
+
+<table class="table m-0 mt-4 text-center" style="table-layout: fixed; width: 100%;">
+    <tr>
+        {% for type in secondHalf %}
+            <th>
+            <span class="badge fs-6" style="background-color: var(--{{ type }})">
+                {{ type|upper }}
+            </span>
+            </th>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for type in secondHalf %}
+            <td>
+                x{{ multipliers[type] }}
+            </td>
+        {% endfor %}
+    </tr>
+</table>
+
