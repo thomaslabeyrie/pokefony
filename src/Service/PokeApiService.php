@@ -41,7 +41,7 @@ class PokeApiService
 
     public function getFullPokemonData(string|int $identifier): array
     {
-        $pokemon = $this->pokeApiClient->get(new PokemonDTO(), 'bulbasaur');
+        $pokemon = $this->pokeApiClient->get(new PokemonDTO(), $identifier);
 
         $types = [];
         foreach ($pokemon->types as $slot) {
