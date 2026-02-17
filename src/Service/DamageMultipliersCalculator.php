@@ -6,6 +6,7 @@ use App\PokeApiClient\DTO\Type\TypeDTO;
 
 class DamageMultipliersCalculator
 {
+    // const
     protected array $defaultMultipliers = [
         'normal' => 1,
         'fire' => 1,
@@ -26,7 +27,8 @@ class DamageMultipliersCalculator
         'steel' => 1,
         'fairy' => 1,
     ];
-
+    
+    // static
     /**
      * @param TypeDTO[] $types
      * @return array<string, float>
