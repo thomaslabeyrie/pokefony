@@ -32,6 +32,15 @@ class PokeApiClient
         );
     }
 
+
+    // /**
+    //  * Usage : $this->pokeApiClient->getFromResource($resource, PokemonDTO::class);
+    //  *
+    //  * @template T
+    //  * @param class-string<T> $dtoClass
+    //  * @return T
+    //  */
+    // public function getFromResource(ResourceDTO $resource, string $dtoClass): mixed
     public function getFromResource(ResourceDTO|NamedResourceDTO $resource, PokeApiEndpointDtoInterface $DTO)
     {
         $response = $this->httpClient->request('GET', $resource->url);
@@ -39,6 +48,7 @@ class PokeApiClient
 
         return $this->serializer->deserialize(
             data: $data,
+            // type: $dtoClass
             type: $DTO::class,
             format: 'json',
         );
