@@ -2,9 +2,7 @@
 
 namespace App\PokeApiClient;
 
-use App\PokeApiClient\DTO\Common\NamedResourceDTO;
 use App\PokeApiClient\DTO\Common\ResourceDTO;
-use App\PokeApiClient\DTO\PokeApiEndpointDtoInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -17,39 +15,43 @@ class PokeApiClient
     ) {
     }
 
-    public function get(PokeApiEndpointDtoInterface $DTO, string|int $identifier)
+    /**
+     * @template DTO
+     *
+     * @param class-string<DTO> $dtoClass
+     *
+     * @return DTO
+     */
+    public function get(string $dtoClass, string|int $identifier): mixed
     {
         $response = $this->httpClient->request(
             'GET',
-            "$this->baseUrl{$DTO->getEndpoint()}/$identifier"
+            "$this->baseUrl{$dtoClass::getEndpoint()}/$identifier"
         );
         $data = $response->getContent();
 
         return $this->serializer->deserialize(
             data: $data,
-            type: $DTO::class,
+            type: $dtoClass,
             format: 'json',
         );
     }
 
-
-    // /**
-    //  * Usage : $this->pokeApiClient->getFromResource($resource, PokemonDTO::class);
-    //  *
-    //  * @template T
-    //  * @param class-string<T> $dtoClass
-    //  * @return T
-    //  */
-    // public function getFromResource(ResourceDTO $resource, string $dtoClass): mixed
-    public function getFromResource(ResourceDTO|NamedResourceDTO $resource, PokeApiEndpointDtoInterface $DTO)
+    /**
+     * @template DTO
+     *
+     * @param class-string<DTO> $dtoClass
+     *
+     * @return DTO
+     */
+    public function getFromResource(string $dtoClass, ResourceDTO $resource): mixed
     {
         $response = $this->httpClient->request('GET', $resource->url);
         $data = $response->getContent();
 
         return $this->serializer->deserialize(
             data: $data,
-            // type: $dtoClass
-            type: $DTO::class,
+            type: $dtoClass,
             format: 'json',
         );
     }

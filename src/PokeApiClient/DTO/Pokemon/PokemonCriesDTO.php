@@ -6,5 +6,5 @@ class PokemonCriesDTO
 {
     public string $latest;
 
-    public string $legacy;
+    public ?string $legacy = null;
 }

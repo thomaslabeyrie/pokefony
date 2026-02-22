@@ -38,7 +38,7 @@ class PokemonDTO implements PokeApiEndpointDtoInterface
     /** @var PokemonTypeDTO[] */
     public array $types;
 
-    public function getEndpoint(): string
+    public static function getEndpoint(): string
     {
         return 'pokemon';
     }

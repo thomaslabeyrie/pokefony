@@ -7,7 +7,7 @@
 
 {% block body %}
 
-    {# @var pokemon App\PokeApiClient\DTO\Pokemon\PokemonDTO #}
+    {% from "pokemon/_evolution_chain.html.twig" import recursiveChainLink %}
 
     <div
         class="container">
@@ -19,7 +19,8 @@
                 <section class="p-4 rounded h-100">
                     <div class="d-flex h-100 flex-column justify-content-between align-items-center">
                         <div class="h-100 d-flex align-items-center">
-                            <img src="{{ pokemon.sprites.other.officialArtwork.frontDefault }}" class="img-fluid" style="width: 300px;" alt="{{ pokemon.name|title }} artwork">
+                            <img src="{{ pokemon.sprites.other.officialArtwork.frontDefault }}" class="img-fluid"
+                                 style="width: 300px;" alt="{{ pokemon.name|title }} artwork">
                         </div>
 
                         <div class="w-100">
@@ -85,102 +86,106 @@
 
                     <table class="table mb-4">
                         <tbody>
-                            <tr>
-                                <th scope="row">
-                                    Height
-                                </th>
-                                <td>
-                                    {{ pokemon.height / 10 }}
-                                    m
-                                </td>
-                            </tr>
+                        <tr>
+                            <th scope="row">
+                                Height
+                            </th>
+                            <td>
+                                {{ pokemon.height / 10 }}
+                                m
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th scope="row">
-                                    Weight
-                                </th>
-                                <td>
-                                    {{ pokemon.weight / 10 }}
-                                    kg
-                                </td>
-                            </tr>
+                        <tr>
+                            <th scope="row">
+                                Weight
+                            </th>
+                            <td>
+                                {{ pokemon.weight / 10 }}
+                                kg
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th scope="row">
-                                    Gender Ratio
-                                </th>
-                                <td class="align-middle">
-                                    {% if species.genderRate == -1 %}
-                                        <span class="text-muted">
+                        <tr>
+                            <th scope="row">
+                                Gender Ratio
+                            </th>
+                            <td class="align-middle">
+                                {% if species.genderRate == -1 %}
+                                    <span class="text-muted">
                                             Genderless
                                         </span>
-                                    {% else %}
-                                        {% set femalePercent = (species.genderRate / 8 * 100)|number_format(1) %}
-                                        {% set malePercent = ((8 - species.genderRate) / 8 * 100)|number_format(1) %}
-                                        <div class="progress rounded-5" style="height: 20px; max-width: 400px;">
-                                            <div class="progress-bar bg-danger fw-medium" role="progressbar" style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}" aria-valuemin="0" aria-valuemax="100">
-                                                {{ femalePercent }}
-                                                %
-                                            </div>
-                                            <div class="progress-bar bg-primary fw-medium" role="progressbar" style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}" aria-valuemin="0" aria-valuemax="100">
-                                                {{ malePercent }}
-                                                %
-                                            </div>
+                                {% else %}
+                                    {% set femalePercent = (species.genderRate / 8 * 100)|number_format(1) %}
+                                    {% set malePercent = ((8 - species.genderRate) / 8 * 100)|number_format(1) %}
+                                    <div class="progress rounded-5" style="height: 20px; max-width: 400px;">
+                                        <div class="progress-bar bg-danger fw-medium" role="progressbar"
+                                             style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {{ femalePercent }}
+                                            %
                                         </div>
-                                    {% endif %}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">
-                                    Abilities
-                                </th>
-
-                                <td class="align-middle">
-                                    <div class="d-flex gap-2 flex-wrap">
-                                        {% for entry in pokemon.abilities %}
-                                            <span class="badge bg-secondary">
-                                                {{ entry.ability.name|replace({'-': ' '})|title }}
-                                                {% if entry.isHidden %}
-                                                    (Hidden)
-                                                {% endif %}
-                                            </span>
-                                        {% endfor %}
+                                        <div class="progress-bar bg-primary fw-medium" role="progressbar"
+                                             style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {{ malePercent }}
+                                            %
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
+                                {% endif %}
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th scope="row">
-                                    Catch Rate
-                                </th>
-                                <td>
-                                    {{ species.captureRate }}
-                                    <span class="text-muted">
+                        <tr>
+                            <th scope="row">
+                                Abilities
+                            </th>
+
+                            <td class="align-middle">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    {% for entry in pokemon.abilities %}
+                                        <span class="badge bg-secondary">
+                                                {{ entry.ability.name|replace({'-': ' '})|title }}
+                                            {% if entry.isHidden %}
+                                                (Hidden)
+                                            {% endif %}
+                                            </span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">
+                                Catch Rate
+                            </th>
+                            <td>
+                                {{ species.captureRate }}
+                                <span class="text-muted">
                                         (
                                         {{- species.captureRate * (100 / 255)|format_number({rounding_mode: 'floor'}) -}}
                                         %)
                                     </span>
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th scope="row">
-                                    Growth Rate
-                                </th>
-                                <td>
-                                    {{ species.growthRate.name|replace({'-': ' '})|title }}
-                                </td>
-                            </tr>
+                        <tr>
+                            <th scope="row">
+                                Growth Rate
+                            </th>
+                            <td>
+                                {{ species.growthRate.name|replace({'-': ' '})|title }}
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th scope="row">
-                                    Base Experience
-                                </th>
-                                <td>
-                                    {{ pokemon.baseExperience }}
-                                </td>
-                            </tr>
+                        <tr>
+                            <th scope="row">
+                                Base Experience
+                            </th>
+                            <td>
+                                {{ pokemon.baseExperience }}
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -194,6 +199,17 @@
                 </section>
             </div>
         </div>
+
+        {# Evolutions Section #}
+        <section class="p-4 rounded">
+            <h6 class="section-title">
+                Evolution Chain
+            </h6>
+
+            <div class="d-flex flex-column justify-content-around align-items-center gap-5">
+                {{ recursiveChainLink(evolutionChain.chain, 0) }}
+            </div>
+        </section>
 
         {# Types Section #}
         <section class="my-4 p-4 rounded">
@@ -218,22 +234,23 @@
                 </colgroup>
 
                 <tbody>
-                    {% for entry in pokemon.stats %}
-                        <tr>
-                            <th scope="row">
-                                {{ entry.stat.name|replace({'-': ' ', defense: 'def', attack: 'atk', special: 'spe'})|title|replace({Hp: 'HP'}) }}
-                            </th>
+                {% for entry in pokemon.stats %}
+                    <tr>
+                        <th scope="row">
+                            {{ entry.stat.name|replace({'-': ' ', defense: 'def', attack: 'atk', special: 'spe'})|title|replace({Hp: 'HP'}) }}
+                        </th>
 
-                            <td class="text-center fw-semibold">
-                                {{ entry.baseStat }}
-                            </td>
-                            <td class="align-middle">
-                                <div class="progress" style="height: 12px;">
-                                    <div class="progress-bar" style="width: {{ entry.baseStat / 2.55 }}%" role="progressbar" aria-valuenow="{{ entry.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                        <td class="text-center fw-semibold">
+                            {{ entry.baseStat }}
+                        </td>
+                        <td class="align-middle">
+                            <div class="progress" style="height: 12px;">
+                                <div class="progress-bar" style="width: {{ entry.baseStat / 2.55 }}%" role="progressbar"
+                                     aria-valuenow="{{ entry.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </section>

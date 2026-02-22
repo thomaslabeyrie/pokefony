@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PokeApiService;
+use App\ViewModel\EvolutionChainViewModel;
 use App\ViewModel\PokemonViewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +14,11 @@ final class TestController extends AbstractController
     #[Route('/test', name: 'app_test')]
     public function test(PokeApiService $pokeApi): Response
     {
-        $pokemonData = $pokeApi->getFullPokemonData(1);
+        $data = $pokeApi->getFullPokemonData('eevee');
 
-        $viewmodel = new PokemonViewModel($pokemonData);
+        return $this->render('test/index.html.twig', [
+            'evolutionChain' => $data['evolutionChain'],
+        ]);
 
-        dd($viewmodel->getDamageMultipliers());
     }
 }

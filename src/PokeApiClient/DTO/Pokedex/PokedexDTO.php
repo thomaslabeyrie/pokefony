@@ -33,7 +33,7 @@ class PokedexDTO implements PokeApiEndpointDtoInterface
     #[SerializedName('version_groups')]
     public array $versionGroups;
 
-    public function getEndpoint(): string
+    public static function getEndpoint(): string
     {
         return 'pokedex';
     }
