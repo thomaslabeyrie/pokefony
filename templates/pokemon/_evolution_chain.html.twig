@@ -1,33 +1,33 @@
 {% macro recursiveChainLink(chain, index) %}
     {% import _self as self %}
 
-{#    {% if index > 0 %}#}
-{#        <div class="d-flex flex-column align-items-center">#}
-{#            <span class="fs-1 d-inline-flex">#}
-{#                {{ ux_icon('bi:arrow-right') }}#}
-{#            </span>#}
+    {% if index > 0 %}
+        <div class="d-flex flex-column align-items-center">
+            <span class="fs-1 d-inline-flex">
+                {{ ux_icon('bi:arrow-right') }}
+            </span>
 
-{#            {% for detail in chain.evolutionDetails %}#}
-{#                <span>#}
-{#                    {% if detail.minLevel %}#}
-{#                        <span>Lvl {{ detail.minLevel }}</span>#}
-{#                    {% endif %}#}
+            {% for detail in chain.evolutionDetails %}
+                <span>
+                    {% if detail.minLevel %}
+                        <span>Lvl {{ detail.minLevel }}</span>
+                    {% endif %}
 
-{#                    {% if detail.minHappiness %}#}
-{#                        <span>Happiness {{ detail.minHappiness }}</span>#}
-{#                    {% endif %}#}
+                    {% if detail.minHappiness %}
+                        <span>Happiness {{ detail.minHappiness }}</span>
+                    {% endif %}
 
-{#                    {% if detail.item %}#}
-{#                        <span>{{ detail.item.name | title | replace({'-': ' '}) }}</span>#}
-{#                    {% endif %}#}
+                    {% if detail.item %}
+                        <span>{{ detail.item.name | title | replace({'-': ' '}) }}</span>
+                    {% endif %}
 
-{#                    {% if detail.timeOfDay %}#}
-{#                        <span>Time: {{ detail.timeOfDay | title }}</span>#}
-{#                    {% endif %}#}
-{#                </span>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    {% endif %}#}
+                    {% if detail.timeOfDay %}
+                        <span>Time: {{ detail.timeOfDay | title }}</span>
+                    {% endif %}
+                </span>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class="d-flex flex-column align-items-center gap-2">
         <img
