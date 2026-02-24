@@ -4,5 +4,5 @@ namespace App\PokeApiClient\DTO;
 
 interface PokeApiEndpointDtoInterface
 {
-    public function getEndpoint(): string;
+    public static function getEndpoint(): string;
 }

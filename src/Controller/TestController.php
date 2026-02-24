@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
-use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
-use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
-use App\PokeApiClient\DTO\Type\TypeDTO;
-use App\PokeApiClient\PokeApiClient;
+use App\Service\PokeApiService;
+use App\ViewModel\EvolutionChainViewModel;
+use App\ViewModel\PokemonViewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,19 +12,13 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TestController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
-    public function test(PokeApiClient $pokeApiClient): Response
+    public function test(PokeApiService $pokeApi): Response
     {
-        $pokemon = $pokeApiClient->get(new PokemonDTO(), 'bulbasaur');
+        $data = $pokeApi->getFullPokemonData('eevee');
 
-        $types = [];
-        foreach ($pokemon->types as $slot) {
-            $types[] = $pokeApiClient->get(new TypeDTO(), $slot->type->name);
-        }
+        return $this->render('test/index.html.twig', [
+            'evolutionChain' => $data['evolutionChain'],
+        ]);
 
-        $species = $pokeApiClient->get(new PokemonSpeciesDTO(), $pokemon->name);
-
-        $evolutionChain = $pokeApiClient->getFromResource($species->evolutionChain, new EvolutionChainDTO());
-
-        dd($pokemon, $types, $species, $evolutionChain);
     }
 }

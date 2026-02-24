@@ -1,11 +1,72 @@
-<li>
-    {{ node.species.name }}
+{% macro recursiveChainLink(chain, index) %}
+    {% import _self as self %}
 
-    {% if node.evolvesTo is not empty %}
-        <ul>
-            {% for child in node.evolvesTo %}
-                {{ include('pokemon/_evolution_chain.html.twig', {node: child}) }}
+    {% if index > 0 %}
+        <div class="d-flex flex-column align-items-center">
+            <span class="fs-1 d-inline-flex">
+                {{ ux_icon('bi:arrow-right') }}
+            </span>
+
+            {% for detail in chain.evolutionDetails %}
+                <span>
+                    <span>{{ detail.trigger.name | title | replace({'-': ' '}) }}</span>
+
+                    {% if detail.minLevel %}
+                        <span>{{ detail.minLevel }}</span>
+                    {% endif %}
+
+                    {% if detail.minHappiness %}
+                        <span>Happiness {{ detail.minHappiness }}</span>
+                    {% endif %}
+
+                    {% if detail.item %}
+                        <span>{{ detail.item.name | title | replace({'-': ' '}) }}</span>
+                    {% endif %}
+
+                    {% if detail.timeOfDay %}
+                        <span>Time: {{ detail.timeOfDay | title }}</span>
+                    {% endif %}
+                </span>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
-</li>
+
+    <div class="d-flex flex-column align-items-center gap-2">
+        <img
+            src="{{ chain.sprite }}"
+            class="img-fluid"
+            style="width: 100px;"
+            alt="{{ chain.species.name | title }} artwork">
+
+        <strong>
+            <a class="text-reset text-decoration-none"
+               href="{{ path('app_pokemon_show', { name: chain.species.name | title }) }}">
+                {{ chain.species.name | title }}
+            </a>
+
+        </strong>
+
+        <div>
+            {% for type in chain.types %}
+                <span class="badge" style="background-color: var(--{{ type }})">
+                    {{ type | upper }}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if chain.evolvesTo | length %}
+        {# When there are more than one possible evolution, display them in a column #}
+        {% if chain.evolvesTo | length > 1 %}
+            <div class="d-flex gap-5">
+                {% for link in chain.evolvesTo %}
+                    {{ self.recursiveChainLink(link, index + 1) }}
+                {% endfor %}
+            </div>
+        {% else %}
+            {% for link in chain.evolvesTo %}
+                {{ self.recursiveChainLink(link, index + 1) }}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endmacro %}

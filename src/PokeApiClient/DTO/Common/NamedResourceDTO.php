@@ -2,9 +2,7 @@
 
 namespace App\PokeApiClient\DTO\Common;
 
-class NamedResourceDTO
+class NamedResourceDTO extends ResourceDTO
 {
     public string $name;
-
-    public string $url;
 }
