@@ -27,6 +27,7 @@
 
 ###> phpstan/phpstan ###
 phpstan.dist.neon
+/.idea/
 ###< phpstan/phpstan ###
 
 ###> vincentlanglet/twig-cs-fixer ###
