@@ -104,7 +104,6 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.94",
         "phpstan/extension-installer": "*",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "*",
@@ -116,7 +115,6 @@
         "symfony/maker-bundle": "^1.65.1",
         "symfony/stopwatch": "8.0.*",
         "symfony/var-dumper": "8.0.*",
-        "symfony/web-profiler-bundle": "8.0.*",
-        "vincentlanglet/twig-cs-fixer": "^3.13"
+        "symfony/web-profiler-bundle": "8.0.*"
     }
 }
