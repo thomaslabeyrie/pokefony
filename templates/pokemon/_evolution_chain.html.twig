@@ -9,8 +9,10 @@
 
             {% for detail in chain.evolutionDetails %}
                 <span>
+                    <span>{{ detail.trigger.name | title | replace({'-': ' '}) }}</span>
+
                     {% if detail.minLevel %}
-                        <span>Lvl {{ detail.minLevel }}</span>
+                        <span>{{ detail.minLevel }}</span>
                     {% endif %}
 
                     {% if detail.minHappiness %}
@@ -37,7 +39,8 @@
             alt="{{ chain.species.name | title }} artwork">
 
         <strong>
-            <a class="text-reset text-decoration-none" href="{{ path('app_pokemon_show', { name: chain.species.name | title }) }}">
+            <a class="text-reset text-decoration-none"
+               href="{{ path('app_pokemon_show', { name: chain.species.name | title }) }}">
                 {{ chain.species.name | title }}
             </a>
 

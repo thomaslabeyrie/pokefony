@@ -30,46 +30,84 @@
     {% endfor %}
 {% endfor %}
 
-{% set firstHalf = types|slice(0, 9) %}
-{% set secondHalf = types|slice(9, 9) %}
+{% set immune = multipliers|filter(m => m == 0) %}
+{% set veryResistant = multipliers|filter(m => m == 0.25) %}
+{% set resistant = multipliers|filter(m => m == 0.5) %}
+{% set normal = multipliers|filter(m => m == 1) %}
+{% set weak = multipliers|filter(m => m == 2) %}
+{% set veryWeak = multipliers|filter(m => m == 4) %}
 
-<table class="table m-0 text-center" style="table-layout: fixed; width: 100%;">
+<table class="table m-0">
     <tr>
-        {% for type in firstHalf %}
-            <th>
-            <span class="badge fs-6" style="background-color: var(--{{ type }})">
-                {{ type|upper }}
-            </span>
-            </th>
-        {% endfor %}
+        <th scope="row">Immune to</th>
+        <td>
+            {% if immune is not empty %}
+                {% for type in immune|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
     </tr>
-
     <tr>
-        {% for type in firstHalf %}
-            <td>
-                x{{ multipliers[type] }}
-            </td>
-        {% endfor %}
+        <th scope="row">Very Resistant to <span class="text-black-50">(x0.25)</span></th>
+        <td>
+            {% if veryResistant is not empty %}
+                {% for type in veryResistant|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">Resistant to <span class="text-black-50">(x0.5)</span></th>
+        <td>
+            {% if resistant is not empty %}
+                {% for type in resistant|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">Normal <span class="text-black-50">(x1)</span></th>
+        <td>
+            {% if normal is not empty %}
+                {% for type in normal|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">Weak to <span class="text-black-50">(x2)</span></th>
+        <td>
+            {% if weak is not empty %}
+                {% for type in weak|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">Very Weak to <span class="text-black-50">(x4)</span></th>
+        <td>
+            {% if veryWeak is not empty %}
+                {% for type in veryWeak|keys %}
+                    <span class="badge" style="background-color: var(--{{ type }})">{{ type|upper }}</span>
+                {% endfor %}
+            {% else %}
+                <strong>-</strong>
+            {% endif %}
+        </td>
     </tr>
 </table>
-
-<table class="table m-0 mt-4 text-center" style="table-layout: fixed; width: 100%;">
-    <tr>
-        {% for type in secondHalf %}
-            <th>
-            <span class="badge fs-6" style="background-color: var(--{{ type }})">
-                {{ type|upper }}
-            </span>
-            </th>
-        {% endfor %}
-    </tr>
-
-    <tr>
-        {% for type in secondHalf %}
-            <td>
-                x{{ multipliers[type] }}
-            </td>
-        {% endfor %}
-    </tr>
-</table>
-
