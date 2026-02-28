@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Factory\Embeddable;
+
+use App\Entity\Embeddable\IVs;
+use Zenstruck\Foundry\ObjectFactory;
+
+/**
+ * @extends ObjectFactory<IVs>
+ */
+final class IVsFactory extends ObjectFactory
+{
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
+     *
+     * @todo inject services if required
+     */
+    public function __construct()
+    {
+    }
+
+    #[\Override]
+    public static function class(): string
+    {
+        return IVs::class;
+    }
+
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
+     *
+     * @todo add your default values here
+     */
+    #[\Override]
+    protected function defaults(): array|callable
+    {
+        return [
+            'atkIv' => self::faker()->numberBetween(0, 31),
+            'defIv' => self::faker()->numberBetween(0, 31),
+            'hpIv' => self::faker()->numberBetween(0, 31),
+            'spAtkIv' => self::faker()->numberBetween(0, 31),
+            'spDefIv' => self::faker()->numberBetween(0, 31),
+            'speedIv' => self::faker()->numberBetween(0, 31),
+        ];
+    }
+
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
+     */
+    #[\Override]
+    protected function initialize(): static
+    {
+        return $this
+            // ->afterInstantiate(function(IVs $iVs): void {})
+        ;
+    }
+}
