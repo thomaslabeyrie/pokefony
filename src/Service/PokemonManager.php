@@ -29,7 +29,7 @@ class PokemonManager
 
         // On crée l'entité
         $pokemon = new Pokemon();
-        $pokemon->setName($pokemonDTO->name);
+        $pokemon->setNickname($pokemonDTO->name);
         $pokemon->setPokemonId($pokemonDTO->id);
         $pokemon->setSpriteUrl($pokemonDTO->sprites->officialArtwork);
         $pokemon->setTypes(array_map(

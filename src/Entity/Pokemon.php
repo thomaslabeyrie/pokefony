@@ -2,10 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Embeddable\EVs;
+use App\Entity\Embeddable\IVs;
+use App\Entity\Embeddable\Moveset;
+use App\Enum\NatureEnum;
+use App\Enum\GenderEnum;
 use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -18,14 +24,40 @@ class Pokemon
     #[ORM\Column]
     private ?int $pokemonId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $nickname = null;
 
     #[ORM\Column]
-    private array $types = [];
+    #[Assert\Range(min: 1, max: 100)]
+    private ?int $level = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $spriteUrl = null;
+    #[ORM\Column]
+    #[Assert\Range(min: 0, max: 255)]
+    private ?int $happiness = null;
+
+    #[ORM\Column]
+    private ?bool $isShiny = null;
+
+    #[ORM\Column(type: 'string', enumType: GenderEnum::class)]
+    private GenderEnum $gender;
+
+    #[ORM\Column(length: 32)]
+    private ?string $ability = null;
+
+    #[ORM\Column(type: 'string', enumType: NatureEnum::class)]
+    private NatureEnum $nature;
+
+    #[ORM\Column(length: 64)]
+    private ?string $heldItem = null;
+
+    #[ORM\Embedded(class: Moveset::class)]
+    private Moveset $moveset;
+
+    #[ORM\Embedded(class: IVs::class)]
+    private IVs $IVs;
+
+    #[ORM\Embedded(class: EVs::class)]
+    private EVs $EVs;
 
     /**
      * @var Collection<int, User>
@@ -36,6 +68,9 @@ class Pokemon
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->moveset = new Moveset();
+        $this->IVs = new IVs();
+        $this->EVs = new EVs();
     }
 
     public function getId(): ?int
@@ -55,38 +90,122 @@ class Pokemon
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNickname(): ?string
     {
-        return $this->name;
+        return $this->nickname;
     }
 
-    public function setName(string $name): static
+    public function setNickname(string $nickname): static
     {
-        $this->name = $name;
+        $this->nickname = $nickname;
 
         return $this;
     }
 
-    public function getTypes(): array
+    public function getLevel(): ?int
     {
-        return $this->types;
+        return $this->level;
     }
 
-    public function setTypes(array $types): static
+    public function setLevel(?int $level): static
     {
-        $this->types = $types;
+        $this->level = $level;
 
         return $this;
     }
 
-    public function getSpriteUrl(): ?string
+    public function getIsShiny(): ?bool
     {
-        return $this->spriteUrl;
+        return $this->isShiny;
     }
 
-    public function setSpriteUrl(string $spriteUrl): static
+    public function setIsShiny(?bool $isShiny): static
     {
-        $this->spriteUrl = $spriteUrl;
+        $this->isShiny = $isShiny;
+
+        return $this;
+    }
+
+    public function getGender(): GenderEnum
+    {
+        return $this->gender;
+    }
+
+    public function setGender(GenderEnum $gender): static
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getAbility(): ?string
+    {
+        return $this->ability;
+    }
+
+    public function setAbility(string $ability): static
+    {
+        $this->ability = $ability;
+
+        return $this;
+    }
+
+    public function getNature(): NatureEnum
+    {
+        return $this->nature;
+    }
+
+    public function setNature(NatureEnum $nature): static
+    {
+        $this->nature = $nature;
+
+        return $this;
+    }
+
+    public function getHeldItem(): ?string
+    {
+        return $this->heldItem;
+    }
+
+    public function setHeldItem(?string $heldItem): static
+    {
+        $this->heldItem = $heldItem;
+
+        return $this;
+    }
+
+    public function getMoveset(): Moveset
+    {
+        return $this->moveset;
+    }
+
+    public function setMoveset(Moveset $moveset): static
+    {
+        $this->moveset = $moveset;
+
+        return $this;
+    }
+
+    public function getIVs(): IVs
+    {
+        return $this->IVs;
+    }
+
+    public function setIVs(IVs $IVs): static
+    {
+        $this->IVs = $IVs;
+
+        return $this;
+    }
+
+    public function getEVs(): EVs
+    {
+        return $this->EVs;
+    }
+
+    public function setEVs(EVs $EVs): static
+    {
+        $this->EVs = $EVs;
 
         return $this;
     }
@@ -117,4 +236,18 @@ class Pokemon
 
         return $this;
     }
+
+    public function getHappiness(): ?int
+    {
+        return $this->happiness;
+    }
+
+    public function setHappiness(?int $happiness): static
+    {
+        $this->happiness = $happiness;
+
+        return $this;
+    }
+
+
 }

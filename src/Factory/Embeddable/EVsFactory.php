@@ -34,12 +34,12 @@ final class EVsFactory extends ObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'atkEv' => self::faker()->numberBetween(0, 255),
-            'defEv' => self::faker()->numberBetween(0, 255),
-            'hpEv' => self::faker()->numberBetween(0, 255),
-            'spAtkEv' => self::faker()->numberBetween(0, 255),
-            'spDefEv' => self::faker()->numberBetween(0, 255),
-            'speedEv' => self::faker()->numberBetween(0, 255),
+            'atk' => self::faker()->numberBetween(0, 255),
+            'def' => self::faker()->numberBetween(0, 255),
+            'hp' => self::faker()->numberBetween(0, 255),
+            'spAtk' => self::faker()->numberBetween(0, 255),
+            'spDef' => self::faker()->numberBetween(0, 255),
+            'speed' => self::faker()->numberBetween(0, 255),
         ];
     }
 

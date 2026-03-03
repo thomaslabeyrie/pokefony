@@ -34,12 +34,12 @@ final class IVsFactory extends ObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'atkIv' => self::faker()->numberBetween(0, 31),
-            'defIv' => self::faker()->numberBetween(0, 31),
-            'hpIv' => self::faker()->numberBetween(0, 31),
-            'spAtkIv' => self::faker()->numberBetween(0, 31),
-            'spDefIv' => self::faker()->numberBetween(0, 31),
-            'speedIv' => self::faker()->numberBetween(0, 31),
+            'atk' => self::faker()->numberBetween(0, 31),
+            'def' => self::faker()->numberBetween(0, 31),
+            'hp' => self::faker()->numberBetween(0, 31),
+            'spAtk' => self::faker()->numberBetween(0, 31),
+            'spDef' => self::faker()->numberBetween(0, 31),
+            'speed' => self::faker()->numberBetween(0, 31),
         ];
     }
 
