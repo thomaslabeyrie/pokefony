@@ -1,137 +1,116 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>
-            {% block title %}
-                Welcome!
-            {% endblock %}
-        </title>
-        <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Welcome!
+        {% endblock %}
+    </title>
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220
                 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22
                 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-            {% block stylesheets %}
-            {% endblock %}
+    {% block stylesheets %}
+    {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}
-                {{ importmap('app') }}
-            {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
         {% endblock %}
-    </head>
+    {% endblock %}
+</head>
 
-    <body>
-        <nav class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-between
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-between
                 px-4">
-            <div class="navbar-brand fw-bold">
-                POKEFONY
+    <div class="navbar-brand fw-bold">
+        POKEFONY
+    </div>
+
+    {% if app.user %}
+        {# Search form - only for authenticated users #}
+        <form action="{{ path('app_pokemon_search') }}" method="GET" class="d-flex bg-secondary"
+              style="min-width: 300px;">
+            <div class="input-group input-group-sm w-100">
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    placeholder="Search Pokémon by name or ID..."
+                    aria-label="Search Pokémon"
+                    value="{{ app.request.query.get('q', '') }}"
+                    required>
+                <button class="btn btn-light" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
+        </form>
+    {% endif %}
 
-            {% if app.user %}
-                {# Search form - only for authenticated users #}
-                <form action="{{ path('app_pokemon_search') }}" method="GET" class="d-flex bg-secondary" style="min-width: 300px;">
-                    <div class="input-group input-group-sm w-100">
-                        <input
-                            type="text"
-                            name="q"
-                            class="form-control"
-                            placeholder="Search Pokémon by name or ID..."
-                            aria-label="Search Pokémon"
-                            value="{{ app.request.query.get('q', '') }}"
-                            required>
-                        <button class="btn btn-light" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-            {% endif %}
-
-            <ul class="nav navbar-nav gap-2">
-                <li class="nav-item">
-                    <a class="nav-link active fw-semibold" href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" aria-current="page">
-                        Pokédex
-                        <span class="visually-hidden">
+    <ul class="nav navbar-nav gap-2">
+        <li class="nav-item">
+            <a class="nav-link active fw-semibold"
+               href="{{ path('app_pokedex_region', {region: 'national', page: 1}) }}" aria-current="page">
+                Pokédex
+                <span class="visually-hidden">
                             (current)
                         </span>
-                    </a>
-                </li>
+            </a>
+        </li>
 
-                {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ path('app_favorites') }}" aria-current="page">
-                            Favorites
-                            <span class="visually-hidden">
+        {% if app.user %}
+            <li class="nav-item">
+                <a class="nav-link active fw-semibold" href="{{ path('app_teams') }}" aria-current="page">
+                    Teams
+                    <span class="visually-hidden">
                                 (current)
                             </span>
-                        </a>
-                    </li>
+                </a>
+            </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ path('app_teams') }}" aria-current="page">
-                            Teams
-                            <span class="visually-hidden">
+            <li class="nav-item">
+                <a class="nav-link active fw-semibold" href="{{ path('app_logout') }}" aria-current="page">
+                    Logout
+                    <span class="visually-hidden">
                                 (current)
                             </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ path('app_logout') }}" aria-current="page">
-                            Logout
-                            <span class="visually-hidden">
+                </a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link active fw-semibold" href="{{ path('app_register') }}" aria-current="page">
+                    Register
+                    <span class="visually-hidden">
                                 (current)
                             </span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ path('app_register') }}" aria-current="page">
-                            Register
-                            <span class="visually-hidden">
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active fw-semibold" href="{{ path('app_login') }}" aria-current="page">
+                    Login
+                    <span class="visually-hidden">
                                 (current)
                             </span>
-                        </a>
-                    </li>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
 
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ path('app_login') }}" aria-current="page">
-                            Login
-                            <span class="visually-hidden">
-                                (current)
-                            </span>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-
-    {# Flash Messages #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show m-3" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endfor %}
-
-        <!-- Toast Container -->
-        <div
-            class="toast-container position-fixed bottom-0 end-0 p-3"
-            style="z-index: 11">
-            <div
-                id="favoriteToast"
-                class="toast"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true">
-                <div class="toast-body"></div>
-            </div>
+{# Flash Messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show m-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    {% endfor %}
+{% endfor %}
 
-        <div class="container d-flex justify-content-center align-items-center"> {% block body %}{% endblock %}
-            </div>
-        </body>
-    </html>
+<div class="container d-flex justify-content-center align-items-center"> {% block body %}{% endblock %}
+</div>
+</body>
+</html>

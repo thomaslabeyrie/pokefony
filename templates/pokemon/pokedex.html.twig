@@ -48,10 +48,9 @@
             </nav>
         </div>
 
-        <section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
+        <section class="p-0 p-md-4 rounded">
             {{ include('pokemon/_pokedex_table.html.twig', {
                 pokemons: pokemons,
-                favoriteIds: favoriteIds,
                 teamPokemonIds: teamPokemonIds,
             }) }}
         </section>

@@ -39,9 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Pokemon>
      */
-    #[ORM\ManyToMany(targetEntity: Pokemon::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinTable(name: 'user_pokemon')]
-    private Collection $favoritePokemons;
+    #[ORM\OneToMany(targetEntity: Pokemon::class, mappedBy: 'user', cascade: ['persist'])]
+    private Collection $pokemons;
 
     /**
      * @var Collection<int, Team>
@@ -51,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->favoritePokemons = new ArrayCollection();
+        $this->pokemons = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }
 
@@ -133,23 +132,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Pokemon>
      */
-    public function getFavoritePokemons(): Collection
+    public function getPokemons(): Collection
     {
-        return $this->favoritePokemons;
+        return $this->pokemons;
     }
 
-    public function addFavoritePokemon(Pokemon $favoritePokemon): static
+    public function addPokemon(Pokemon $Pokemon): static
     {
-        if (!$this->favoritePokemons->contains($favoritePokemon)) {
-            $this->favoritePokemons->add($favoritePokemon);
+        if (!$this->pokemons->contains($Pokemon)) {
+            $this->pokemons->add($Pokemon);
         }
 
         return $this;
     }
 
-    public function removeFavoritePokemon(Pokemon $favoritePokemon): static
+    public function removePokemon(Pokemon $Pokemon): static
     {
-        $this->favoritePokemons->removeElement($favoritePokemon);
+        $this->pokemons->removeElement($Pokemon);
 
         return $this;
     }

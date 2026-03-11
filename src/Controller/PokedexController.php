@@ -17,8 +17,6 @@ final class PokedexController extends AbstractController
 {
     public function __construct(
         private readonly PokeApiService $pokeApi,
-        private readonly UserRepository $userRepository,
-        private readonly TeamRepository $teamRepository,
     ) {
     }
 
@@ -27,32 +25,12 @@ final class PokedexController extends AbstractController
     {
         $pokemons = $this->pokeApi->getPokemonsByRegion($region, $page);
 
-        $favoriteIds = [];
         $teamPokemonIds = [];
-
-        $user = $this->getUser();
-
-        if ($user instanceof User) {
-            // Reload user from database to get fresh favoritePokemons collection
-            $freshUser = $this->userRepository->find($user->getId());
-            if ($freshUser) {
-                $favoriteIds = array_values($freshUser->getFavoritePokemons()->map(fn ($p) => $p->getPokemonId())->toArray());
-
-                // Get teams containing each Pokemon
-                foreach ($pokemons as $pokemon) {
-                    $teams = $this->teamRepository->findTeamsContainingPokemon($freshUser, $pokemon->id);
-                    if (!empty($teams)) {
-                        $teamPokemonIds[$pokemon->id] = $teams;
-                    }
-                }
-            }
-        }
 
         return $this->render('pokemon/pokedex.html.twig', [
             'region' => $region,
             'page' => $page,
             'pokemons' => $pokemons,
-            'favoriteIds' => $favoriteIds,
             'teamPokemonIds' => $teamPokemonIds,
         ]);
     }
@@ -63,29 +41,13 @@ final class PokedexController extends AbstractController
         $data = $this->pokeApi->getFullPokemonData($name);
 
         // Initialize data for authenticated users
-        $isFavorite = false;
         $teams = [];
-
-        $user = $this->getUser();
-        if ($user instanceof User) {
-            // Reload user from database to get fresh data
-            $freshUser = $this->userRepository->find($user->getId());
-            if ($freshUser) {
-                // Check if pokemon is in favorites
-                $favoriteIds = $freshUser->getFavoritePokemons()->map(fn ($p) => $p->getPokemonId())->toArray();
-                $isFavorite = in_array($data['pokemon']->id, $favoriteIds);
-
-                // Get teams containing this pokemon
-                $teams = $this->teamRepository->findTeamsContainingPokemon($freshUser, $data['pokemon']->id);
-            }
-        }
 
         return $this->render('pokemon/show.html.twig', [
             'pokemon' => $data['pokemon'],
             'types' => $data['types'],
             'evolutionChain' => $data['evolutionChain'],
             'species' => $data['species'],
-            'isFavorite' => $isFavorite,
             'teams' => $teams,
         ]);
     }
@@ -121,37 +83,9 @@ final class PokedexController extends AbstractController
                 'types' => array_map(fn ($type) => $type->name, $pokemonDTO->types),
             ];
 
-            // Wrap in array for template iteration
-            $pokemons = [$searchResult];
-
-            // Retrieve favorite/team data for authenticated users
-            $favoriteIds = [];
-            $teamPokemonIds = [];
-
-            $user = $this->getUser();
-            if ($user instanceof User) {
-                // Reload user from database to get fresh data
-                $freshUser = $this->userRepository->find($user->getId());
-                if ($freshUser) {
-                    // Get favorite IDs
-                    $favoriteIds = array_values($freshUser->getFavoritePokemons()
-                        ->map(fn ($p) => $p->getPokemonId())->toArray());
-
-                    // Get teams for this specific Pokémon
-                    $teams = $this->teamRepository->findTeamsContainingPokemon(
-                        $freshUser,
-                        $pokemonDTO->id
-                    );
-                    if (!empty($teams)) {
-                        $teamPokemonIds[$pokemonDTO->id] = $teams;
-                    }
-                }
-            }
-
             return $this->render('pokemon/search.html.twig', [
                 'query' => $query,
                 'pokemons' => $pokemons,
-                'favoriteIds' => $favoriteIds,
                 'teamPokemonIds' => $teamPokemonIds,
             ]);
         } catch (ClientException $e) {

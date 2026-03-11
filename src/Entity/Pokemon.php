@@ -59,18 +59,24 @@ class Pokemon
     #[ORM\Embedded(class: EVs::class)]
     private EVs $EVs;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favoritePokemons')]
-    private Collection $users;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'pokemons')]
+    private User $user;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->moveset = new Moveset();
         $this->IVs = new IVs();
         $this->EVs = new EVs();
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 
     public function getId(): ?int
@@ -206,33 +212,6 @@ class Pokemon
     public function setEVs(EVs $EVs): static
     {
         $this->EVs = $EVs;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addFavoritePokemon($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeFavoritePokemon($this);
-        }
 
         return $this;
     }

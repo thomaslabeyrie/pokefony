@@ -25,7 +25,7 @@
             </h5>
         </div>
 
-        <section class="p-0 p-md-4 rounded" data-controller="favorite-toast">
+        <section class="p-0 p-md-4 rounded">
             {% if pokemons is empty %}
                 {# Empty state #}
                 <div class="text-center py-5">
@@ -39,7 +39,6 @@
                 {# Include shared table component #}
                 {{ include('pokemon/_pokedex_table.html.twig', {
                     pokemons: pokemons,
-                    favoriteIds: favoriteIds,
                     teamPokemonIds: teamPokemonIds,
                 }) }}
 

@@ -10,7 +10,7 @@
     {% from "pokemon/_evolution_chain.html.twig" import recursiveChainLink %}
 
     <div class="container">
-        <div class="row my-4" data-controller="favorite-toast">
+        <div class="row my-4">
             {# Section Image #}
             <div class="col-12 col-lg-4">
                 <section class="p-4 rounded h-100">
@@ -46,17 +46,9 @@
                                 </h6>
                             </div>
 
-                            {# Favorites and Teams buttons #}
+                            {#Teams buttons #}
                             {% if app.user %}
                                 <div class="d-flex gap-3 mt-4">
-                                    {# Favorites button #}
-                                    <turbo-frame id="favorite-{{ pokemon.id }}">
-                                        {{ include('favorites/_favorite_button_text.html.twig', {
-                                            pokemon: pokemon,
-                                            isFavorite: isFavorite,
-                                        }) }}
-                                    </turbo-frame>
-
                                     {# Teams button #}
                                     <button type="button" class="btn btn-sm btn-primary"
                                             data-bs-toggle="modal"

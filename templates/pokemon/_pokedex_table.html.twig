@@ -17,12 +17,6 @@
                     <td class="align-middle py-3">
                         {{ include('teams/_team_button.html.twig', {pokemonId: pokemon.id, pokemonName: pokemon.name, teams: pokemon.id in teamPokemonIds|keys ? teamPokemonIds[pokemon.id] : []}) }}
                     </td>
-
-                    <td class="align-middle py-3">
-                        <turbo-frame id="favorite-{{ pokemon.id }}">
-                            {{ include('favorites/_favorite_button.html.twig', {pokemon: pokemon, isFavorite: pokemon.id in favoriteIds}) }}
-                        </turbo-frame>
-                    </td>
                 {% endif %}
 
                 <td class="align-middle py-3">

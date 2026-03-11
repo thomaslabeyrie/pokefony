@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Pokemon;
+use App\Entity\User;
 use App\Enum\GenderEnum;
 use App\Enum\NatureEnum;
 use App\Factory\Embeddable\EVsFactory;
