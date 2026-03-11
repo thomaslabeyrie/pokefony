@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PcController!{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-wrap justify-content-center gap-5 py-5">
+        {% for pokemon in pokemons %}
+            <div class="d-flex flex-column align-items-center">
+                <img
+                    src="{{ pokemon.apiData.sprites.other.officialArtwork.frontDefault }}"
+                    alt="{{ pokemon.apiData.name | title }} artwork"
+                    style="max-width: 128px;"
+                >
+
+                {% if pokemon.nickname %}
+                    <strong>{{ pokemon.nickname }}</strong> {{ pokemon.apiData.name | title }}
+                {% else %}
+                    <strong>{{ pokemon.apiData.name | title }}</strong>
+                {% endif %}
+                Lvl {{ pokemon.level }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
