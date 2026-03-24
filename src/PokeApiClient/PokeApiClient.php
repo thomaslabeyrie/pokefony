@@ -15,6 +15,17 @@ class PokeApiClient
     ) {
     }
 
+    public function getAllPokemons(): array
+    {
+        $response = $this->httpClient->request(
+            'GET',
+            "$this->baseUrl/pokemon?limit=10000"
+        );
+        $data = $response->toArray();
+
+        return $data['results'];
+    }
+
     /**
      * @template DTO
      *

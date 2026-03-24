@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Pokemon;
+use App\PokeApiClient\DTO\Ability\AbilityDTO;
 use App\PokeApiClient\DTO\Evolution\ChainLinkDTO;
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
 use App\PokeApiClient\DTO\Pokedex\PokedexDTO;
@@ -10,12 +10,11 @@ use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
 use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 use App\PokeApiClient\DTO\Type\TypeDTO;
 use App\PokeApiClient\PokeApiClient;
-use Doctrine\Common\Collections\Collection;
 
-class PokeApiService
+readonly class PokeApiService
 {
     public function __construct(
-        private readonly PokeApiClient $pokeApiClient,
+        private PokeApiClient $pokeApiClient,
     )
     {
     }
@@ -39,9 +38,17 @@ class PokeApiService
     {
         $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $identifier);
 
-        $types = array_map(fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name), $pokemon->types);
+        $types = array_map(
+            fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name),
+            $pokemon->types
+        );
 
         $species = $this->pokeApiClient->get(PokemonSpeciesDTO::class, $pokemon->name);
+
+        $abilities = array_map(
+            fn($slot) => $this->pokeApiClient->get(AbilityDTO::class, $slot->ability->name),
+            $pokemon->abilities
+        );
 
         $evolutionChain = $this->pokeApiClient->getFromResource(EvolutionChainDTO::class, $species->evolutionChain);
 
@@ -50,6 +57,7 @@ class PokeApiService
         return [
             'pokemon' => $pokemon,
             'species' => $species,
+            'abilities' => $abilities,
             'types' => $types,
             'evolutionChain' => $enrichedEvolutionChain,
         ];
@@ -73,6 +81,11 @@ class PokeApiService
     public function getPcPokemonListData(string|int $identifier): PokemonDTO
     {
         return $this->pokeApiClient->get(PokemonDTO::class, $identifier);
+    }
+
+    public function getAllPokemonNames(): array
+    {
+        return $this->pokeApiClient->getAllPokemons();
     }
 
     private function enrichEvolutionChain(EvolutionChainDTO $evolutionChain): EvolutionChainDTO
