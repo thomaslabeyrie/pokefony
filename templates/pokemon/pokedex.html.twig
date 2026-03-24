@@ -15,8 +15,7 @@
 {% endblock %}
 
 {% block body %}
-    <div
-        class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
+    <div class="container-fluid container-md w-100 my-4" style="max-width: 800px;">
         {# Pagination #}
         <div class="d-flex justify-content-center gap-2 my-2">
             <nav aria-label="Page navigation">
@@ -49,10 +48,7 @@
         </div>
 
         <section class="p-0 p-md-4 rounded">
-            {{ include('pokemon/_pokedex_table.html.twig', {
-                pokemons: pokemons,
-                teamPokemonIds: teamPokemonIds,
-            }) }}
+            {{ include('pokemon/_pokedex_table.html.twig', { rows: viewModel.rows }) }}
         </section>
 
         {# Pagination #}

@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\TeamRepository;
-use App\Repository\UserRepository;
+use App\Service\ApiToViewMapper;
 use App\Service\PokeApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\Exception\ClientException;
@@ -17,6 +15,7 @@ final class PokedexController extends AbstractController
 {
     public function __construct(
         private readonly PokeApiService $pokeApi,
+        private readonly ApiToViewMapper $viewMapper
     ) {
     }
 
@@ -25,13 +24,12 @@ final class PokedexController extends AbstractController
     {
         $pokemons = $this->pokeApi->getPokemonsByRegion($region, $page);
 
-        $teamPokemonIds = [];
+        $viewModel = $this->viewMapper->listPage($pokemons);
 
         return $this->render('pokemon/pokedex.html.twig', [
             'region' => $region,
             'page' => $page,
-            'pokemons' => $pokemons,
-            'teamPokemonIds' => $teamPokemonIds,
+            'viewModel' => $viewModel,
         ]);
     }
 
@@ -39,9 +37,6 @@ final class PokedexController extends AbstractController
     public function show(string $name): Response
     {
         $data = $this->pokeApi->getFullPokemonData($name);
-
-        // Initialize data for authenticated users
-        $teams = [];
 
         return $this->render('pokemon/show.html.twig', [
             'pokemon' => $data['pokemon'],

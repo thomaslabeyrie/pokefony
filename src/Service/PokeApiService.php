@@ -19,6 +19,7 @@ readonly class PokeApiService
     {
     }
 
+    /** @return PokemonDTO[] */
     public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
         // Récupère la liste complète du Pokédex de la région
