@@ -62,11 +62,20 @@
 
         {% if app.user %}
             <li class="nav-item">
+                <a class="nav-link active fw-semibold" href="{{ path('app_pc') }}" aria-current="page">
+                    PC
+                    <span class="visually-hidden">
+                                (current)
+                    </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link active fw-semibold" href="{{ path('app_teams') }}" aria-current="page">
                     Teams
                     <span class="visually-hidden">
                                 (current)
-                            </span>
+                    </span>
                 </a>
             </li>
 

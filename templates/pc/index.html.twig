@@ -7,7 +7,13 @@
         {% for pokemon in pokemons %}
             <div class="d-flex flex-column align-items-center">
                 <img
-                    src="{{ pokemon.apiData.sprites.other.officialArtwork.frontDefault }}"
+                    src="
+                        {% if pokemon.isShiny %}
+                            {{ pokemon.apiData.sprites.other.officialArtwork.frontShiny }}
+                        {% else %}
+                            {{ pokemon.apiData.sprites.other.officialArtwork.frontDefault }}
+                        {% endif %}
+                    "
                     alt="{{ pokemon.apiData.name | title }} artwork"
                     style="max-width: 128px;"
                 >
