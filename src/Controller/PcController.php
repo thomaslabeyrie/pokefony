@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Pokemon;
 use App\Entity\User;
+use App\Form\PokemonType;
 use App\Service\PokeApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,14 +27,22 @@ final class PcController extends AbstractController
             $pokemon->apiData = $this->pokeApi->getPcPokemonListData($pokemon->getPokemonId());
         }
 
-        dump($userPokemons);
         return $this->render('pc/index.html.twig', [
             'pokemons' => $userPokemons,
         ]);
     }
 
-    #[Route(path: '/pc/{id}', name: 'app_pc_show')]
-    public function show(): Response {
+    #[Route(path: '/pc/new', name: 'app_pc_new')]
+    public function new(): Response
+    {
+        $form = $this->createForm(
+            type: PokemonType::class,
+            data: new Pokemon(),
+            options: [
+            'pokemon_id_choices' => ['pikachu', 'eevee'],
+            'ability_choices' => [1, 2, 3]
+        ]);
 
+        return $this->render('pc/new.html.twig', ['form' => $form]);
     }
 }
