@@ -38,10 +38,12 @@
         "symfony/translation": "8.0.*",
         "symfony/twig-bundle": "8.0.*",
         "symfony/ux-icons": "^2.32",
+        "symfony/ux-live-component": "^2.33",
         "symfony/ux-turbo": "^2.32",
         "symfony/validator": "8.0.*",
         "symfony/web-link": "8.0.*",
         "symfony/yaml": "8.0.*",
+        "symfonycasts/dynamic-forms": "^0.2.0",
         "twig/extra-bundle": "^2.12|^3.23",
         "twig/intl-extra": "^3.23",
         "twig/twig": "^2.12|^3.23"
