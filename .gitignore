@@ -35,3 +35,7 @@ phpstan.dist.neon
 ###> vincentlanglet/twig-cs-fixer ###
 /.twig-cs-fixer.cache
 ###< vincentlanglet/twig-cs-fixer ###
+
+###> claude ###
+.claude/settings.local.json
+###< claude ###
