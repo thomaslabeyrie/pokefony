@@ -82,12 +82,12 @@ readonly class ApiToViewMapper
             details: array_map(
                 fn($detail) => new EvolutionDetailViewModel(
                     trigger: $detail->trigger->name,
-                    item: $detail->item,
+                    item: $detail->item?->name,
                     gender: $detail->gender,
                     heldItem: $detail->heldItem,
                     knownMove: $detail->knownMove,
-                    knownMoveType: $detail->knownMoveType,
-                    location: $detail->location,
+                    knownMoveType: $detail->knownMoveType?->name,
+                    location: $detail->location?->name,
                     minLevel: $detail->minLevel,
                     minHappiness: $detail->minHappiness,
                     minBeauty: $detail->minBeauty,
@@ -160,7 +160,7 @@ readonly class ApiToViewMapper
         foreach (TypeEnum::cases() as $attacker) {
             $multiplier =
                 $typeEnums[0]->multiplierAgainst($attacker)
-                * ($typeEnums[1]->multiplierAgainst($attacker) ?? 1);
+                * (count($typeEnums) > 1 ? $typeEnums[1]->multiplierAgainst($attacker) : 1);
 
             match (true) {
                 $multiplier === 0.0 => $immuneTo[] = $attacker->value,
