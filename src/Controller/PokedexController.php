@@ -37,13 +37,14 @@ final class PokedexController extends AbstractController
     public function show(string $name): Response
     {
         $data = $this->pokeApi->getFullPokemonData($name);
+        $viewModel = $this->viewMapper->speciesPage(
+            $data['pokemon'],
+            $data['species'],
+            $data['evolutionChain']
+        );
 
         return $this->render('pokemon/show.html.twig', [
-            'pokemon' => $data['pokemon'],
-            'types' => $data['types'],
-            'evolutionChain' => $data['evolutionChain'],
-            'species' => $data['species'],
-            'teams' => $teams,
+            'vm' => $viewModel,
         ]);
     }
 

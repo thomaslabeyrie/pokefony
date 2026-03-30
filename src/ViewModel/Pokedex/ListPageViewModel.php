@@ -2,19 +2,11 @@
 
 namespace App\ViewModel\Pokedex;
 
-class ListPageViewModel
+readonly class ListPageViewModel
 {
-    /** @var PokedexRowViewModel[] */
-    private array $rows;
-
-    public function getRows(): array
-    {
-        return $this->rows;
-    }
-
-    public function setRows(array $rows): ListPageViewModel
-    {
-        $this->rows = $rows;
-        return $this;
+    public function __construct(
+        /** @var PokedexRowViewModel[] */
+        public array $rows,
+    ) {
     }
 }

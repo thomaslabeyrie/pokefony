@@ -38,29 +38,18 @@ readonly class PokeApiService
     public function getFullPokemonData(string|int $identifier): array
     {
         $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $identifier);
-
         $types = array_map(
             fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name),
             $pokemon->types
         );
-
         $species = $this->pokeApiClient->get(PokemonSpeciesDTO::class, $pokemon->name);
-
-        $abilities = array_map(
-            fn($slot) => $this->pokeApiClient->get(AbilityDTO::class, $slot->ability->name),
-            $pokemon->abilities
-        );
-
         $evolutionChain = $this->pokeApiClient->getFromResource(EvolutionChainDTO::class, $species->evolutionChain);
-
-        $enrichedEvolutionChain = $this->enrichEvolutionChain($evolutionChain);
 
         return [
             'pokemon' => $pokemon,
             'species' => $species,
-            'abilities' => $abilities,
             'types' => $types,
-            'evolutionChain' => $enrichedEvolutionChain,
+            'evolutionChain' => $evolutionChain,
         ];
     }
 
@@ -87,25 +76,5 @@ readonly class PokeApiService
     public function getAllPokemonNames(): array
     {
         return $this->pokeApiClient->getAllPokemons();
-    }
-
-    private function enrichEvolutionChain(EvolutionChainDTO $evolutionChain): EvolutionChainDTO
-    {
-        $this->enrichChainLink($evolutionChain->chain);
-        return $evolutionChain;
-    }
-
-    private function enrichChainLink(ChainLinkDTO $link): void
-    {
-        $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $link->species->name);
-        $link->sprite = $pokemon->sprites->other->officialArtwork->frontDefault;
-
-        foreach ($pokemon->types as $slot) {
-            $link->types[] = $slot->type->name;
-        }
-
-        foreach ($link->evolvesTo as $stage) {
-            $this->enrichChainLink($stage);
-        }
     }
 }

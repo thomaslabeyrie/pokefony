@@ -28,9 +28,7 @@ class PokeApiClient
 
     /**
      * @template DTO
-     *
      * @param class-string<DTO> $dtoClass
-     *
      * @return DTO
      */
     public function get(string $dtoClass, string|int $identifier): mixed

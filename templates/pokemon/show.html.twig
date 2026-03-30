@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ pokemon.name|title }}
-    - Pokefony
+    {{ vm.name|title }} - Pokefony
 {% endblock %}
 
 {% block body %}
@@ -16,20 +15,20 @@
                 <section class="p-4 rounded h-100">
                     <div class="d-flex h-100 flex-column justify-content-between align-items-center">
                         <div class="h-100 d-flex align-items-center">
-                            <img src="{{ pokemon.sprites.other.officialArtwork.frontDefault }}" class="img-fluid"
-                                 style="width: 300px;" alt="{{ pokemon.name|title }} artwork">
+                            <img src="{{ vm.sprite.url }}" class="img-fluid" style="width: 300px;"
+                                 alt="{{ vm.name|title }} artwork">
                         </div>
 
                         <div class="w-100">
                             <div class="w-100 d-flex justify-content-between align-items-center">
                                 <h2 class="fw-bold">
-                                    {{ pokemon.name|title }}
+                                    {{ vm.name|title }}
                                 </h2>
 
                                 <div class="d-flex gap-2">
-                                    {% for type in types %}
-                                        <span class="badge fs-6" style="background-color: var(--{{ type.name }});">
-                                            {{ type.name|upper }}
+                                    {% for type in vm.types %}
+                                        <span class="badge fs-6" style="background-color: var(--{{ type }});">
+                                            {{ type|upper }}
                                         </span>
                                     {% endfor %}
                                 </div>
@@ -41,26 +40,9 @@
                                 </h6>
 
                                 <h6 class="text-muted m-0">
-                                    #
-                                    {{- pokemon.id|upper -}}
+                                    #{{- vm.id -}}
                                 </h6>
                             </div>
-
-                            {#Teams buttons #}
-                            {% if app.user %}
-                                <div class="d-flex gap-3 mt-4">
-                                    {# Teams button #}
-                                    <button type="button" class="btn btn-sm btn-primary"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addToTeamModal-{{ pokemon.id }}"
-                                            data-controller="team-modal-trigger"
-                                            data-action="click->team-modal-trigger#loadModal"
-                                            data-team-modal-trigger-pokemon-id-value="{{ pokemon.id }}"
-                                            data-team-modal-trigger-pokemon-name-value="{{ pokemon.name }}">
-                                        Manage Teams
-                                    </button>
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 </section>
@@ -76,49 +58,39 @@
                     <table class="table mb-4">
                         <tbody>
                         <tr>
-                            <th scope="row">
-                                Height
-                            </th>
-                            <td>
-                                {{ pokemon.height / 10 }}
-                                m
-                            </td>
+                            <th scope="row">Height</th>
+                            <td>{{ vm.height / 10 }} m</td>
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Weight
-                            </th>
-                            <td>
-                                {{ pokemon.weight / 10 }}
-                                kg
-                            </td>
+                            <th scope="row">Weight</th>
+                            <td>{{ vm.weight / 10 }} kg</td>
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Gender Ratio
-                            </th>
+                            <th scope="row">Gender Ratio</th>
                             <td class="align-middle">
-                                {% if species.genderRate == -1 %}
-                                    <span class="text-muted">
-                                            Genderless
-                                        </span>
+                                {% if vm.genderRate == -1 %}
+                                    <span class="text-muted">Genderless</span>
                                 {% else %}
-                                    {% set femalePercent = (species.genderRate / 8 * 100)|number_format(1) %}
-                                    {% set malePercent = ((8 - species.genderRate) / 8 * 100)|number_format(1) %}
+                                    {% set femalePercent = (vm.genderRate / 8 * 100)|number_format(1) %}
+                                    {% set malePercent = ((8 - vm.genderRate) / 8 * 100)|number_format(1) %}
                                     <div class="progress rounded-5" style="height: 20px; max-width: 400px;">
-                                        <div class="progress-bar bg-danger fw-medium" role="progressbar"
-                                             style="width: {{ femalePercent }}%;" aria-valuenow="{{ femalePercent }}"
-                                             aria-valuemin="0" aria-valuemax="100">
-                                            {{ femalePercent }}
-                                            %
+                                        <div class="progress-bar bg-danger fw-medium"
+                                             role="progressbar"
+                                             style="width: {{ femalePercent }}%;"
+                                             aria-valuenow="{{ femalePercent }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            {{ femalePercent }} %
                                         </div>
-                                        <div class="progress-bar bg-primary fw-medium" role="progressbar"
-                                             style="width: {{ malePercent }}%;" aria-valuenow="{{ malePercent }}"
-                                             aria-valuemin="0" aria-valuemax="100">
-                                            {{ malePercent }}
-                                            %
+                                        <div class="progress-bar bg-primary fw-medium"
+                                             role="progressbar"
+                                             style="width: {{ malePercent }}%;"
+                                             aria-valuenow="{{ malePercent }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            {{ malePercent }} %
                                         </div>
                                     </div>
                                 {% endif %}
@@ -126,54 +98,39 @@
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Abilities
-                            </th>
+                            <th scope="row">Abilities</th>
 
                             <td class="align-middle">
                                 <div class="d-flex gap-2 flex-wrap">
-                                    {% for entry in pokemon.abilities %}
+                                    {% for ability in vm.abilities %}
                                         <span class="badge bg-secondary">
-                                                {{ entry.ability.name|replace({'-': ' '})|title }}
-                                            {% if entry.isHidden %}
+                                            {{ ability.name|replace({'-': ' '})|title }}
+                                            {% if ability.isHidden %}
                                                 (Hidden)
                                             {% endif %}
-                                            </span>
+                                        </span>
                                     {% endfor %}
                                 </div>
                             </td>
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Catch Rate
-                            </th>
+                            <th scope="row">Capture Rate</th>
                             <td>
-                                {{ species.captureRate }}
-                                <span class="text-muted">
-                                        (
-                                        {{- species.captureRate * (100 / 255)|format_number({rounding_mode: 'floor'}) -}}
-                                        %)
-                                    </span>
+                                {{ vm.captureRate }}
+                                <span
+                                    class="text-muted">({{- vm.captureRate * (100 / 255)|format_number({rounding_mode: 'floor'}) -}} %)</span>
                             </td>
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Growth Rate
-                            </th>
-                            <td>
-                                {{ species.growthRate.name|replace({'-': ' '})|title }}
-                            </td>
+                            <th scope="row">Growth Rate</th>
+                            <td>{{ vm.growthRate|replace({'-': ' '})|title }}</td>
                         </tr>
 
                         <tr>
-                            <th scope="row">
-                                Base Experience
-                            </th>
-                            <td>
-                                {{ pokemon.baseExperience }}
-                            </td>
+                            <th scope="row">Base Experience</th>
+                            <td>{{ vm.baseExperience }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -183,37 +140,32 @@
                     </h6>
 
                     <p class="fst-italic fw-medium my-1">
-                        {{ species.flavorTextEntries[0].flavorText }}
+                        {{ vm.flavorText.flavorText }}
                     </p>
                 </section>
             </div>
         </div>
 
         {# Evolutions Section #}
-        <section class="p-4 rounded">
-            <h6 class="section-title">
-                Evolution Chain
-            </h6>
+        {% if vm.evolutionChain %}
+            <section class="p-4 rounded">
+                <h6 class="section-title">Evolution Chain</h6>
 
-            <div class="d-flex justify-content-around align-items-center p-4">
-                {{ recursiveChainLink(evolutionChain.chain, 0) }}
-            </div>
-        </section>
+                <div class="d-flex justify-content-around align-items-center p-4">
+                    {{ recursiveChainLink(vm.evolutionChain, 0) }}
+                </div>
+            </section>
+        {% endif %}
 
         {# Types Section #}
         <section class="my-4 p-4 rounded">
-            <h6 class="section-title">
-                Type Effectiveness
-            </h6>
-
-            {{ include('pokemon/_types_table.html.twig', { pokemonTypes: types }) }}
+            <h6 class="section-title">Type Effectiveness</h6>
+            {{ include('pokemon/_types_table.html.twig', { damageRelations: vm.damageRelations }) }}
         </section>
 
         {# Section Stats #}
         <section class="my-4 p-4 rounded">
-            <h6 class="section-title">
-                Stats
-            </h6>
+            <h6 class="section-title">Stats</h6>
 
             <table class="table table-borderless m-0" style="table-layout: fixed;">
                 <colgroup>
@@ -223,19 +175,25 @@
                 </colgroup>
 
                 <tbody>
-                {% for entry in pokemon.stats %}
+                {% for stat in vm.stats %}
                     <tr>
                         <th scope="row">
-                            {{ entry.stat.name|replace({'-': ' ', defense: 'def', attack: 'atk', special: 'spe'})|title|replace({Hp: 'HP'}) }}
+                            {{ stat.name|replace({'-': ' ', defense: 'def', attack: 'atk', special: 'spe'})|title|replace({Hp: 'HP'}) }}
                         </th>
 
                         <td class="text-center fw-semibold">
-                            {{ entry.baseStat }}
+                            {{ stat.baseValue }}
                         </td>
                         <td class="align-middle">
                             <div class="progress" style="height: 12px;">
-                                <div class="progress-bar" style="width: {{ entry.baseStat / 2.55 }}%" role="progressbar"
-                                     aria-valuenow="{{ entry.baseStat }}" aria-valuemin="0" aria-valuemax="255"></div>
+                                <div class="progress-bar"
+                                     style="width: {{ stat.baseValue / 2.55 }}%"
+                                     role="progressbar"
+                                     aria-valuenow="{{ stat.baseValue }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="255">
+
+                                </div>
                             </div>
                         </td>
                     </tr>

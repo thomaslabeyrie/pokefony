@@ -7,9 +7,9 @@
                 {{ ux_icon('bi:arrow-right') }}
             </span>
 
-            {% for detail in chain.evolutionDetails %}
+            {% for detail in chain.details %}
                 <span>
-                    <span>{{ detail.trigger.name | title | replace({'-': ' '}) }}</span>
+                    <span>{{ detail.trigger | title | replace({'-': ' '}) }}</span>
 
                     {% if detail.minLevel %}
                         <span>{{ detail.minLevel }}</span>
@@ -20,7 +20,7 @@
                     {% endif %}
 
                     {% if detail.item %}
-                        <span>{{ detail.item.name | title | replace({'-': ' '}) }}</span>
+                        <span>{{ detail.item | title | replace({'-': ' '}) }}</span>
                     {% endif %}
 
                     {% if detail.timeOfDay %}
@@ -33,38 +33,30 @@
 
     <div class="d-flex flex-column align-items-center gap-2">
         <img
-            src="{{ chain.sprite }}"
+            src="{{ chain.sprite.url }}"
             class="img-fluid"
             style="width: 100px;"
-            alt="{{ chain.species.name | title }} artwork">
+            alt="{{ chain.name | title }} artwork">
 
         <strong>
             <a class="text-reset text-decoration-none"
-               href="{{ path('app_pokemon_show', { name: chain.species.name | title }) }}">
-                {{ chain.species.name | title }}
+               href="{{ path('app_pokemon_show', { name: chain.name }) }}">
+                {{ chain.name | title }}
             </a>
 
         </strong>
-
-        <div>
-            {% for type in chain.types %}
-                <span class="badge" style="background-color: var(--{{ type }})">
-                    {{ type | upper }}
-                </span>
-            {% endfor %}
-        </div>
     </div>
 
-    {% if chain.evolvesTo | length %}
+    {% if chain.evolutions | length %}
         {# When there are more than one possible evolution, display them in a column #}
-        {% if chain.evolvesTo | length > 1 %}
+        {% if chain.evolutions | length > 1 %}
             <div class="d-flex gap-5">
-                {% for link in chain.evolvesTo %}
+                {% for link in chain.evolutions %}
                     {{ self.recursiveChainLink(link, index + 1) }}
                 {% endfor %}
             </div>
         {% else %}
-            {% for link in chain.evolvesTo %}
+            {% for link in chain.evolutions %}
                 {{ self.recursiveChainLink(link, index + 1) }}
             {% endfor %}
         {% endif %}
