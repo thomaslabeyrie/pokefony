@@ -35,14 +35,6 @@ final class PcController extends AbstractController
     #[Route(path: '/pc/new', name: 'app_pc_new')]
     public function new(): Response
     {
-        $form = $this->createForm(
-            type: PokemonType::class,
-            data: new Pokemon(),
-            options: [
-            'pokemon_id_choices' => ['pikachu', 'eevee'],
-            'ability_choices' => [1, 2, 3]
-        ]);
-
-        return $this->render('pc/new.html.twig', ['form' => $form]);
+        return $this->render('pc/new.html.twig');
     }
 }

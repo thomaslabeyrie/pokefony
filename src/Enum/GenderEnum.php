@@ -6,15 +6,24 @@ use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 
 enum GenderEnum: string
 {
-    case Male = 'male';
-    case Female = 'female';
-    case Genderless = 'genderless';
+    case MALE = 'male';
+    case FEMALE = 'female';
+    case GENDERLESS = 'genderless';
 
     public static function getFromSpecies(PokemonSpeciesDTO $species): array
     {
         return match($species->hasGenderDifferences) {
-            $species->hasGenderDifferences => [self::Male, self::Female],
-            default => [self::Genderless],
+            $species->hasGenderDifferences => [self::MALE, self::FEMALE],
+            default => [self::GENDERLESS],
+        };
+    }
+
+    public function getLabel(): string
+    {
+        return match($this) {
+            self::MALE => 'Male',
+            self::FEMALE => 'Female',
+            self::GENDERLESS => 'Genderless',
         };
     }
 }

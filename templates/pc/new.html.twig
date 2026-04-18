@@ -3,17 +3,7 @@
 {% block title %}New Pokemon{% endblock %}
 
 {% block body %}
-    <div class="row w-100 py-5">
-        <div class="col-4">
-            <img
-                src="https://www.pngall.com/wp-content/uploads/4/Pokemon-Pokeball-PNG-File.png"
-                alt=""
-                style="max-width: 128px;"
-            >
-        </div>
-
-        <div class="col-3">
-            {{ component('NewPokemonForm') }}
-        </div>
-    </div>
+<div class="row w-100 py-5">
+    {{ component('NewPokemonForm') }}
+</div>
 {% endblock %}

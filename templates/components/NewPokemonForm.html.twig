@@ -1,5 +1,26 @@
 <div {{ attributes }}>
-    {{ form_row(form.pokemonId, { 'attr': { 'data-model': 'pokemonId' } }) }}
-    {{ form_row(form.ability) }}
-    {{ form_row(form.gender) }}
+    <div class="row">
+        <div class="col-4">
+            <img
+                src="{{ spriteUrl }}"
+                alt=""
+                style="max-width: 254px;"
+            >
+        </div>
+
+        <div class="col-auto">
+            {{ form_row(form.pokemonId, { 'attr': { 'data-model': 'currentPokemon' } }) }}
+            {{ form_row(form.isShiny, { 'attr': { 'data-model': 'isShiny' } }) }}
+            {{ form_row(form.nickname) }}
+            {{ form_row(form.ability) }}
+            {{ form_row(form.gender) }}
+            {{ form_row(form.level) }}
+            {{ form_row(form.happiness) }}
+            {{ form_row(form.nature) }}
+            {{ form_row(form.heldItem) }}
+            {{ form_row(form.moveset) }}
+            {{ form_row(form.ivs) }}
+            {{ form_row(form.evs) }}
+        </div>
+    </div>
 </div>

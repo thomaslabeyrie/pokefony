@@ -20,7 +20,13 @@ class NewPokemonForm extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp(writable: true)]
-    public ?int $pokemonId = null;
+    public ?string $currentPokemon = null;
+
+    #[LiveProp(writable: true)]
+    public ?bool $isShiny = false;
+
+    #[LiveProp(writable: true)]
+    public ?string $spriteUrl = 'https://www.pngall.com/wp-content/uploads/4/Pokemon-Pokeball-PNG-File.png';
 
     public function __construct(
         private readonly PokeApiService $pokeApiService
@@ -30,46 +36,38 @@ class NewPokemonForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        $pokemonIdChoices = array_flip(
-            array_map(
-                fn($entry) => $entry['name'],
-                $this->pokeApiService->getAllPokemonNames()
-            )
+        $pokemonNames = $this->pokeApiService->getAllPokemonNames();
+
+        $pokemonChoices = array_combine(
+            array_map(fn($entry) => ucwords($entry['name']), $pokemonNames),
+            array_map(fn($entry) => $entry['name'], $pokemonNames)
         );
 
         $possibleAbilities = [];
         $possibleGenders = [];
-        if ($this->pokemonId) {
-            // Fetch full pokemon data
-            $pokemonData = $this->pokeApiService->getFullPokemonData($this->pokemonId);
-            dump($pokemonData);
+        if ($this->currentPokemon) {
+            $pokemonData = $this->pokeApiService->getFullPokemonData($this->currentPokemon);
 
-            // Map it to options
-            // abilityChoices
             $possibleAbilities = array_flip(
                 array_map(
-                    fn($entry) => $entry->name,
-                    $pokemonData['abilities']
+                    fn($entry) => ucwords(str_replace('-', ' ', $entry->ability->name)),
+                    $pokemonData['pokemon']->abilities
                 )
             );
-
-            // genderChoices
             $possibleGenders = GenderEnum::getFromSpecies($pokemonData['species']);
-            $possibleGenders =
-                array_map(
-                    fn($entry) => $entry->name,
-                    $possibleGenders
-                );
+
+            $this->spriteUrl = $this->isShiny ?
+                $pokemonData['pokemon']->sprites->other->officialArtwork->frontShiny
+                : $pokemonData['pokemon']->sprites->other->officialArtwork->frontDefault;
 
             // movesetChoices
         }
-
 
         return $this->createForm(
             type: PokemonType::class,
             data: new Pokemon(),
             options: [
-                'pokemon_id_choices' => $pokemonIdChoices,
+                'pokemon_choices' => $pokemonChoices,
                 'ability_choices' => $possibleAbilities,
                 'gender_choices' => $possibleGenders
             ]

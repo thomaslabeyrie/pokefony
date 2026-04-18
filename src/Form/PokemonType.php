@@ -19,12 +19,6 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 class PokemonType extends AbstractType
 {
-    public function __construct(
-        private readonly PokeApiService $pokeApiService
-    )
-    {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -34,7 +28,7 @@ class PokemonType extends AbstractType
                 options: [
                     'label' => 'Pokémon',
                     'placeholder' => 'Search for a Pokémon',
-                    'choices' => $options['pokemon_id_choices'],
+                    'choices' => $options['pokemon_choices'],
                 ]
             )
             ->add(
@@ -42,6 +36,7 @@ class PokemonType extends AbstractType
                 type: ChoiceType::class,
                 options: [
                     'label' => 'Ability',
+                    'placeholder' => 'Select an ability',
                     'choices' => $options['ability_choices'],
                 ]
             )
@@ -50,6 +45,14 @@ class PokemonType extends AbstractType
                 type: TextType::class,
                 options: [
                     'attr' => ['placeholder' => 'Enter a nickname'],
+                ]
+            )
+            ->add(
+                child: 'isShiny',
+                type: ChoiceType::class,
+                options: [
+                    'expanded' => true,
+                    'multiple' => true
                 ]
             )
             ->add(
@@ -70,14 +73,14 @@ class PokemonType extends AbstractType
                     'label' => 'Shiny'
                 ]
             )
-            // Dependent on the pokemon, some are genderless
             ->add(
                 child: 'gender',
                 type: EnumType::class,
                 options: [
                     'class' => GenderEnum::class,
                     'placeholder' => 'Select a gender',
-                    'choices' => $options['gender_choices']
+                    'choices' => $options['gender_choices'],
+                    'choice_label' => fn(GenderEnum $gender) => $gender->getLabel()
                 ]
             )
             ->add(
@@ -97,7 +100,6 @@ class PokemonType extends AbstractType
                     'choices' => [],
                 ]
             )
-            // Dependent on the pokemon
             ->add(
                 child: 'moveset',
                 type: MovesetType::class
@@ -128,7 +130,7 @@ class PokemonType extends AbstractType
                 'moveset_choices' => [],
             ])
             ->setRequired([
-                'pokemon_id_choices',
+                'pokemon_choices',
                 'gender_choices',
                 'ability_choices',
                 'moveset_choices'
