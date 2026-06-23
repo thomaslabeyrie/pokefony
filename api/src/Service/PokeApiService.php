@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\PokeApiClient\DTO\Ability\AbilityDTO;
-use App\PokeApiClient\DTO\Evolution\ChainLinkDTO;
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
 use App\PokeApiClient\DTO\Pokedex\PokedexDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonDTO;

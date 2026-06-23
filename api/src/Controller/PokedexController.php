@@ -6,6 +6,7 @@ use App\Service\ApiToViewMapper;
 use App\Service\PokeApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,9 +16,8 @@ final class PokedexController extends AbstractController
 {
     public function __construct(
         private readonly PokeApiService $pokeApi,
-        private readonly ApiToViewMapper $viewMapper
-    ) {
-    }
+        private readonly ApiToViewMapper $viewMapper,
+    ) {}
 
     #[Route(path: '/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
     public function list(string $region, int $page): Response
@@ -37,15 +37,9 @@ final class PokedexController extends AbstractController
     public function show(string $name): Response
     {
         $data = $this->pokeApi->getFullPokemonData($name);
-        $viewModel = $this->viewMapper->speciesPage(
-            $data['pokemon'],
-            $data['species'],
-            $data['evolutionChain']
-        );
+        $viewModel = $this->viewMapper->speciesPage($data['pokemon'], $data['species'], $data['evolutionChain']);
 
-        return $this->render('pokemon/show.html.twig', [
-            'vm' => $viewModel,
-        ]);
+        return new JsonResponse($viewModel);
     }
 
     #[Route('/search', name: 'app_pokemon_search', methods: ['GET'])]
@@ -76,7 +70,7 @@ final class PokedexController extends AbstractController
                 'id' => $pokemonDTO->id,
                 'name' => $pokemonDTO->name,
                 'artwork' => $pokemonDTO->sprites->officialArtwork,
-                'types' => array_map(fn ($type) => $type->name, $pokemonDTO->types),
+                'types' => array_map(fn($type) => $type->name, $pokemonDTO->types),
             ];
 
             return $this->render('pokemon/search.html.twig', [

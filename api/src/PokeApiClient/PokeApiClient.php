@@ -12,8 +12,7 @@ class PokeApiClient
         private readonly HttpClientInterface $httpClient,
         private readonly SerializerInterface $serializer,
         private readonly string $baseUrl = 'https://pokeapi.co/api/v2/',
-    ) {
-    }
+    ) {}
 
     public function getAllPokemons(): array
     {
@@ -48,9 +47,7 @@ class PokeApiClient
 
     /**
      * @template DTO
-     *
      * @param class-string<DTO> $dtoClass
-     *
      * @return DTO
      */
     public function getFromResource(string $dtoClass, ResourceDTO $resource): mixed

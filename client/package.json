@@ -28,10 +28,12 @@
     "eslint-plugin-oxlint": "~1.57.0",
     "eslint-plugin-vue": "~10.8.0",
     "jiti": "^2.6.1",
+    "naive-ui": "^2.44.1",
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.57.0",
     "prettier": "3.8.1",
     "typescript": "~6.0.0",
+    "vfonts": "^0.0.3",
     "vite": "^8.0.3",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vue-tsc": "^3.2.6"

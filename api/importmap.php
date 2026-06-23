@@ -42,4 +42,19 @@ return [
     '@symfony/ux-live-component' => [
         'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
+    'vue' => [
+        'version' => '3.5.32',
+    ],
+    '@vue/runtime-dom' => [
+        'version' => '3.5.32',
+    ],
+    '@vue/runtime-core' => [
+        'version' => '3.5.32',
+    ],
+    '@vue/shared' => [
+        'version' => '3.5.32',
+    ],
+    '@vue/reactivity' => [
+        'version' => '3.5.32',
+    ],
 ];

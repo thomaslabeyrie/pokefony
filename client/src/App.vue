@@ -1,47 +1,30 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onMounted, ref } from 'vue'
+import { darkTheme, NCard, NConfigProvider } from 'naive-ui'
+import { get } from './components/requester'
+import type { Pokemon } from './types/pokemon'
+
+const pokemon = ref<Pokemon | null>(null)
+
+onMounted(async () => {
+  pokemon.value = await get()
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <n-config-provider :theme="darkTheme">
+    <n-card v-if="pokemon" :title="pokemon.name" size="large">
+      <template #cover>
+        <img :src="pokemon.sprite.url" alt="pokemon.name" style="max-width: 300px" />
+      </template>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+      <template #default>{{ pokemon.flavorText.flavorText }}</template>
+    </n-card>
 
-  <main>
-    <TheWelcome />
-  </main>
+    <n-card v-else title="Loading">
+      <template #default>Fetching pokemon...</template>
+    </n-card>
+  </n-config-provider>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
