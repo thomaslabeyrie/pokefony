@@ -26,11 +26,7 @@ final class PokedexController extends AbstractController
 
         $viewModel = $this->viewMapper->listPage($pokemons);
 
-        return $this->render('pokemon/pokedex.html.twig', [
-            'region' => $region,
-            'page' => $page,
-            'viewModel' => $viewModel,
-        ]);
+        return new JsonResponse($viewModel);
     }
 
     #[Route(path: '/pokemon/{name}', name: 'app_pokemon_show')]
