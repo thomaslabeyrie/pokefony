@@ -25,28 +25,20 @@ use App\ViewModel\Species\StatViewModel;
 readonly class ApiToViewMapper
 {
     public function __construct(
-        private PokeApiClient $pokeApiClient
-    )
-    {
-    }
+        private PokeApiClient $pokeApiClient,
+    ) {}
 
     /** @param PokemonDTO[] $pokemons */
     public function listPage(array $pokemons): ListPageViewModel
     {
-        return new ListPageViewModel(
-            rows: array_map(
-                fn($pokemon) => $this->pokedexRow($pokemon),
-                $pokemons
-            ),
-        );
+        return new ListPageViewModel(rows: array_map(fn($pokemon) => $this->pokedexRow($pokemon), $pokemons));
     }
 
     public function speciesPage(
-        PokemonDTO        $pokemon,
+        PokemonDTO $pokemon,
         PokemonSpeciesDTO $species,
-        EvolutionChainDTO $evolutionChain
-    ): SpeciesPageViewModel
-    {
+        EvolutionChainDTO $evolutionChain,
+    ): SpeciesPageViewModel {
         return new SpeciesPageViewModel(
             id: $pokemon->id,
             name: $pokemon->name,
@@ -63,7 +55,7 @@ readonly class ApiToViewMapper
             flavorText: $this->flavorText($species->flavorTextEntries),
             stats: $this->stats($pokemon->stats),
             abilities: $this->abilities($pokemon->abilities),
-            evolutionChain: $this->chainLink($evolutionChain->chain)
+            evolutionChain: $this->chainLink($evolutionChain->chain),
         );
     }
 
@@ -72,13 +64,8 @@ readonly class ApiToViewMapper
         return new ChainLinkViewModel(
             name: $chainLink->species->name,
             isBaby: $chainLink->isBaby,
-            sprite: $this->sprite(
-                $this->pokeApiClient->get(PokemonDTO::class, $chainLink->species->name)
-            ),
-            evolutions: array_map(
-                fn($evolution) => $this->chainLink($evolution),
-                $chainLink->evolvesTo
-            ),
+            sprite: $this->sprite($this->pokeApiClient->get(PokemonDTO::class, $chainLink->species->name)),
+            evolutions: array_map(fn($evolution) => $this->chainLink($evolution), $chainLink->evolvesTo),
             details: array_map(
                 fn($detail) => new EvolutionDetailViewModel(
                     trigger: $detail->trigger->name,
@@ -107,7 +94,7 @@ readonly class ApiToViewMapper
                     minSteps: $detail->minSteps,
                     minDamageTaken: $detail->minDamageTaken,
                 ),
-                $chainLink->evolutionDetails
+                $chainLink->evolutionDetails,
             ),
         );
     }
@@ -119,11 +106,8 @@ readonly class ApiToViewMapper
     private function abilities(array $abilities): array
     {
         return array_map(
-            fn($entry) => new AbilityViewModel(
-                name: $entry->ability->name,
-                isHidden: $entry->isHidden,
-            ),
-            $abilities
+            fn($entry) => new AbilityViewModel(name: $entry->ability->name, isHidden: $entry->isHidden),
+            $abilities,
         );
     }
 
@@ -134,21 +118,15 @@ readonly class ApiToViewMapper
     private function stats(array $stats): array
     {
         return array_map(
-            fn($entry) => new StatViewModel(
-                name: $entry->stat->name,
-                baseValue: $entry->baseStat,
-            ),
-            $stats
+            fn($entry) => new StatViewModel(name: $entry->stat->name, baseValue: $entry->baseStat),
+            $stats,
         );
     }
 
     /** @var PokemonTypeDTO[] $types */
     private function damageRelations(array $types): PokemonDamageRelationsViewModel
     {
-        $typeEnums = array_map(
-            fn($entry) => TypeEnum::tryFrom($entry->type->name),
-            $types
-        );
+        $typeEnums = array_map(fn($entry) => TypeEnum::tryFrom($entry->type->name), $types);
 
         $immuneTo = [];
         $veryResistantTo = [];
@@ -196,14 +174,12 @@ readonly class ApiToViewMapper
             sprite: $this->sprite($pokemon),
             name: $pokemon->name,
             types: array_map(fn($entry) => $entry->type->name, $pokemon->types),
-            pokedexNumber: $pokemon->id + 1,
+            pokedexNumber: $pokemon->id,
         );
     }
 
     private function sprite(PokemonDTO $pokemon): SpriteViewModel
     {
-        return new SpriteViewModel(
-            url: $pokemon->sprites->other->officialArtwork->frontDefault,
-        );
+        return new SpriteViewModel(url: $pokemon->sprites->other->officialArtwork->frontDefault);
     }
 }
