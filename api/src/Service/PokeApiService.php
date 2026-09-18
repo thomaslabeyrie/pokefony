@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use App\Enum\TypeEnum;
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
 use App\PokeApiClient\DTO\Pokedex\PokedexDTO;
+use App\PokeApiClient\DTO\Pokedex\PokemonEntryDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
 use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 use App\PokeApiClient\DTO\Type\TypeDTO;
@@ -13,33 +15,43 @@ readonly class PokeApiService
 {
     public function __construct(
         private PokeApiClient $pokeApiClient,
-    )
-    {
-    }
+    ) {}
 
     /** @return PokemonDTO[] */
     public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
-        // Récupère la liste complète du Pokédex de la région
+        // Liste complète du Pokédex de la région
         $pokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
 
-        // Pagination
-        $offset = ($page - 1) * $perPage;
-        $paginatedEntries = array_slice($pokedex->pokemonEntries, $offset, $perPage);
+        // Building a map of pokemon types so we can avoid an API call for each pokemon : ["bulbasaur" => [0: "grass", 1: "poisoin"]]
+        $pokeTypeMap = [];
+
+        foreach (TypeEnum::cases() as $type) {
+            $typeData = $this->pokeApiClient->get(TypeDTO::class, $type->value);
+
+            foreach ($typeData->pokemon as $entry) {
+                $pokeTypeMap[$entry->pokemon->name][$entry->slot - 1] = $typeData->name;
+            }
+        }
 
         return array_map(
-            fn($entry) => $this->pokeApiClient->get(PokemonDTO::class, $entry->pokemonSpecies->name),
-            $paginatedEntries
+            function (PokemonEntryDTO $entry) use ($pokeTypeMap) {
+                return [
+                    'name' => $entry->pokemonSpecies->name,
+                    'number' => $entry->entryNumber,
+                    'types' => $pokeTypeMap[$entry->pokemonSpecies->name],
+                    // Using the raw sprite URL lets us avoid another API call per pokemon
+                    'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$entry->entryNumber.png",
+                ];
+            },
+            $pokedex->pokemonEntries,
         );
     }
 
     public function getFullPokemonData(string|int $identifier): array
     {
         $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $identifier);
-        $types = array_map(
-            fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name),
-            $pokemon->types
-        );
+        $types = array_map(fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name), $pokemon->types);
         $species = $this->pokeApiClient->get(PokemonSpeciesDTO::class, $pokemon->name);
         $evolutionChain = $this->pokeApiClient->getFromResource(EvolutionChainDTO::class, $species->evolutionChain);
 
@@ -62,7 +74,7 @@ readonly class PokeApiService
 
         return [
             'pokemon' => $pokemon,
-            'types' => $types
+            'types' => $types,
         ];
     }
 

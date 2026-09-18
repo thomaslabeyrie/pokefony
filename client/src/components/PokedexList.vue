@@ -19,7 +19,7 @@ const columns: DataTableColumns<PokedexRow> = [
     key: 'sprite',
     render(row) {
       return h('img', {
-        src: row.sprite.url,
+        src: row.spriteUrl,
         alt: row.name,
         style: 'width: 64px;',
       })
@@ -39,7 +39,7 @@ const columns: DataTableColumns<PokedexRow> = [
       return h(
         'div',
         { style: 'display: flex; gap: 0.5rem;' },
-        row.types.map((type) => h(PokemonTypeIcon, { type })),
+        Array.from(row.types).map((type) => h(PokemonTypeIcon, { type })),
       )
     },
   },
@@ -48,8 +48,14 @@ const columns: DataTableColumns<PokedexRow> = [
 
 <template>
   <div class="table-container">
-    <n-data-table v-if="pokedexList" :columns="columns" :data="pokedexList?.rows ?? []"
-      :rowKey="(row) => row.pokedexNumber" :bordered="false">
+    <n-data-table
+      v-if="pokedexList"
+      size="large"
+      :columns="columns"
+      :data="pokedexList?.rows ?? []"
+      :rowKey="(row) => row.pokedexNumber"
+      :bordered="false"
+    >
     </n-data-table>
   </div>
 </template>

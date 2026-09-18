@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { darkTheme, NConfigProvider, NLayout } from 'naive-ui'
 import { getPokedexList, getPokemon } from './components/requester'
 import type { Pokemon } from './types/pokemon'
@@ -11,7 +11,7 @@ const pokedexList = ref<ListPage | null>(null)
 
 onMounted(async () => {
   pokemon.value = await getPokemon('charizard')
-  pokedexList.value = await getPokedexList('national', 1)
+  pokedexList.value = await getPokedexList('kanto', 1)
 })
 </script>
 

@@ -168,13 +168,13 @@ readonly class ApiToViewMapper
         return new FlavorTextViewModel(flavorText: $enFlavorText->flavorText);
     }
 
-    private function pokedexRow(PokemonDTO $pokemon): PokedexRowViewModel
+    private function pokedexRow(array $pokemon): PokedexRowViewModel
     {
         return new PokedexRowViewModel(
-            sprite: $this->sprite($pokemon),
-            name: $pokemon->name,
-            types: array_map(fn($entry) => $entry->type->name, $pokemon->types),
-            pokedexNumber: $pokemon->id,
+            spriteUrl: $pokemon['spriteUrl'],
+            name: $pokemon['name'],
+            types: $pokemon['types'],
+            pokedexNumber: $pokemon['number'],
         );
     }
 

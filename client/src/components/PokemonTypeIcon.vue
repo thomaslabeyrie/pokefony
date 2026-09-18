@@ -2,8 +2,10 @@
 import { computed } from 'vue'
 
 const props = defineProps<{ type: string }>()
-
-const iconUrl = computed(() => new URL(`../assets/types/${props.type}.svg`, import.meta.url).href)
+const iconUrl = computed(() => {
+  console.log('type prop:', props.type)
+  return new URL(`../assets/types/${props.type}.svg`, import.meta.url).href
+})
 </script>
 
 <template>
