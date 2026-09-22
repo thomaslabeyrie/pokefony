@@ -1,0 +1,25 @@
+# $schema: https://github.com/AJenbo/phpantom_lsp/raw/main/config-schema.json[php]
+# Si l'auto-détection depuis composer.json se trompe
+version = "8.3"
+
+[formatting]
+# Auto-détecté depuis require-dev sinon (Pint/php-cs-fixer/phpcbf).
+# Si le formatter externe est lent, augmente le timeout ou désactive-le :
+timeout = 20000        # ms, défaut 10000
+# php-cs-fixer = ""     # décommente pour désactiver et forcer le formatter intégré
+
+[phpstan]
+timeout = 60000         # défaut, augmente si PHPStan est lent sur un gros projet
+memory-limit = "1G"
+
+[diagnostics]
+# Ça, c'est probablement ton vrai coupable : ça relance PHPStan/PHPCS/Mago
+# sur tout le projet en arrière-plan après le démarrage — coûteux sur un
+# projet Symfony avec beaucoup de fichiers.
+workspace = false          # défaut déjà false, vérifie que tu ne l'as pas activé
+workspace-external = true  # ne s'applique que si workspace = true
+
+[indexing]
+# "full" (défaut) scanne tout le projet + parse en arrière-plan.
+# Si l'indexation initiale ou en continu est ce qui traîne, teste "composer" :
+strategy = "composer"
