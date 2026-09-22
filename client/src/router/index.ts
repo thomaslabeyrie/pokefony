@@ -1,8 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/pages/HomePage.vue'
+
+import PokedexView from '@/views/PokedexView.vue'
+//import PokemonView from '@/views/PokemonView.vue'
 
 const routes = [
-  { path: '/', name: 'home', component: HomePage },
+  {
+    path: '/pokedex/:region',
+    name: 'pokedex',
+    props: true,
+    component: PokedexView,
+  },
+  // { path: '/pokemon/:nameOrId', name: 'pokemon', component: PokemonView },
 ]
 
 export default createRouter({
