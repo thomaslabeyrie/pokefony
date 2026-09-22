@@ -17,12 +17,10 @@ readonly class PokeApiService
         private PokeApiClient $pokeApiClient,
     ) {}
 
-    /** @return PokemonDTO[] */
     public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
         // Liste complète du Pokédex de la région
         $pokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
-
         // Building a map of pokemon types so we can avoid an API call for each pokemon : ["bulbasaur" => [0: "grass", 1: "poisoin"]]
         $pokeTypeMap = [];
 
@@ -32,20 +30,35 @@ readonly class PokeApiService
             foreach ($typeData->pokemon as $entry) {
                 $pokeTypeMap[$entry->pokemon->name][$entry->slot - 1] = $typeData->name;
             }
+
+            // Chaque sous-tableau est trié par slot (0 puis 1) puis ré-indexé avec
+            // array_values(), car un tableau inséré dans le désordre reste en mode
+            // "hashtable" pour PHP même trié : json_encode() le sérialiserait alors
+            // en objet JSON ({"0":...}) au lieu d'un array ([...]).
+            foreach ($pokeTypeMap as $name => $types) {
+                ksort($types);
+                $pokeTypeMap[$name] = array_values($types);
+            }
         }
 
-        return array_map(
+        $data = array_map(
             function (PokemonEntryDTO $entry) use ($pokeTypeMap) {
                 return [
                     'name' => $entry->pokemonSpecies->name,
                     'number' => $entry->entryNumber,
-                    'types' => $pokeTypeMap[$entry->pokemonSpecies->name],
+                    // La type map est indexée par la variety par défaut du pokémon, pas par le nom de la species.
+                    // Donc si l'utilisation du nom de la species ne fonctionne pas, on cherche la variety par défaut à la place.
+                    'types' =>
+                        $pokeTypeMap[$entry->pokemonSpecies->name]
+                            ?? $pokeTypeMap[$this->getDefaultVariety($entry->pokemonSpecies->name)],
                     // Using the raw sprite URL lets us avoid another API call per pokemon
                     'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$entry->entryNumber.png",
                 ];
             },
             $pokedex->pokemonEntries,
         );
+
+        return $data;
     }
 
     public function getFullPokemonData(string|int $identifier): array
@@ -86,5 +99,11 @@ readonly class PokeApiService
     public function getAllPokemonNames(): array
     {
         return $this->pokeApiClient->getAllPokemons();
+    }
+
+    private function getDefaultVariety(string $pokemon): string
+    {
+        $speciesData = $this->pokeApiClient->get(PokemonSpeciesDTO::class, $pokemon);
+        return $speciesData->varieties[0]->pokemon->name;
     }
 }

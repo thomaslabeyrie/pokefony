@@ -54,6 +54,9 @@ class PokemonSpeciesDTO implements PokeApiEndpointDtoInterface
     #[SerializedName('egg_groups')]
     public array $eggGroups = [];
 
+    /** @var PokemonSpeciesVarietyDTO[] */
+    public array $varieties = [];
+
     public NamedResourceDTO $color;
 
     public NamedResourceDTO $shape;
