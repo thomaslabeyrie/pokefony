@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { h } from 'vue'
+import { h, ref, watch } from 'vue'
 import { capitalize } from '../utils'
 import { NDataTable } from 'naive-ui'
-import type { DataTableColumns } from 'naive-ui'
+import type { DataTableColumns, PaginationProps } from 'naive-ui'
 import type { PokedexRow } from '../types/pokedexRow'
 import type { ListPage } from '@/types/listPage'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
@@ -44,6 +44,12 @@ const columns: DataTableColumns<PokedexRow> = [
     },
   },
 ]
+
+const pagination = ref<PaginationProps>({
+  defaultPage: 1,
+  defaultPageSize: 20,
+  size: 'large',
+})
 </script>
 
 <template>
@@ -55,6 +61,7 @@ const columns: DataTableColumns<PokedexRow> = [
       :data="pokedexList?.rows ?? []"
       :rowKey="(row) => row.pokedexNumber"
       :bordered="false"
+      :pagination="pagination"
     >
     </n-data-table>
   </div>
@@ -63,6 +70,6 @@ const columns: DataTableColumns<PokedexRow> = [
 <style>
 .table-container {
   width: 900px;
-  margin: 0 auto;
+  margin: 2rem auto;
 }
 </style>
