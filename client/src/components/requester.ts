@@ -22,7 +22,6 @@ export async function getPokedexList(region?: string, page?: number): Promise<Li
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`)
     }
-
     return await response.json()
   } catch (error: any) {
     throw new Error(error.message)
