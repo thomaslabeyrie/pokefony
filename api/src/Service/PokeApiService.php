@@ -19,7 +19,6 @@ readonly class PokeApiService
 
     public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
-        // Liste complète du Pokédex de la région
         $pokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
         // Building a map of pokemon types so we can avoid an API call for each pokemon : ["bulbasaur" => [0: "grass", 1: "poisoin"]]
         $pokeTypeMap = [];

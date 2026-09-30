@@ -16,10 +16,7 @@ class PokeApiClient
 
     public function getAllPokemons(): array
     {
-        $response = $this->httpClient->request(
-            'GET',
-            "$this->baseUrl/pokemon?limit=10000"
-        );
+        $response = $this->httpClient->request('GET', "$this->baseUrl/pokemon?limit=10000");
         $data = $response->toArray();
 
         return $data['results'];
@@ -32,17 +29,10 @@ class PokeApiClient
      */
     public function get(string $dtoClass, string|int $identifier): mixed
     {
-        $response = $this->httpClient->request(
-            'GET',
-            "$this->baseUrl{$dtoClass::getEndpoint()}/$identifier"
-        );
+        $response = $this->httpClient->request('GET', "$this->baseUrl{$dtoClass::getEndpoint()}/$identifier");
         $data = $response->getContent();
 
-        return $this->serializer->deserialize(
-            data: $data,
-            type: $dtoClass,
-            format: 'json',
-        );
+        return $this->serializer->deserialize(data: $data, type: $dtoClass, format: 'json');
     }
 
     /**
@@ -55,10 +45,6 @@ class PokeApiClient
         $response = $this->httpClient->request('GET', $resource->url);
         $data = $response->getContent();
 
-        return $this->serializer->deserialize(
-            data: $data,
-            type: $dtoClass,
-            format: 'json',
-        );
+        return $this->serializer->deserialize(data: $data, type: $dtoClass, format: 'json');
     }
 }

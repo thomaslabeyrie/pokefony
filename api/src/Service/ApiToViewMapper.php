@@ -21,6 +21,7 @@ use App\ViewModel\Species\FlavorTextViewModel;
 use App\ViewModel\Species\PokemonDamageRelationsViewModel;
 use App\ViewModel\Species\SpeciesPageViewModel;
 use App\ViewModel\Species\StatViewModel;
+use App\ViewModel\Species\GenusViewModel;
 
 readonly class ApiToViewMapper
 {
@@ -40,23 +41,31 @@ readonly class ApiToViewMapper
         EvolutionChainDTO $evolutionChain,
     ): SpeciesPageViewModel {
         return new SpeciesPageViewModel(
-            id: $pokemon->id,
-            name: $pokemon->name,
+            id: $species->id,
+            name: $species->name,
+            genderRate: $species->genderRate,
+            growthRate: $species->growthRate->name,
+            captureRate: $species->captureRate,
+            baseHappiness: $species->baseHappiness,
+            genus: $this->genus($species->genera),
+            eggGroups: array_map(fn($group) => $group->name, $species->eggGroups),
+            flavorText: $this->flavorText($species->flavorTextEntries),
             types: array_map(fn($entry) => $entry->type->name, $pokemon->types),
             height: $pokemon->height,
             weight: $pokemon->weight,
-            genderRate: $species->genderRate,
-            growthRate: $species->growthRate->name,
             baseExperience: $pokemon->baseExperience,
-            captureRate: $species->captureRate,
-            baseHappiness: $species->baseHappiness,
             sprite: $this->sprite($pokemon),
             damageRelations: $this->damageRelations($pokemon->types),
-            flavorText: $this->flavorText($species->flavorTextEntries),
             stats: $this->stats($pokemon->stats),
             abilities: $this->abilities($pokemon->abilities),
             evolutionChain: $this->chainLink($evolutionChain->chain),
         );
+    }
+
+    public function genus(array $genera): string
+    {
+        $entry = array_find($genera, fn($entry) => $entry->language->name === 'en' );
+        return $entry->genus;
     }
 
     public function chainLink(ChainLinkDTO $chainLink): ChainLinkViewModel
@@ -87,7 +96,7 @@ readonly class ApiToViewMapper
                     timeOfDay: $detail->timeOfDay,
                     tradeSpecies: $detail->tradeSpecies,
                     turnUpsideDown: $detail->turnUpsideDown,
-                    region: $detail->region,
+                    region: $detail->region?->name,
                     baseForm: $detail->baseForm,
                     usedMove: $detail->usedMove,
                     minMoveCount: $detail->minMoveCount,

@@ -6,6 +6,7 @@ use App\PokeApiClient\DTO\Common\FlavorTextDTO;
 use App\PokeApiClient\DTO\Common\NamedResourceDTO;
 use App\PokeApiClient\DTO\Common\ResourceDTO;
 use App\PokeApiClient\DTO\PokeApiEndpointDtoInterface;
+use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesGenusDTO;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class PokemonSpeciesDTO implements PokeApiEndpointDtoInterface
@@ -74,6 +75,9 @@ class PokemonSpeciesDTO implements PokeApiEndpointDtoInterface
     /** @var FlavorTextDTO[] */
     #[SerializedName('flavor_text_entries')]
     public array $flavorTextEntries = [];
+
+    /** @var PokemonSpeciesGenusDTO[] */
+    public array $genera = [];
 
     public static function getEndpoint(): string
     {
