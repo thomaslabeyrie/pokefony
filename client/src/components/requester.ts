@@ -1,11 +1,11 @@
-import type { Pokemon } from '../types/pokemon'
+import type { Species } from '../types/species'
 import type { ListPage } from '../types/listPage'
 
 const baseUrl = 'http://localhost:8000'
 
-export async function getPokemon(pokemon: string): Promise<Pokemon> {
+export async function getSpecies(name: string): Promise<Species> {
   try {
-    const response = await fetch(`${baseUrl}/pokemon/${pokemon}`)
+    const response = await fetch(`${baseUrl}/pokemon/${name}`)
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`)
     }

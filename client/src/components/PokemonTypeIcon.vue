@@ -8,12 +8,5 @@ const iconUrl = computed(() => {
 </script>
 
 <template>
-  <img :src="iconUrl" alt="type" class="type-icon" />
+  <img :src="iconUrl" alt="type" class="h-8 w-8" />
 </template>
-
-<style scoped>
-.type-icon {
-  width: 2rem;
-  height: 2rem;
-}
-</style>

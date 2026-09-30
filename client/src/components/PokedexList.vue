@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { h, ref, watch } from 'vue'
-import { capitalize } from '../utils'
+import { h, ref } from 'vue'
+import { toUcFirst } from '../utils'
 import { NDataTable } from 'naive-ui'
 import type { DataTableColumns, PaginationProps } from 'naive-ui'
 import type { PokedexRow } from '../types/pokedexRow'
@@ -29,7 +29,7 @@ const columns: DataTableColumns<PokedexRow> = [
     title: 'Name',
     key: 'name',
     render(row) {
-      return h('span', { style: 'font-size: 1rem; font-weight: bold;' }, capitalize(row.name))
+      return h('span', { style: 'font-size: 1rem; font-weight: bold;' }, toUcFirst(row.name))
     },
   },
   {
@@ -54,15 +54,8 @@ const pagination = ref<PaginationProps>({
 
 <template>
   <div class="table-container">
-    <n-data-table
-      v-if="pokedexList"
-      size="large"
-      :columns="columns"
-      :data="pokedexList?.rows ?? []"
-      :rowKey="(row) => row.pokedexNumber"
-      :bordered="false"
-      :pagination="pagination"
-    >
+    <n-data-table v-if="pokedexList" size="large" :columns="columns" :data="pokedexList?.rows ?? []"
+      :rowKey="(row) => row.pokedexNumber" :bordered="false" :pagination="pagination">
     </n-data-table>
   </div>
 </template>

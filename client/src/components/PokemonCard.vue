@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { capitalize } from '../utils'
 import { NCard } from 'naive-ui'
-import type { Pokemon } from '../types/pokemon'
+import type { Species } from '../types/species'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
 
 defineProps<{ pokemon: Pokemon }>()

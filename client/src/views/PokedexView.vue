@@ -18,7 +18,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h1>{{ region }} Pokédex</h1>
   <PokedexList v-if="pokedexList" :pokedexList />
 </template>
 
