@@ -6,8 +6,11 @@ import type { DataTableColumns, PaginationProps } from 'naive-ui'
 import type { PokedexRow } from '../types/pokedexRow'
 import type { ListPage } from '@/types/listPage'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
+import { useRouter } from 'vue-router'
 
 defineProps<{ pokedexList: ListPage | null }>()
+
+const router = useRouter()
 
 const columns: DataTableColumns<PokedexRow> = [
   {
@@ -55,7 +58,11 @@ const pagination = ref<PaginationProps>({
 <template>
   <div class="table-container">
     <n-data-table v-if="pokedexList" size="large" :columns="columns" :data="pokedexList?.rows ?? []"
-      :rowKey="(row) => row.pokedexNumber" :bordered="false" :pagination="pagination">
+      :rowKey="(row) => row.pokedexNumber" :bordered="false" :pagination="pagination" :rowProps="(row) => ({
+          style: 'cursor: pointer;',
+          onClick: () => router.push({ name: 'species', params: { name: row.name } }),
+        })
+        ">
     </n-data-table>
   </div>
 </template>
