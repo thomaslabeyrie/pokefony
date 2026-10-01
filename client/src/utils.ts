@@ -16,8 +16,8 @@ export function toUcFirst(text: string, separator?: string): string {
   return joined.charAt(0).toUpperCase() + joined.slice(1)
 }
 
-export function byteToPercent(value: number): number {
-  return Math.round((value / 255) * 100)
+export function toPercent(value: number, max: number): number {
+  return Math.round((value / max) * 100)
 }
 
 export function arrayToUcFirst(list: string[], separator?: string): string {
