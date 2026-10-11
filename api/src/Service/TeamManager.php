@@ -14,8 +14,7 @@ class TeamManager
         private EntityManagerInterface $entityManager,
         private TeamRepository $teamRepository,
         private PokemonManager $pokemonManager,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new team with initial Pokemon.
@@ -26,10 +25,10 @@ class TeamManager
     {
         $pokemon = $this->pokemonManager->getOrCreatePokemon($pokemonId);
 
-        $team = new Team();
-        $team->setName($teamName);
-        $team->setUser($user);
-        $team->addPokemon($pokemon);
+        $team = new Team()
+            ->setUser($user)
+            ->setName($teamName)
+            ->addPokemon($pokemon);
 
         $this->entityManager->persist($team);
         $this->entityManager->flush();

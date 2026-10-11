@@ -23,7 +23,6 @@ final class PokedexController extends AbstractController
     public function list(string $region, int $page): Response
     {
         $pokemons = $this->pokeApi->getPokemonsByRegion($region, $page);
-
         $viewModel = $this->viewMapper->listPage($pokemons);
 
         return new JsonResponse($viewModel);
@@ -32,8 +31,12 @@ final class PokedexController extends AbstractController
     #[Route(path: '/pokemon/{name}', name: 'app_pokemon_show')]
     public function show(string $name): Response
     {
-        $data = $this->pokeApi->getFullPokemonData($name);
-        $viewModel = $this->viewMapper->speciesPage($data['pokemon'], $data['species'], $data['evolutionChain']);
+        $fullPokemonEntry = $this->pokeApi->getFullPokemonData($name);
+        $viewModel = $this->viewMapper->speciesPage(
+            $fullPokemonEntry['pokemon'],
+            $fullPokemonEntry['species'],
+            $fullPokemonEntry['evolutionChain'],
+        );
 
         return new JsonResponse($viewModel);
     }

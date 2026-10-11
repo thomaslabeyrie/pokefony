@@ -60,9 +60,12 @@ readonly class PokeApiService
         return $data;
     }
 
-    public function getFullPokemonData(string|int $identifier): array
+    /**
+     * Aggregates data about a specific pokémon from various PokéAPI endpoints
+     */
+    public function getFullPokemonData(string|int $idOrName): array
     {
-        $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $identifier);
+        $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $idOrName);
         $types = array_map(fn($slot) => $this->pokeApiClient->get(TypeDTO::class, $slot->type->name), $pokemon->types);
         $species = $this->pokeApiClient->get(PokemonSpeciesDTO::class, $pokemon->name);
         $evolutionChain = $this->pokeApiClient->getFromResource(EvolutionChainDTO::class, $species->evolutionChain);
