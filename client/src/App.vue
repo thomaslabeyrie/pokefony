@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { darkTheme, NConfigProvider, NLayout } from 'naive-ui'
+import Header from './components/Header.vue'
 </script>
 
 <template>
-  <n-config-provider :theme="darkTheme">
-    <n-layout style="min-height: 100vh; display: flex; justify-content: center">
-      <div class="mx-6 max-h-3/4">
-        <RouterView />
-      </div>
-    </n-layout>
-  </n-config-provider>
+  <div class="flex min-h-screen flex-col bg-neutral-900 text-white">
+    <Header />
+    <div class="mx-6">
+      <RouterView />
+    </div>
+  </div>
 </template>

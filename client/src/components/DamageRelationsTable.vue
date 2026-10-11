@@ -22,7 +22,7 @@ const labels: Record<keyof DamageRelations, { label: string; ratio: string }> = 
       <tr v-for="(types, key) in props.relations" class="text-left">
         <th scope="row" class="w-2/12 py-4 font-normal">
           {{ labels[key].label }}
-          <span class="text-gray-500">{{ labels[key].ratio }}</span>
+          <span class="text-neutral-500">{{ labels[key].ratio }}</span>
         </th>
 
         <td class="flex flex-wrap gap-4 py-4">

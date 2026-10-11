@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NTag } from 'naive-ui'
 import { toPercent, toUcFirst, arrayToUcFirst } from '@/utils'
 
 const props = defineProps<{
@@ -33,7 +32,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Gender rate</th>
         <td>
           {{ props.genderRate }} / 12
-          <span class="text-gray-500">({{ toPercent(props.genderRate, 12) }}%)</span>
+          <span class="text-neutral-500">({{ toPercent(props.genderRate, 12) }}%)</span>
         </td>
       </tr>
 
@@ -51,7 +50,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Capture rate</th>
         <td>
           {{ props.captureRate }} / 255
-          <span class="text-gray-500">({{ toPercent(props.captureRate, 255) }}%)</span>
+          <span class="text-neutral-500">({{ toPercent(props.captureRate, 255) }}%)</span>
         </td>
       </tr>
 
@@ -59,7 +58,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Base happiness</th>
         <td>
           {{ props.baseHappiness }} / 255
-          <span class="text-gray-500">({{ toPercent(props.baseHappiness, 255) }}%)</span>
+          <span class="text-neutral-500">({{ toPercent(props.baseHappiness, 255) }}%)</span>
         </td>
       </tr>
 
@@ -71,14 +70,12 @@ const props = defineProps<{
       <tr class="text-left">
         <th scope="row" class="w-2/12 py-4 font-normal">Abilities</th>
         <td>
-          <div class="flex gap-2">
-            <n-tag
+          <div class="flex flex-wrap gap-2">
+            <span
               v-for="(ability, key) in props.abilities"
               :key
-              round
-              size="medium"
-              :bordered="false"
-              >{{ toUcFirst(ability) }}</n-tag
+              class="rounded-full bg-neutral-700 px-3 py-1 text-sm"
+              >{{ toUcFirst(ability) }}</span
             >
           </div>
         </td>

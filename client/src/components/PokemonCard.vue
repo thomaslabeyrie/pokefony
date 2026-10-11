@@ -1,49 +1,21 @@
 <script lang="ts" setup>
 import { capitalize } from '../utils'
-import { NCard } from 'naive-ui'
-import type { Species } from '../types/species'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
 
 defineProps<{ pokemon: Pokemon }>()
 </script>
 
 <template>
-  <n-card v-if="pokemon" class="card" size="huge">
-    <template #header>
-      {{ capitalize(pokemon.name) }}
-    </template>
-
-    <template #header-extra>
-      <div class="types">
-        <PokemonTypeIcon v-for="type in pokemon.types" :type />
+  <div v-if="pokemon" class="max-w-[400px] overflow-hidden rounded-xl bg-neutral-800">
+    <img :src="pokemon.sprite.url" alt="pokemon.name" class="mx-auto block max-w-[300px]" />
+    <div class="p-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold">{{ capitalize(pokemon.name) }}</h3>
+        <div class="flex gap-2">
+          <PokemonTypeIcon v-for="type in pokemon.types" :key="type" :type />
+        </div>
       </div>
-    </template>
-
-    <template #cover>
-      <img :src="pokemon.sprite.url" alt="pokemon.name" class="cover" />
-    </template>
-
-    <template #default>{{ pokemon.flavorText.flavorText }}</template>
-  </n-card>
+      <p class="mt-2 text-neutral-400">{{ pokemon.flavorText.flavorText }}</p>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-.card {
-  max-width: 400px;
-}
-
-.types {
-  display: flex;
-  gap: 0.5rem;
-
-  .type-label {
-    font-weight: bold;
-  }
-}
-
-.cover {
-  display: block;
-  max-width: 300px;
-  margin: 0 auto;
-}
-</style>
