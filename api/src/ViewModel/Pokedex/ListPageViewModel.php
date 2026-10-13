@@ -7,6 +7,8 @@ readonly class ListPageViewModel
     public function __construct(
         /** @var PokedexRowViewModel[] */
         public array $rows,
+
+        public int $totalRows,
     ) {
     }
 }

@@ -30,9 +30,9 @@ readonly class ApiToViewMapper
     ) {}
 
     /** @param PokemonDTO[] $pokemons */
-    public function listPage(array $pokemons): ListPageViewModel
+    public function pokedex(array $pokedex): ListPageViewModel
     {
-        return new ListPageViewModel(rows: array_map(fn($pokemon) => $this->pokedexRow($pokemon), $pokemons));
+        return new ListPageViewModel(array_map(fn($entry) => $this->pokedexRow($entry), $pokedex['paginatedRows']), $pokedex['totalEntries']);
     }
 
     public function speciesPage(

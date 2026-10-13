@@ -10,54 +10,65 @@ use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
 use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 use App\PokeApiClient\DTO\Type\TypeDTO;
 use App\PokeApiClient\PokeApiClient;
+use Symfony\Contracts\Cache\ItemInterface;
 
 readonly class PokeApiService
 {
     public function __construct(
         private PokeApiClient $pokeApiClient,
+        private PokedexProvider $cache,
     ) {}
 
-    public function getPokemonsByRegion(string $region = 'national', int $page = 1, int $perPage = 20): array
+    public function getPokedex(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
-        $pokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
-        // Building a map of pokemon types so we can avoid an API call for each pokemon : ["bulbasaur" => [0: "grass", 1: "poisoin"]]
-        $pokeTypeMap = [];
+        $cached = $this->cache->get("pokedex_{$region}", function (ItemInterface $item) use ($region) {
+            $item->expiresAfter(60 * 60 * 24);
 
-        foreach (TypeEnum::cases() as $type) {
-            $typeData = $this->pokeApiClient->get(TypeDTO::class, $type->value);
+            // Map to avoid one API call per pokemon: ["bulbasaur" => ["grass", "poison"]]
+            $typesByPokemon = [];
 
-            foreach ($typeData->pokemon as $entry) {
-                $pokeTypeMap[$entry->pokemon->name][$entry->slot - 1] = $typeData->name;
+            foreach (TypeEnum::cases() as $type) {
+                $apiType = $this->pokeApiClient->get(TypeDTO::class, $type->value);
+
+                foreach ($apiType->pokemon as $entry) {
+                    $typesByPokemon[$entry->pokemon->name][$entry->slot - 1] = $apiType->name;
+                }
+
+                // Sort by slot and reindex so json_encode() outputs an array, not an object
+                foreach ($typesByPokemon as $name => $types) {
+                    ksort($types);
+                    $typesByPokemon[$name] = array_values($types);
+                }
             }
 
-            // Chaque sous-tableau est trié par slot (0 puis 1) puis ré-indexé avec
-            // array_values(), car un tableau inséré dans le désordre reste en mode
-            // "hashtable" pour PHP même trié : json_encode() le sérialiserait alors
-            // en objet JSON ({"0":...}) au lieu d'un array ([...]).
-            foreach ($pokeTypeMap as $name => $types) {
-                ksort($types);
-                $pokeTypeMap[$name] = array_values($types);
-            }
-        }
+            $apiPokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
 
-        $data = array_map(
-            function (PokemonEntryDTO $entry) use ($pokeTypeMap) {
-                return [
-                    'name' => $entry->pokemonSpecies->name,
-                    'number' => $entry->entryNumber,
-                    // La type map est indexée par la variety par défaut du pokémon, pas par le nom de la species.
-                    // Donc si l'utilisation du nom de la species ne fonctionne pas, on cherche la variety par défaut à la place.
-                    'types' =>
-                        $pokeTypeMap[$entry->pokemonSpecies->name]
-                            ?? $pokeTypeMap[$this->getDefaultVariety($entry->pokemonSpecies->name)],
-                    // Using the raw sprite URL lets us avoid another API call per pokemon
-                    'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$entry->entryNumber.png",
-                ];
-            },
-            $pokedex->pokemonEntries,
-        );
+            $pokedex = array_map(
+                function (PokemonEntryDTO $entry) use ($typesByPokemon) {
+                    return [
+                        'name' => $entry->pokemonSpecies->name,
+                        'number' => $entry->entryNumber,
+                        // The map is keyed by default variety name, so fall back to it
+                        'types' =>
+                            $typesByPokemon[$entry->pokemonSpecies->name]
+                                ?? $typesByPokemon[$this->getDefaultVariety($entry->pokemonSpecies->name)],
+                        // Raw sprite URL: no extra API call
+                        'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$entry->entryNumber.png",
+                    ];
+                },
+                $apiPokedex->pokemonEntries,
+            );
 
-        return $data;
+            return  [
+                'rows' => $pokedex,
+                'totalEntries' => count( $apiPokedex->pokemonEntries )
+            ];
+        });
+
+        return  [
+            'paginatedRows' => array_slice($cached['rows'], ($page - 1) * $perPage, $perPage),
+            'totalEntries' => $cached['totalEntries']
+        ];
     }
 
     /**

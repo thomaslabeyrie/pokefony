@@ -21,7 +21,7 @@ final class ApiPokedexController extends AbstractController
     public function list(string $region, int $page): JsonResponse
     {
         $pokemons = $this->pokeApi->getPokemonsByRegion($region, $page);
-        $viewModel = $this->viewMapper->listPage($pokemons);
+        $viewModel = $this->viewMapper->pokedex($pokemons);
 
         $json = $this->serializer->serialize($viewModel, 'json');
         return new JsonResponse($json, json: true);
