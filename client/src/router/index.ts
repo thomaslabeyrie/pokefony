@@ -5,7 +5,7 @@ import SpeciesView from '@/views/SpeciesView.vue'
 
 const routes = [
   {
-    path: '/pokedex/:region/:page',
+    path: '/pokedex/:region?/:page?',
     name: 'pokedex',
     props: true,
     component: PokedexView,

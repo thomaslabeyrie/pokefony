@@ -9,10 +9,16 @@ import { computed } from '@vue/reactivity'
 import Pagination from '../components/Pagination.vue'
 import SpriteImage from '../components/SpriteImage.vue'
 
-const props = defineProps<{
-  region: string
-  page: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    region?: string
+    page?: string
+  }>(),
+  {
+    region: 'national',
+    page: '1',
+  },
+)
 
 const router = useRouter()
 
