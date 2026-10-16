@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
+import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
 import PokedexView from '@/views/PokedexView.vue'
 import SpeciesView from '@/views/SpeciesView.vue'
 
@@ -7,7 +6,10 @@ const routes = [
   {
     path: '/pokedex/:region?/:page?',
     name: 'pokedex',
-    props: true,
+    props: (route: RouteLocationNormalized) => ({
+      region: route.params.region || 'national',
+      page: Number(route.params.page) || 1,
+    }),
     component: PokedexView,
   },
   {

@@ -20,10 +20,7 @@ const error = ref(false)
       :src
       :alt
       class="absolute w-16 opacity-100 transition-opacity duration-200"
-      @load="
-        loaded = true
-        error = false
-      "
+      @load="loaded = true"
       @error="error = true"
       :class="loaded ? 'opacity-100' : 'opacity-0'"
     />
