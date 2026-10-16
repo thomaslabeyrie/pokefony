@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DamageRelations } from '@/types/species'
+import type { DamageRelations } from '@/types/Species'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
 
 const props = defineProps<{

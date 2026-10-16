@@ -1,4 +1,4 @@
-import type { PokemonType } from './species'
+import type { Type } from './Type'
 
 export interface TypeColor {
   color: string
@@ -6,7 +6,7 @@ export interface TypeColor {
   borderColor: string
 }
 
-export const typeColorMap: Record<PokemonType, TypeColor> = {
+export const typeColorMap: Record<Type, TypeColor> = {
   normal: { color: '#a8a878', textColor: '#000', borderColor: '#a8a878' },
   fire: { color: '#f08030', textColor: '#000', borderColor: '#f08030' },
   water: { color: '#6890f0', textColor: '#000', borderColor: '#6890f0' },

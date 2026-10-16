@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { capitalize } from '../utils'
+import { toUcFirst } from '../utils'
+import type { Species } from '@/types/Species'
 import PokemonTypeIcon from './PokemonTypeIcon.vue'
 
-defineProps<{ pokemon: Pokemon }>()
+defineProps<{ pokemon: Species }>()
 </script>
 
 <template>
@@ -10,7 +11,7 @@ defineProps<{ pokemon: Pokemon }>()
     <img :src="pokemon.sprite.url" alt="pokemon.name" class="mx-auto block max-w-[300px]" />
     <div class="p-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-xl font-bold">{{ capitalize(pokemon.name) }}</h3>
+        <h3 class="text-xl font-bold">{{ toUcFirst(pokemon.name) }}</h3>
         <div class="flex gap-2">
           <PokemonTypeIcon v-for="type in pokemon.types" :key="type" :type />
         </div>

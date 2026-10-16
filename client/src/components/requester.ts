@@ -1,5 +1,5 @@
-import type { Species } from '../types/species'
-import type { ListPage } from '../types/listPage'
+import type { Species } from '@/types/Species'
+import type { Pokedex } from '@/types/Pokedex'
 
 const baseUrl = 'http://localhost:8000'
 
@@ -16,7 +16,7 @@ export async function getSpecies(name: string): Promise<Species> {
   }
 }
 
-export async function getPokedexList(region?: string, page?: string): Promise<ListPage> {
+export async function getPokedex(region?: string, page?: number): Promise<Pokedex> {
   try {
     const response = await fetch(`${baseUrl}/pokedex/${region}/${page}`)
     if (!response.ok) {

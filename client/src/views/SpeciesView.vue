@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import type { Species } from '@/types/species'
-import { typeColorMap } from '@/types/typeColor'
+import type { Species } from '@/types/Species'
+import { typeColorMap } from '@/types/TypeColor'
 import { getSpecies } from '@/components/requester'
 import StatsTable from '@/components/StatsTable.vue'
 import DamageRelationsTable from '@/components/DamageRelationsTable.vue'
@@ -26,7 +26,7 @@ onMounted(async () => {
     <div class="col-span-2 rounded-xl bg-neutral-800">
       <div class="p-6">
         <div v-if="!species" class="h-[200px] animate-pulse rounded-xl bg-neutral-700"></div>
-        <img v-else :src="species.sprite.url" :alt="species.name" class="mx-auto block" />
+        <img v-else :src="species.spriteUrl" :alt="species.name" class="mx-auto block" />
       </div>
       <div class="border-t border-neutral-700 px-6 py-4">
         <template v-if="!species">
@@ -45,7 +45,10 @@ onMounted(async () => {
               v-for="type in species.types"
               :key="type"
               class="rounded-full px-3 py-1 text-xs font-bold"
-              :style="{ backgroundColor: typeColorMap[type].color, color: typeColorMap[type].textColor }"
+              :style="{
+                backgroundColor: typeColorMap[type].color,
+                color: typeColorMap[type].textColor,
+              }"
             >
               {{ type.toUpperCase() }}
             </span>
@@ -71,7 +74,7 @@ onMounted(async () => {
             baseExperience: species.baseExperience,
             captureRate: species.captureRate,
             baseHappiness: species.baseHappiness,
-            flavorText: species.flavorText.flavorText,
+            flavorText: species.flavorText,
             eggGroups: species.eggGroups,
             abilities: species.abilities.map((a) => a.name),
           }"

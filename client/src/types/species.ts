@@ -1,7 +1,9 @@
+import type { Type } from './Type'
+
 export interface Species {
   id: number
   name: string
-  types: PokemonType[]
+  types: Type[]
   height: number
   weight: number
   genus: string
@@ -11,9 +13,9 @@ export interface Species {
   eggGroups: string[]
   captureRate: number
   baseHappiness: number
-  sprite: Sprite
+  spriteUrl: string
   damageRelations: DamageRelations
-  flavorText: FlavorText
+  flavorText: string
   stats: Stat[]
   abilities: Ability[]
   evolutionChain: EvolutionNode
@@ -23,7 +25,7 @@ export interface Species {
 export interface EvolutionNode {
   name: string
   isBaby: boolean
-  sprite: Sprite
+  spriteUrl: string
   evolutions: EvolutionNode[]
   details: EvolutionDetail[]
 }
@@ -71,36 +73,14 @@ export interface FlavorText {
 }
 
 export interface DamageRelations {
-  immuneTo: PokemonType[]
-  veryResistantTo: PokemonType[]
-  resistantTo: PokemonType[]
-  neutralTo: PokemonType[]
-  weakTo: PokemonType[]
-  veryWeakTo: PokemonType[]
+  immuneTo: Type[]
+  veryResistantTo: Type[]
+  resistantTo: Type[]
+  neutralTo: Type[]
+  weakTo: Type[]
+  veryWeakTo: Type[]
 }
 
 export interface Sprite {
   url: string
 }
-
-// A Pokémon type — you could widen this to `string`, but the union
-// gives you autocomplete and catches typos.
-export type PokemonType =
-  | 'normal'
-  | 'fire'
-  | 'water'
-  | 'electric'
-  | 'grass'
-  | 'ice'
-  | 'fighting'
-  | 'poison'
-  | 'ground'
-  | 'flying'
-  | 'psychic'
-  | 'bug'
-  | 'rock'
-  | 'ghost'
-  | 'dragon'
-  | 'dark'
-  | 'steel'
-  | 'fairy'
