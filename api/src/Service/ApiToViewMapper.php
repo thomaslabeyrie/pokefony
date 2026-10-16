@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Enum\TypeEnum;
-use App\PokeApiClient\DTO\Common\FlavorTextDTO;
 use App\PokeApiClient\DTO\Evolution\ChainLinkDTO;
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonAbilityDTO;
@@ -12,16 +11,13 @@ use App\PokeApiClient\DTO\Pokemon\PokemonStatDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonTypeDTO;
 use App\PokeApiClient\DTO\PokemonSpecies\PokemonSpeciesDTO;
 use App\PokeApiClient\PokeApiClient;
-use App\ViewModel\Common\SpriteViewModel;
-use App\ViewModel\Pokedex\ListPageViewModel;
+use App\ViewModel\Pokedex\PokedexViewModel;
 use App\ViewModel\Pokedex\PokedexRowViewModel;
 use App\ViewModel\Species\ChainLinkViewModel;
 use App\ViewModel\Species\EvolutionDetailViewModel;
-use App\ViewModel\Species\FlavorTextViewModel;
 use App\ViewModel\Species\PokemonDamageRelationsViewModel;
-use App\ViewModel\Species\SpeciesPageViewModel;
+use App\ViewModel\Species\SpeciesViewModel;
 use App\ViewModel\Species\StatViewModel;
-use App\ViewModel\Species\GenusViewModel;
 
 readonly class ApiToViewMapper
 {
@@ -29,18 +25,17 @@ readonly class ApiToViewMapper
         private PokeApiClient $pokeApiClient,
     ) {}
 
-    /** @param PokemonDTO[] $pokemons */
-    public function pokedex(array $pokedex): ListPageViewModel
+    public function pokedex(array $pokedex): PokedexViewModel
     {
-        return new ListPageViewModel(array_map(fn($entry) => $this->pokedexRow($entry), $pokedex['paginatedRows']), $pokedex['totalEntries']);
+        return new PokedexViewModel(array_map(fn($entry) => $this->pokedexRow($entry), $pokedex['paginatedEntries']), $pokedex['totalEntries']);
     }
 
     public function speciesPage(
         PokemonDTO $pokemon,
         PokemonSpeciesDTO $species,
         EvolutionChainDTO $evolutionChain,
-    ): SpeciesPageViewModel {
-        return new SpeciesPageViewModel(
+    ): SpeciesViewModel {
+        return new SpeciesViewModel(
             id: $species->id,
             name: $species->name,
             genderRate: $species->genderRate,
@@ -49,12 +44,12 @@ readonly class ApiToViewMapper
             baseHappiness: $species->baseHappiness,
             genus: $this->genus($species->genera),
             eggGroups: array_map(fn($group) => $group->name, $species->eggGroups),
-            flavorText: $this->flavorText($species->flavorTextEntries),
+            flavorText: array_find($species->flavorTextEntries, fn($entry) => $entry->language->name === 'en')->flavorText,
             types: array_map(fn($entry) => $entry->type->name, $pokemon->types),
             height: $pokemon->height,
             weight: $pokemon->weight,
             baseExperience: $pokemon->baseExperience,
-            sprite: $this->sprite($pokemon),
+            spriteUrl: $pokemon->sprites->other->officialArtwork->frontDefault,
             damageRelations: $this->damageRelations($pokemon->types),
             stats: $this->stats($pokemon->stats),
             abilities: $this->abilities($pokemon->abilities),
@@ -73,7 +68,7 @@ readonly class ApiToViewMapper
         return new ChainLinkViewModel(
             name: $chainLink->species->name,
             isBaby: $chainLink->isBaby,
-            sprite: $this->sprite($this->pokeApiClient->get(PokemonDTO::class, $chainLink->species->name)),
+            spriteUrl: $this->spriteUrl($this->pokeApiClient->get(PokemonDTO::class, $chainLink->species->name)),
             evolutions: array_map(fn($evolution) => $this->chainLink($evolution), $chainLink->evolvesTo),
             details: array_map(
                 fn($detail) => new EvolutionDetailViewModel(
@@ -132,7 +127,7 @@ readonly class ApiToViewMapper
         );
     }
 
-    /** @var PokemonTypeDTO[] $types */
+    /** @param PokemonTypeDTO[] $types */
     private function damageRelations(array $types): PokemonDamageRelationsViewModel
     {
         $typeEnums = array_map(fn($entry) => TypeEnum::tryFrom($entry->type->name), $types);
@@ -169,26 +164,18 @@ readonly class ApiToViewMapper
         );
     }
 
-    /** @param FlavorTextDTO[] $flavorTexts */
-    private function flavorText(array $flavorTexts): FlavorTextViewModel
-    {
-        $enFlavorText = array_find($flavorTexts, fn($entry) => $entry->language->name === 'en');
-
-        return new FlavorTextViewModel(flavorText: $enFlavorText->flavorText);
-    }
-
     private function pokedexRow(array $pokemon): PokedexRowViewModel
     {
         return new PokedexRowViewModel(
             spriteUrl: $pokemon['spriteUrl'],
             name: $pokemon['name'],
             types: $pokemon['types'],
-            pokedexNumber: $pokemon['number'],
+            regionalId: $pokemon['number'],
         );
     }
 
-    private function sprite(PokemonDTO $pokemon): SpriteViewModel
+    private function spriteUrl(PokemonDTO $pokemon): string
     {
-        return new SpriteViewModel(url: $pokemon->sprites->other->officialArtwork->frontDefault);
+        return $pokemon->sprites->other->officialArtwork->frontDefault;
     }
 }

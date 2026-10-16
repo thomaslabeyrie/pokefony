@@ -3,9 +3,8 @@
 namespace App\ViewModel\Species;
 
 use App\Service\AbilityViewModel;
-use App\ViewModel\Common\SpriteViewModel;
 
-readonly class SpeciesPageViewModel
+readonly class SpeciesViewModel
 {
     public function __construct(
         public int $id,
@@ -29,15 +28,15 @@ readonly class SpeciesPageViewModel
 
         public int $baseHappiness,
 
-        public SpriteViewModel $sprite,
+        public string $spriteUrl,
 
         public PokemonDamageRelationsViewModel $damageRelations,
 
-        public FlavorTextViewModel $flavorText,
+        public string $flavorText,
 
         public string $genus,
 
-        /** @var EggGroupViewModel[] */
+        /** @var string[] */
         public array $eggGroups,
 
         /** @var StatViewModel[] */

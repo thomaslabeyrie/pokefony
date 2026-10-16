@@ -10,6 +10,6 @@ readonly class PokedexRowViewModel
         public string $spriteUrl,
         public string $name,
         public array $types,
-        public int $pokedexNumber,
+        public int $regionalId,
     ) {}
 }

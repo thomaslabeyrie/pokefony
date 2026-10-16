@@ -2,14 +2,12 @@
 
 namespace App\ViewModel\Species;
 
-use App\ViewModel\Common\SpriteViewModel;
-
 readonly class ChainLinkViewModel
 {
     public function __construct(
         public string           $name,
         public bool             $isBaby,
-        public ?SpriteViewModel $sprite = null,
+        public string           $spriteUrl,
         /** @var ChainLinkViewModel[] */
         public array            $evolutions = [],
         /** @var EvolutionDetailViewModel[] */

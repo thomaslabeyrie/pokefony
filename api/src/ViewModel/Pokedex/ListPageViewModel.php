@@ -2,13 +2,13 @@
 
 namespace App\ViewModel\Pokedex;
 
-readonly class ListPageViewModel
+readonly class PokedexViewModel
 {
     public function __construct(
         /** @var PokedexRowViewModel[] */
-        public array $rows,
+        public array $entries,
 
-        public int $totalRows,
+        public int $totalEntries,
     ) {
     }
 }

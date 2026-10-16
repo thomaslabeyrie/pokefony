@@ -19,12 +19,13 @@ readonly class PokeApiService
         private PokedexProvider $cache,
     ) {}
 
+    // TODO : needs to be transformed into getPokedexesByRegion
     public function getPokedex(string $region = 'national', int $page = 1, int $perPage = 20): array
     {
         $cached = $this->cache->get("pokedex_{$region}", function (ItemInterface $item) use ($region) {
             $item->expiresAfter(60 * 60 * 24);
 
-            // Map to avoid one API call per pokemon: ["bulbasaur" => ["grass", "poison"]]
+            // Map to avoid one API call per pokémon: ["bulbasaur" => ["grass", "poison"]]
             $typesByPokemon = [];
 
             foreach (TypeEnum::cases() as $type) {
@@ -48,26 +49,23 @@ readonly class PokeApiService
                     return [
                         'name' => $entry->pokemonSpecies->name,
                         'number' => $entry->entryNumber,
-                        // The map is keyed by default variety name, so fall back to it
+                        // The map is keyed by default pokémon variety name, so fall back to it
                         'types' =>
                             $typesByPokemon[$entry->pokemonSpecies->name]
                                 ?? $typesByPokemon[$this->getDefaultVariety($entry->pokemonSpecies->name)],
                         // Raw sprite URL: no extra API call
-                        'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$entry->entryNumber.png",
+                        'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{$entry->entryNumber}.png",
                     ];
                 },
                 $apiPokedex->pokemonEntries,
             );
 
-            return  [
-                'rows' => $pokedex,
-                'totalEntries' => count( $apiPokedex->pokemonEntries )
-            ];
+            return  ['entries' => $pokedex];
         });
 
         return  [
-            'paginatedRows' => array_slice($cached['rows'], ($page - 1) * $perPage, $perPage),
-            'totalEntries' => $cached['totalEntries']
+            'paginatedEntries' => array_slice($cached['entries'], ($page - 1) * $perPage, $perPage),
+            'totalEntries' => count($cached['entries'])
         ];
     }
 
