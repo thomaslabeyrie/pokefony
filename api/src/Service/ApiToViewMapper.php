@@ -183,7 +183,7 @@ readonly class ApiToViewMapper
             spriteUrl: $pokemon['spriteUrl'],
             name: $pokemon['name'],
             types: $pokemon['types'],
-            pokedexNumber: $pokemon['number'],
+            regionalId: $pokemon['number'],
         );
     }
 
