@@ -26,11 +26,12 @@ readonly class PokeApiService
             $item->expiresAfter(60 * 60 * 24);
 
             $typesMap = $this->getTypesMap();
+            $nationalIdsMap = $this->getNationalIdsMap();
 
             $apiPokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
 
             $pokedex = array_map(
-                function (PokemonEntryDTO $entry) use ($typesMap) {
+                function (PokemonEntryDTO $entry) use ($typesMap, $nationalIdsMap) {
                     return [
                         'name' => $entry->pokemonSpecies->name,
                         'number' => $entry->entryNumber,
@@ -39,7 +40,7 @@ readonly class PokeApiService
                             $typesMap[$entry->pokemonSpecies->name]
                                 ?? $typesMap[$this->getDefaultVariety($entry->pokemonSpecies->name)],
                         // Raw sprite URL: no extra API call
-                        'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{$entry->entryNumber}.png",
+                        'spriteUrl' => "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{$nationalIdsMap[$entry->pokemonSpecies->name]}.png",
                     ];
                 },
                 $apiPokedex->pokemonEntries,
@@ -132,6 +133,29 @@ readonly class PokeApiService
             }
 
             return $typesByPokemon;
+        });
+
+        return $cached;
+    }
+
+    /**
+     * Maps each pokémon to its national ID: ["bulbasaur" => 1]
+     *
+     * @return array<string, int>
+     */
+    private function getNationalIdsMap(): array
+    {
+        $cached = $this->cache->get("national_ids_map", function (ItemInterface $item) {
+            $item->expiresAfter(60 * 60 * 24);
+
+            $nationalIds = [];
+            $nationalDex = $this->pokeApiClient->get(PokedexDTO::class, 'national');
+
+            foreach ($nationalDex->pokemonEntries as $entry) {
+                $nationalIds[$entry->pokemonSpecies->name] = $entry->entryNumber;
+            }
+
+            return $nationalIds;
         });
 
         return $cached;
