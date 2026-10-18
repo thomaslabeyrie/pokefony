@@ -63,7 +63,7 @@ const range = (from: number, to: number): number[] => {
 <template>
   <div v-if="totalPages > 0" class="flex w-full items-center justify-center gap-4">
     <RouterLink
-      :to="{ name: 'pokedex', params: { region: route.params.region, page: currentPage - 1 } }"
+      :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: currentPage - 1 } }"
       class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-neutral-600 hover:first:text-neutral-100"
     >
       <ChevronLeftIcon
@@ -76,7 +76,7 @@ const range = (from: number, to: number): number[] => {
 
       <RouterLink
         v-else
-        :to="{ name: 'pokedex', params: { region: route.params.region, page: item } }"
+        :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: item } }"
         class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:text-neutral-100"
         :class="{
           'bg-neutral-700': item === props.currentPage,
@@ -89,7 +89,7 @@ const range = (from: number, to: number): number[] => {
     </template>
 
     <RouterLink
-      :to="{ name: 'pokedex', params: { region: route.params.region, page: currentPage + 1 } }"
+      :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: currentPage + 1 } }"
       class="flex size-8 cursor-pointer items-center justify-center rounded-full text-neutral-100 transition-colors hover:bg-neutral-600"
     >
       <ChevronRightIcon

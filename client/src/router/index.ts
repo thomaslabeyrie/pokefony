@@ -4,10 +4,10 @@ import SpeciesView from '@/views/SpeciesView.vue'
 
 const routes = [
   {
-    path: '/pokedex/:region?/:page?',
+    path: '/pokedex/:pokedex?/:page?',
     name: 'pokedex',
     props: (route: RouteLocationNormalized) => ({
-      region: route.params.region || 'national',
+      pokedex: route.params.pokedex || 'national',
       page: Number(route.params.page) || 1,
     }),
     component: PokedexView,

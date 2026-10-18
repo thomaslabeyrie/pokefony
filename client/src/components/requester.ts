@@ -16,9 +16,21 @@ export async function getSpecies(name: string): Promise<Species> {
   }
 }
 
-export async function getPokedex(region?: string, page?: number): Promise<Pokedex> {
+export async function getPokedexPage(region?: string, page?: number): Promise<Pokedex> {
   try {
     const response = await fetch(`${baseUrl}/pokedex/${region}/${page}`)
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`)
+    }
+    return await response.json()
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
+
+export async function getPokedexesList(): Promise<Record<string, string[]>> {
+  try {
+    const response = await fetch(`${baseUrl}/pokedex`)
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`)
     }

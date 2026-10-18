@@ -1,48 +1,87 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
+import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { toUcFirst } from '../utils'
 import PokemonTypeIcon from '../components/PokemonTypeIcon.vue'
 import { useRouter } from 'vue-router'
-import { getPokedex } from '@/components/requester'
+import { getPokedexPage, getPokedexesList } from '@/components/requester'
 import type { Pokedex } from '@/types/Pokedex'
 import Pagination from '../components/Pagination.vue'
 import SpriteImage from '../components/SpriteImage.vue'
 
 const props = defineProps<{
-  region: string
+  pokedex: string
   page: number
 }>()
 
 const router = useRouter()
 
-const pokedex = ref<Pokedex | null>(null)
+const dexNamesByRegion = ref<Record<string, string[]>>({})
+const pokedexPage = ref<Pokedex | null>(null)
 const loading = ref(false)
 
-const totalPages = computed(() => {
-  return Math.ceil(pokedex.value?.totalEntries / 20)
+onMounted(async () => {
+  dexNamesByRegion.value = (await getPokedexesList()) ?? {}
 })
 
 watch(
-  () => ({ ...props }),
-  async (newProps) => {
+  () => [props.pokedex, props.page],
+  async () => {
     loading.value = true
-    pokedex.value = await getPokedex(newProps.region, newProps.page)
+    pokedexPage.value = await getPokedexPage(props.pokedex, props.page)
     loading.value = false
   },
   { immediate: true },
 )
+
+const selectedDex = computed({
+  get: () => props.pokedex,
+  set: (pokedex) => router.push({ name: 'pokedex', params: { pokedex, page: 1 } }),
+})
+
+const totalPages = computed(() => Math.ceil((pokedexPage.value?.totalEntries ?? 0) / 20))
 </script>
 
 <template>
   <div class="mx-auto my-8 w-1/2">
+    <div class="relative flex gap-4">
+      <div
+        class="focus-within m-auto flex h-10 w-2/3 justify-between gap-2 rounded-full px-4 py-2 outline-1 outline-neutral-700 transition-colors focus-within:outline-neutral-400"
+      >
+        <input type="text" placeholder="Search for a Pokémon" class="w-full outline-none" />
+
+        <button>
+          <MagnifyingGlassIcon
+            class="h-full cursor-pointer text-neutral-400 transition-colors hover:text-neutral-50"
+          />
+        </button>
+      </div>
+
+      <select
+        name="pokedex"
+        id="pokedex"
+        v-model="selectedDex"
+        placeholder="Pokédex"
+        class="m-auto h-10 w-1/3 appearance-none rounded-full py-2 pr-10 pl-4 outline-1 outline-neutral-700 transition-colors focus-within:outline-neutral-400"
+      >
+        <optgroup v-for="(_, region) in dexNamesByRegion" :label="toUcFirst(region)">
+          <option v-for="dex in dexNamesByRegion[region]" :key="dex" :value="dex">
+            {{ toUcFirst(dex, ' ') }}
+          </option>
+        </optgroup>
+      </select>
+
+      <ChevronDownIcon
+        class="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-neutral-500"
+      />
+    </div>
+
     <div
-      v-if="pokedex"
+      v-if="pokedexPage"
       class="flex flex-col items-center transition-opacity duration-200"
       :class="{ 'pointer-events-none opacity-0': loading }"
     >
-      <Pagination :totalPages="totalPages" :currentPage="page" class="mb-8" />
-
-      <table class="w-full table-fixed">
+      <table class="m-8 w-full table-fixed">
         <colgroup>
           <col class="w-38" />
           <col class="w-42" />
@@ -52,7 +91,7 @@ watch(
 
         <tbody>
           <tr
-            v-for="entry in pokedex.entries"
+            v-for="entry in pokedexPage.entries"
             :key="entry.regionalId"
             class="cursor-pointer rounded-xl transition-colors hover:bg-neutral-800"
             @click="router.push({ name: 'species', params: { name: entry.name } })"
@@ -73,6 +112,8 @@ watch(
           </tr>
         </tbody>
       </table>
+
+      <Pagination :totalPages="totalPages" :currentPage="page" />
     </div>
   </div>
 </template>

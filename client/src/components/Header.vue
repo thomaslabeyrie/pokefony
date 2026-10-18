@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
+import { UserCircleIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
@@ -8,21 +8,6 @@ import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
   >
     <!-- Title -->
     <div class="w-full"><h1 class="text-2xl">Pokéfony</h1></div>
-
-    <!-- Search bar -->
-    <div class="w-full">
-      <div
-        class="focus-within m-auto flex h-10 w-2/3 justify-between gap-2 rounded-full px-4 py-2 outline-1 outline-neutral-700 transition-colors focus-within:outline-neutral-400"
-      >
-        <input type="text" placeholder="Search for a Pokémon" class="w-full outline-none" />
-
-        <button>
-          <MagnifyingGlassIcon
-            class="h-full cursor-pointer text-neutral-400 transition-colors hover:text-neutral-50"
-          />
-        </button>
-      </div>
-    </div>
 
     <!-- User avatar -->
     <div class="flex w-full justify-end">
