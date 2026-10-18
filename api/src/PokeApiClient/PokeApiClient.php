@@ -2,7 +2,9 @@
 
 namespace App\PokeApiClient;
 
+use App\PokeApiClient\DTO\Common\NamedResourceListDTO;
 use App\PokeApiClient\DTO\Common\ResourceDTO;
+use App\PokeApiClient\DTO\Common\ResourceListDTO;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,6 +22,19 @@ class PokeApiClient
         $data = $response->toArray();
 
         return $data['results'];
+    }
+
+    /**
+     * @template DTO
+     * @param class-string<DTO> $dtoClass
+     * @return NamedResourceListDTO
+     */
+    public function getList(string $dtoClass): mixed
+    {
+        $response = $this->httpClient->request('GET', "$this->baseUrl{$dtoClass::getEndpoint()}");
+        $data = $response->getContent();
+
+        return $this->serializer->deserialize($data, NamedResourceListDTO::class, 'json');
     }
 
     /**
