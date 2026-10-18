@@ -19,10 +19,19 @@ final class PokedexController extends AbstractController
         private readonly ApiToViewMapper $viewMapper,
     ) {}
 
-    #[Route(path: '/pokedex/{region?national}/{page?1}', name: 'app_pokedex_region')]
-    public function list(string $region, int $page): Response
+    #[Route(path: '/pokedex', name: 'app_pokedex_list')]
+    public function list(): Response
     {
-        $pokedex = $this->pokeApi->getPokedex($region, $page);
+        $list = $this->pokeApi->getAllPokedexes();
+        $viewModel = $this->viewMapper->pokedexListByRegion($list);
+
+        return new JsonResponse($viewModel);
+    }
+
+    #[Route(path: '/pokedex/{name?national}/{page?1}', name: 'app_pokedex_region')]
+    public function getOne(string $name, int $page): Response
+    {
+        $pokedex = $this->pokeApi->getPokedex($name, $page);
         $viewModel = $this->viewMapper->pokedex($pokedex);
 
         return new JsonResponse($viewModel);

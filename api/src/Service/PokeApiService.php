@@ -19,16 +19,35 @@ readonly class PokeApiService
         private PokedexProvider $cache,
     ) {}
 
-    // TODO : needs to be transformed into getPokedexesByRegion
-    public function getPokedex(string $region = 'national', int $page = 1, int $perPage = 20): array
+    public function getAllPokedexes(): array
     {
-        $cached = $this->cache->get("pokedex_{$region}", function (ItemInterface $item) use ($region) {
+        $cached = $this->cache->get("pokedexes",function (ItemInterface $item) {
+            $item->expiresAfter(60 * 60 * 24);
+            $list =  $this->pokeApiClient->getList(PokedexDTO::class);
+
+            $pokedexes = [];
+            foreach($list->results as $pokedex) {
+                $pokedexes[] = $this->pokeApiClient->getFromResource(PokedexDTO::class, $pokedex);
+            }
+
+            return $pokedexes;
+        });
+
+        return $cached;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function getPokedex(string $pokedexName = 'national', int $page = 1, int $perPage = 20): array
+    {
+        $cached = $this->cache->get("pokedex_{$pokedexName}", function (ItemInterface $item) use ($pokedexName) {
             $item->expiresAfter(60 * 60 * 24);
 
             $typesMap = $this->getTypesMap();
             $nationalIdsMap = $this->getNationalIdsMap();
 
-            $apiPokedex = $this->pokeApiClient->get(PokedexDTO::class, $region);
+            $apiPokedex = $this->pokeApiClient->get(PokedexDTO::class, $pokedexName);
 
             $pokedex = array_map(
                 function (PokemonEntryDTO $entry) use ($typesMap, $nationalIdsMap) {
@@ -57,6 +76,7 @@ readonly class PokeApiService
 
     /**
      * Aggregates data about a specific pokémon from various PokéAPI endpoints
+     * @return array<string,mixed>
      */
     public function getFullPokemonData(string|int $idOrName): array
     {
@@ -72,7 +92,9 @@ readonly class PokeApiService
             'evolutionChain' => $evolutionChain,
         ];
     }
-
+    /**
+     * @return array<string,mixed>
+     */
     public function getPcPokemonData(string|int $identifier): array
     {
         $pokemon = $this->pokeApiClient->get(PokemonDTO::class, $identifier);

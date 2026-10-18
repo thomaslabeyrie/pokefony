@@ -27,7 +27,7 @@ class PokedexDTO implements PokeApiEndpointDtoInterface
     #[SerializedName('pokemon_entries')]
     public array $pokemonEntries;
 
-    public NamedResourceDTO $region;
+    public ?NamedResourceDTO $region = null;
 
     /** @var NamedResourceDTO[] */
     #[SerializedName('version_groups')]

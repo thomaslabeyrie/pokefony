@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Enum\TypeEnum;
 use App\PokeApiClient\DTO\Evolution\ChainLinkDTO;
 use App\PokeApiClient\DTO\Evolution\EvolutionChainDTO;
+use App\PokeApiClient\DTO\Pokedex\PokedexDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonAbilityDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonDTO;
 use App\PokeApiClient\DTO\Pokemon\PokemonStatDTO;
@@ -24,6 +25,28 @@ readonly class ApiToViewMapper
     public function __construct(
         private PokeApiClient $pokeApiClient,
     ) {}
+
+
+    /**
+     * @param PokedexDTO[] $pokedexes
+     * @return array<string, string[]>
+     */
+    public function pokedexListByRegion(array $pokedexes): array
+    {
+        $dexesByRegion = [];
+        foreach ($pokedexes as $dex) {
+            if (!$dex->region) {
+                if ($dex->name === 'national') {
+                    $dexesByRegion['national'][] = $dex->name;
+                }
+                continue;
+            }
+
+            $dexesByRegion[$dex->region->name][] = $dex->name;
+        }
+
+        return $dexesByRegion;
+    }
 
     public function pokedex(array $pokedex): PokedexViewModel
     {
