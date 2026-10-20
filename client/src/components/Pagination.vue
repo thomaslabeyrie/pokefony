@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, type RouteLocationRaw } from 'vue-router'
 
 const route = useRoute()
 
@@ -9,6 +9,13 @@ const props = defineProps<{
   totalPages: number
   currentPage: number
 }>()
+
+// Keeps the current query string (e.g. ?pokemon=) when changing page
+const pageLink = (page: number | string): RouteLocationRaw => ({
+  name: 'pokedex',
+  params: { pokedex: route.params.pokedex, page },
+  query: route.query,
+})
 
 // Middle:
 // ┌───────── maxSize ─────────┐
@@ -63,7 +70,7 @@ const range = (from: number, to: number): number[] => {
 <template>
   <div v-if="totalPages > 0" class="flex w-full items-center justify-center gap-4">
     <RouterLink
-      :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: currentPage - 1 } }"
+      :to="pageLink(currentPage - 1)"
       class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-neutral-600 hover:first:text-neutral-100"
     >
       <ChevronLeftIcon
@@ -76,7 +83,7 @@ const range = (from: number, to: number): number[] => {
 
       <RouterLink
         v-else
-        :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: item } }"
+        :to="pageLink(item)"
         class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:text-neutral-100"
         :class="{
           'bg-neutral-700': item === props.currentPage,
@@ -89,7 +96,7 @@ const range = (from: number, to: number): number[] => {
     </template>
 
     <RouterLink
-      :to="{ name: 'pokedex', params: { pokedex: route.params.pokedex, page: currentPage + 1 } }"
+      :to="pageLink(currentPage + 1)"
       class="flex size-8 cursor-pointer items-center justify-center rounded-full text-neutral-100 transition-colors hover:bg-neutral-600"
     >
       <ChevronRightIcon
