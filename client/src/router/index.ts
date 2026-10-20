@@ -9,6 +9,7 @@ const routes = [
     props: (route: RouteLocationNormalized) => ({
       pokedex: route.params.pokedex || 'national',
       page: Number(route.params.page) || 1,
+      query: route.query.pokemon || '',
     }),
     component: PokedexView,
   },

@@ -2,23 +2,25 @@
 import { ref, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { toUcFirst } from '@/utils'
-import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { Pokedex } from '@/types/Pokedex'
 import { getPokedex, getPokedexesList } from '@/components/requester'
 import PokemonTypeIcon from '@/components/PokemonTypeIcon.vue'
 import Pagination from '@/components/Pagination.vue'
 import SpriteImage from '@/components/SpriteImage.vue'
 import { useFuzzyFinding } from '@/composables/fuzzyFinding'
+import { usePaginated } from '@/composables/pagination'
 
 const props = defineProps<{
   pokedex: string
   page: number
+  query: string
 }>()
 
 const router = useRouter()
 
 const dexNamesByRegion = ref<Record<string, string[]>>({})
-const searchQuery = ref('')
+const searchQuery = ref(props.query)
 const pokedex = ref<Pokedex | null>(null)
 const loading = ref(false)
 
@@ -27,10 +29,10 @@ onMounted(async () => {
 })
 
 watch(
-  () => [props.pokedex, props.page],
+  () => props.pokedex,
   async () => {
     loading.value = true
-    pokedex.value = await getPokedex(props.pokedex, props.page)
+    pokedex.value = await getPokedex(props.pokedex)
     loading.value = false
   },
   { immediate: true },
@@ -41,18 +43,32 @@ const selectedDex = computed({
   set: (pokedex) => router.push({ name: 'pokedex', params: { pokedex, page: 1 } }),
 })
 
-let debouncedQuery = ref('')
 let debounceId = 0
-watch(searchQuery, () => {
+watch(searchQuery, (query) => {
   clearTimeout(debounceId)
-  debounceId = setTimeout(() => (debouncedQuery.value = searchQuery.value), 200)
+
+  debounceId = setTimeout(() => {
+    if (query === props.query) return
+    router.push({ params: { page: 1 }, query: query ? { pokemon: query } : {} })
+  }, 300)
 })
 
-const searchablePokedex = useFuzzyFinding(debouncedQuery, pokedex)
-// const paginatedPokedex = usePagination(pokedex)
+watch(
+  () => props.query,
+  (query) => {
+    searchQuery.value = query
+  },
+)
 
-const itemsPerPage = 20
-const totalPages = computed(() => Math.ceil((pokedex.value?.length ?? 0) / itemsPerPage))
+const searchablePokedex = useFuzzyFinding(
+  computed(() => props.query),
+  pokedex,
+)
+const paginatedPokedex = usePaginated(
+  searchablePokedex,
+  computed(() => props.page),
+  20,
+)
 </script>
 
 <template>
@@ -85,11 +101,11 @@ const totalPages = computed(() => Math.ceil((pokedex.value?.length ?? 0) / items
     </div>
 
     <div
-      v-if="searchablePokedex"
-      class="flex flex-col items-center transition-opacity duration-200"
+      v-if="paginatedPokedex"
+      class="m-8 flex flex-col items-center transition-opacity duration-200"
       :class="{ 'pointer-events-none opacity-0': loading }"
     >
-      <table class="m-8 w-full table-fixed">
+      <table class="w-full table-fixed">
         <colgroup>
           <col class="w-38" />
           <col class="w-42" />
@@ -99,29 +115,29 @@ const totalPages = computed(() => Math.ceil((pokedex.value?.length ?? 0) / items
 
         <tbody>
           <tr
-            v-for="entry in searchablePokedex"
-            :key="entry.regionalId"
+            v-for="item in paginatedPokedex.items"
+            :key="item.regionalId"
             class="cursor-pointer rounded-xl transition-colors hover:bg-neutral-800"
-            @click="router.push({ name: 'species', params: { name: entry.name } })"
+            @click="router.push({ name: 'species', params: { name: item.name } })"
           >
-            <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ entry.regionalId }}</td>
+            <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ item.regionalId }}</td>
 
             <td class="py-3">
-              <SpriteImage :src="entry.spriteUrl" :alt="entry.name" />
+              <SpriteImage :src="item.spriteUrl" :alt="item.name" />
             </td>
 
-            <td class="py-3 font-bold">{{ toUcFirst(entry.name) }}</td>
+            <td class="py-3 font-bold">{{ toUcFirst(item.name) }}</td>
 
             <td class="rounded-r-full py-3">
               <div class="flex gap-2">
-                <PokemonTypeIcon v-for="type in entry.types" :key="type" :type />
+                <PokemonTypeIcon v-for="type in item.types" :key="type" :type />
               </div>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <Pagination :totalPages="totalPages" :currentPage="page" />
+      <Pagination :totalPages="paginatedPokedex.totalPages" :currentPage="paginatedPokedex.page" />
     </div>
   </div>
 </template>
