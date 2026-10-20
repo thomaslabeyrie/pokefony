@@ -1,9 +1,6 @@
 import type { Type } from './Type'
 
-export interface Pokedex {
-  entries: PokedexEntry[]
-  totalEntries: number
-}
+export type Pokedex = PokedexEntry[]
 
 export interface PokedexEntry {
   spriteUrl: string

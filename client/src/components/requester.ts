@@ -16,7 +16,7 @@ export async function getSpecies(name: string): Promise<Species> {
   }
 }
 
-export async function getPokedexPage(region?: string, page?: number): Promise<Pokedex> {
+export async function getPokedex(region?: string, page?: number): Promise<Pokedex> {
   try {
     const response = await fetch(`${baseUrl}/pokedex/${region}/${page}`)
     if (!response.ok) {

@@ -32,9 +32,8 @@ final class PokedexController extends AbstractController
     public function getOne(string $name, int $page): Response
     {
         $pokedex = $this->pokeApi->getPokedex($name, $page);
-        $viewModel = $this->viewMapper->pokedex($pokedex);
 
-        return new JsonResponse($viewModel);
+        return new JsonResponse($pokedex);
     }
 
     #[Route(path: '/pokemon/{name}', name: 'app_pokemon_show')]

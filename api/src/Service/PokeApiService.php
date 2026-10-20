@@ -39,7 +39,7 @@ readonly class PokeApiService
     /**
      * @return array<string,mixed>
      */
-    public function getPokedex(string $pokedexName = 'national', int $page = 1, int $perPage = 20): array
+    public function getPokedex(string $pokedexName = 'national'): array
     {
         $cached = $this->cache->get("pokedex_{$pokedexName}", function (ItemInterface $item) use ($pokedexName) {
             $item->expiresAfter(60 * 60 * 24);
@@ -65,13 +65,10 @@ readonly class PokeApiService
                 $apiPokedex->pokemonEntries,
             );
 
-            return  ['entries' => $pokedex];
+            return $pokedex;
         });
 
-        return  [
-            'paginatedEntries' => array_slice($cached['entries'], ($page - 1) * $perPage, $perPage),
-            'totalEntries' => count($cached['entries'])
-        ];
+        return $cached;
     }
 
     /**
