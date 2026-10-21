@@ -3,39 +3,18 @@ import type { Pokedex } from '@/types/Pokedex'
 
 const baseUrl = 'http://localhost:8000'
 
-export async function getSpecies(name: string): Promise<Species> {
-  try {
-    const response = await fetch(`${baseUrl}/pokemon/${name}`)
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`)
-    }
+export const getSpecies = (name: string) => request<Species>(`/pokemon/${name}`)
 
-    return await response.json()
-  } catch (error: any) {
-    throw new Error(error.message)
-  }
-}
+export const getPokedex = (name: string) => request<Pokedex>(`/pokedex/${name}`)
 
-export async function getPokedex(region?: string): Promise<Pokedex> {
-  try {
-    const response = await fetch(`${baseUrl}/pokedex/${region}`)
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`)
-    }
-    return await response.json()
-  } catch (error: any) {
-    throw new Error(error.message)
-  }
-}
+export const getPokedexesList = () => request<Record<string, string[]>>('/pokedex')
 
-export async function getPokedexesList(): Promise<Record<string, string[]>> {
-  try {
-    const response = await fetch(`${baseUrl}/pokedex`)
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`)
-    }
-    return await response.json()
-  } catch (error: any) {
-    throw new Error(error.message)
+async function request<T>(endpoint: string): Promise<T> {
+  const response = await fetch(`${baseUrl}${endpoint}`)
+
+  if (!response.ok) {
+    throw new Error(`Call to ${endpoint} failed: ${response.status}`)
   }
+
+  return await response.json()
 }
