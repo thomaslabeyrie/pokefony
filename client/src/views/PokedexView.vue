@@ -8,8 +8,9 @@ import { getPokedex, getPokedexesList } from '@/components/requester'
 import PokemonTypeIcon from '@/components/PokemonTypeIcon.vue'
 import Pagination from '@/components/Pagination.vue'
 import SpriteImage from '@/components/SpriteImage.vue'
-import { useFuzzyFinding } from '@/composables/fuzzyFinding'
-import { usePaginated } from '@/composables/pagination'
+import useFuzzyFinding from '@/composables/fuzzyFinding'
+import usePaginated from '@/composables/pagination'
+import useSearchQuery from '@/composables/searchQuery'
 
 const props = defineProps<{
   pokedex: string
@@ -20,13 +21,17 @@ const props = defineProps<{
 const router = useRouter()
 
 const dexNamesByRegion = ref<Record<string, string[]>>({})
-const searchQuery = ref(props.query)
-const pokedex = ref<Pokedex | null>(null)
-const loading = ref(false)
-
 onMounted(async () => {
   dexNamesByRegion.value = (await getPokedexesList()) ?? {}
 })
+
+const selectedDex = computed({
+  get: () => props.pokedex,
+  set: (pokedex) => router.push({ name: 'pokedex', params: { pokedex, page: 1 } }),
+})
+
+const pokedex = ref<Pokedex | null>(null)
+const loading = ref(false)
 
 watch(
   () => props.pokedex,
@@ -38,37 +43,9 @@ watch(
   { immediate: true },
 )
 
-const selectedDex = computed({
-  get: () => props.pokedex,
-  set: (pokedex) => router.push({ name: 'pokedex', params: { pokedex, page: 1 } }),
-})
-
-let debounceId = 0
-watch(searchQuery, (query) => {
-  clearTimeout(debounceId)
-
-  debounceId = setTimeout(() => {
-    if (query === props.query) return
-    router.push({ params: { page: 1 }, query: query ? { pokemon: query } : {} })
-  }, 300)
-})
-
-watch(
-  () => props.query,
-  (query) => {
-    searchQuery.value = query
-  },
-)
-
-const searchablePokedex = useFuzzyFinding(
-  computed(() => props.query),
-  pokedex,
-)
-const paginatedPokedex = usePaginated(
-  searchablePokedex,
-  computed(() => props.page),
-  20,
-)
+const searchQuery = useSearchQuery(() => props.query)
+const searchablePokedex = useFuzzyFinding(() => props.query, pokedex)
+const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
 </script>
 
 <template>

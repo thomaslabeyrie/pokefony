@@ -1,5 +1,5 @@
-import { computed } from 'vue'
-import type { Ref, ComputedRef } from 'vue'
+import { computed, toValue } from 'vue'
+import type { MaybeRefOrGetter, ComputedRef } from 'vue'
 
 type Named = { name: string }
 
@@ -10,21 +10,23 @@ type Named = { name: string }
  * (best first), then alphabetically for equal scores.
  *
  * @template T - A named list item
- * @param query - Reactive search string.
- * @param list - List of named items to search through.
- * @returns A computed list of matching items, recomputed when `query` changes.
+ * @param query - Search string (value, ref or getter). An empty query returns `list` as is.
+ * @param list - Named items to search through, or `null` while they're loading.
+ * @returns A computed list of matching items, or `null` while `list` is `null`.
+ * Recomputed when `query` or `list` changes.
  */
-export function useFuzzyFinding<T extends Named>(
-  query: Ref<string>,
-  list: Ref<T[] | null>,
+export default function useFuzzyFinding<T extends Named>(
+  query: MaybeRefOrGetter<string>,
+  list: MaybeRefOrGetter<T[] | null>,
 ): ComputedRef<T[] | null> {
   return computed(() => {
-    const cleanQuery = query.value.toLowerCase().replaceAll('-', '').replaceAll(' ', '')
+    const cleanQuery = toValue(query).toLowerCase().replaceAll('-', '').replaceAll(' ', '')
+    const items = toValue(list)
 
-    if (!list.value) return null
-    if (cleanQuery.length < 1) return list.value
+    if (!items) return null
+    if (cleanQuery.length < 1) return items
 
-    return getSearchResults(cleanQuery, list.value)
+    return getSearchResults(cleanQuery, items)
   })
 }
 
