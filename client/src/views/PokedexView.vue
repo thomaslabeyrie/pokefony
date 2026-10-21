@@ -116,11 +116,11 @@ const paginatedPokedex = usePaginated(
         <tbody>
           <tr
             v-for="item in paginatedPokedex.items"
-            :key="item.regionalId"
+            :key="item.number"
             class="cursor-pointer rounded-xl transition-colors hover:bg-neutral-800"
             @click="router.push({ name: 'species', params: { name: item.name } })"
           >
-            <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ item.regionalId }}</td>
+            <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ item.number }}</td>
 
             <td class="py-3">
               <SpriteImage :src="item.spriteUrl" :alt="item.name" />

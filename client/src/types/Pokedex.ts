@@ -6,5 +6,5 @@ export interface PokedexEntry {
   spriteUrl: string
   name: string
   types: Type[]
-  regionalId: number
+  number: number
 }
