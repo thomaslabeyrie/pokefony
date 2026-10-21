@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
 import PokedexView from '@/views/PokedexView.vue'
 import SpeciesView from '@/views/SpeciesView.vue'
+import NotFound from '@/views/NotFoundView.vue'
 
 const routes = [
   {
@@ -19,9 +20,17 @@ const routes = [
     props: true,
     component: SpeciesView,
   },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: NotFound,
+  },
 ]
 
 export default createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })
