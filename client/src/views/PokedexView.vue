@@ -114,7 +114,11 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
         </tbody>
       </table>
 
-      <Pagination :totalPages="paginatedPokedex.totalPages" :currentPage="paginatedPokedex.page" />
+      <Pagination
+        :totalPages="paginatedPokedex.totalPages"
+        :currentPage="paginatedPokedex.page"
+        class="mt-8"
+      />
     </div>
   </div>
 </template>
