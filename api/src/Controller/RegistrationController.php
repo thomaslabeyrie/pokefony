@@ -37,9 +37,7 @@ class RegistrationController extends AbstractController
 
         $violations = $validator->validate($user);
         if (count($violations) > 0) {
-            throw new UnprocessableEntityHttpException(
-                previous: new ValidationFailedException($user, $violations),
-            );
+            throw new UnprocessableEntityHttpException(previous: new ValidationFailedException($user, $violations));
         }
 
         $entityManager->persist($user);
