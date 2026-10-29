@@ -32,3 +32,25 @@ export class UnprocessableEntityError extends ApiError {
     this.violations = violations
   }
 }
+
+export function fieldErrorsOf(error: Error | null): Record<string, string> {
+  if (!(error instanceof UnprocessableEntityError)) return {}
+
+  const violations: Record<string, string> = {}
+  for (const violation of error.violations) {
+    violations[violation.propertyPath] = violation.title
+  }
+  return violations
+}
+
+export function generalErrorOf(error: Error | null): string | null {
+  if (!error || error instanceof UnprocessableEntityError) {
+    return null
+  }
+
+  if (error instanceof NetworkError || error instanceof ApiError) {
+    return error.message
+  }
+
+  return 'An error occured, please try again later.'
+}

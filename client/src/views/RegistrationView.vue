@@ -1,38 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Ref } from 'vue'
+import { ref, computed } from 'vue'
 import { register } from '@/components/requester'
 import TextInput from '@/components/TextInput.vue'
-import { ApiError, NetworkError, UnprocessableEntityError } from '@/errors/errors'
+import useFetch from '@/composables/fetch'
+import { useRouter } from 'vue-router'
+import { fieldErrorsOf, generalErrorOf } from '@/errors/errors'
+
+const router = useRouter()
 
 const email = ref('')
 const plainPassword = ref('')
-const loading = ref(false)
-const fieldErrors: Ref<Record<string, string>> = ref({})
-const generalErrors: Ref<any[]> = ref([])
+
+const { execute, data, loading, error } = useFetch(register)
+
+const fieldErrors = computed(() => fieldErrorsOf(error.value))
+const generalError = computed(() => generalErrorOf(error.value))
 
 async function handleRegister() {
-  fieldErrors.value = {}
-  generalErrors.value = []
-
-  loading.value = true
-  let response
-
-  try {
-    response = await register({ email: email.value, plainPassword: plainPassword.value })
-  } catch (error) {
-    if (error instanceof NetworkError) {
-      generalErrors.value.push({ message: error.message })
-    } else if (error instanceof UnprocessableEntityError) {
-      for (const violation of error.violations) {
-        fieldErrors.value[violation.propertyPath] = violation.title
-      }
-    } else if (error instanceof ApiError) {
-      generalErrors.value.push({ message: error.message })
-    }
-  }
-
-  loading.value = false
+  const result = await execute({ email: email.value, plainPassword: plainPassword.value })
+  if (result) router.push({ name: 'home' })
 }
 </script>
 
@@ -54,14 +40,17 @@ async function handleRegister() {
       :error="fieldErrors['plainPassword']"
     />
 
-    <div v-for="error of generalErrors" class="text-red-400">
-      {{ error.message }}
+    <div
+      v-if="generalError"
+      class="w-full rounded-lg bg-red-950 px-4 py-2 text-center text-red-400"
+    >
+      {{ generalError }}
     </div>
 
     <button
       type="submit"
       :disabled="loading"
-      class="transition-200 h-12 cursor-pointer rounded-xl bg-neutral-700 px-6 py-2 transition-colors duration-100 hover:bg-neutral-200 hover:text-neutral-900"
+      class="transition-200 h-12 cursor-pointer rounded-xl bg-neutral-700 px-6 py-2 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-900"
     >
       Register
     </button>
