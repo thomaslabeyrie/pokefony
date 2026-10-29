@@ -2,20 +2,25 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
+SESSION="pokefony"
 
-osascript <<EOF
-tell application "iTerm2"
-  tell current window
-    create tab with default profile
-    tell current session
-      write text "cd '$ROOT/api' && printf '\\\\033]0;api\\\\007' && symfony serve"
-    end tell
-    create tab with default profile
-    tell current session
-      write text "cd '$ROOT/client' && printf '\\\\033]0;vite\\\\007' && npm run dev"
-    end tell
-  end tell
-end tell
-EOF
+if ! tmux has-session -t "$SESSION" 2>/dev/null; then
+  tmux new-session -d -s "$SESSION" -c "$ROOT"
+  tmux new-window -t "$SESSION:2" -c "$ROOT"
 
-open -a "Google Chrome" "http://localhost:5173"
+  tmux new-window -t "$SESSION:3" -n client -c "$ROOT/client"
+  tmux send-keys -t "$SESSION:client" "npm run dev" C-m
+
+  tmux new-window -t "$SESSION:4" -n api -c "$ROOT/api"
+  tmux send-keys -t "$SESSION:api" "symfony serve" C-m
+
+  tmux select-window -t "$SESSION:1"
+
+  open -a "Google Chrome" "http://localhost:5173"
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "$SESSION"
+else
+  tmux attach-session -t "$SESSION"
+fi
