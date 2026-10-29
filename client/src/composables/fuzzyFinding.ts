@@ -16,8 +16,8 @@ type Named = { name: string }
  * Recomputed when `query` or `list` changes.
  */
 export default function useFuzzyFinding<T extends Named>(
-  query: MaybeRefOrGetter<string>,
   list: MaybeRefOrGetter<T[] | null>,
+  query: MaybeRefOrGetter<string>,
 ): ComputedRef<T[] | null> {
   return computed(() => {
     const cleanQuery = toValue(query).toLowerCase().replaceAll('-', '').replaceAll(' ', '')

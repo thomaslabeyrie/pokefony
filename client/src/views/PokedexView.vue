@@ -44,7 +44,7 @@ watch(
 )
 
 const searchQuery = useSearchQuery(() => props.query)
-const searchablePokedex = useFuzzyFinding(() => props.query, pokedex)
+const searchablePokedex = useFuzzyFinding(pokedex, () => props.query)
 const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
 </script>
 
