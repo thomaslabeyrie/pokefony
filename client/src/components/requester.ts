@@ -35,7 +35,7 @@ async function request<T>(
       body: body ? JSON.stringify(body) : undefined,
     })
   } catch (error) {
-    throw new NetworkError('Failed to contact server. Retry later.')
+    throw new NetworkError('Failed to contact server. Please retry later.')
   }
 
   if (!response.ok) {
