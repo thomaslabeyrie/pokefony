@@ -14,6 +14,16 @@ export class ApiError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  constructor(message?: string) {
+    super()
+    if (message) {
+      this.message = message
+    }
+  }
+}
+
+
 type Violation = {
   propertyPath: string
   title: string

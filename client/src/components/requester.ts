@@ -1,10 +1,15 @@
 import type { Species } from '@/types/Species'
 import type { Pokedex } from '@/types/Pokedex'
-import { ApiError, NetworkError, UnprocessableEntityError } from '@/errors/errors'
+import { ApiError, NetworkError, UnprocessableEntityError, UnauthorizedError } from '@/errors/errors'
 
 type RegistrationBody = {
   email: string
   plainPassword: string
+}
+
+type LoginBody = {
+  username: string
+  password: string
 }
 
 type HttpRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
@@ -17,7 +22,9 @@ export const getPokedex = (name: string) => request<Pokedex>(`/pokedex/${name}`)
 
 export const getPokedexesList = () => request<Record<string, string[]>>('/pokedex')
 
+// Auth
 export const register = (body: RegistrationBody) => request(`/api/register`, 'POST', body)
+export const login = (body: LoginBody) => request(`/api/login`, 'POST', body)
 
 async function request<T>(
   endpoint: string,
@@ -43,6 +50,8 @@ async function request<T>(
 
     if (error.status === 422) {
       throw new UnprocessableEntityError(error.violations)
+    } else if (error.status === 401) {
+      throw new UnauthorizedError(error.message)
     } else {
       throw new ApiError('Server failure')
     }

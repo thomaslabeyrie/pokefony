@@ -4,6 +4,7 @@ import PokedexView from '@/views/PokedexView.vue'
 import SpeciesView from '@/views/SpeciesView.vue'
 import NotFound from '@/views/NotFoundView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegistrationView,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
   },
   {
     path: '/pokedex/:pokedex?/:page?',
