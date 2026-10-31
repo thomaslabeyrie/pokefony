@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ApiLoginController extends AbstractController
 {
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function index(#[CurrentUser] ?User $user): Response
+    public function login(#[CurrentUser] ?User $user): Response
     {
         if ($user === null) {
             return $this->json(
