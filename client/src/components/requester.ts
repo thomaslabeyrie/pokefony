@@ -42,18 +42,19 @@ async function request<T>(
       body: body ? JSON.stringify(body) : undefined,
     })
   } catch (error) {
-    throw new NetworkError('Failed to contact server. Please retry later.')
+    throw new NetworkError('Failed to contact server. Please try again later.')
   }
 
   if (!response.ok) {
     const error = await response.json()
 
-    if (error.status === 422) {
-      throw new UnprocessableEntityError(error.violations)
-    } else if (error.status === 401) {
-      throw new UnauthorizedError(error.message)
-    } else {
-      throw new ApiError('Server failure')
+    switch (response.status) {
+      case 422:
+        throw new UnprocessableEntityError(error.violations)
+      case 401:
+        throw new UnauthorizedError(error.error)
+      default:
+        throw new ApiError('Server failure. Please try again later.')
     }
   }
 

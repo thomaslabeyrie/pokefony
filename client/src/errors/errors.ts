@@ -58,7 +58,7 @@ export function generalErrorOf(error: Error | null): string | null {
     return null
   }
 
-  if (error instanceof NetworkError || error instanceof ApiError) {
+  if (error instanceof NetworkError || error instanceof ApiError || error instanceof UnauthorizedError) {
     return error.message
   }
 
