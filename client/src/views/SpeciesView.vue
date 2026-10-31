@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 
 import type { Species } from '@/types/Species'
 import { typeColorMap } from '@/types/TypeColor'
-import { getSpecies } from '@/components/requester'
+import { getSpecies } from '@/services/requester'
 import StatsTable from '@/components/StatsTable.vue'
 import DamageRelationsTable from '@/components/DamageRelationsTable.vue'
 import SpeciesDetailsTable from '@/components/SpeciesDetailsTable.vue'

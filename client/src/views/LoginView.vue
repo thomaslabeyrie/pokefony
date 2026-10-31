@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { login } from '@/components/requester'
+import { login } from '@/services/requester'
 import TextInput from '@/components/TextInput.vue'
 import useFetch from '@/composables/fetch'
 import { useRouter } from 'vue-router'
