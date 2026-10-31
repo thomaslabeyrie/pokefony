@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 import HomeView from '@/views/HomeView.vue'
 import PokedexView from '@/views/PokedexView.vue'
 import SpeciesView from '@/views/SpeciesView.vue'
@@ -45,10 +46,23 @@ const routes = [
   },
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
     return { top: 0 }
   },
 })
+
+router.beforeEach(async (to) => {
+    const auth = useAuthStore()
+    if (!auth.initialized) {
+      await auth.fetchUser()
+    }
+
+    if (to.meta.requiresAuth && !auth.isAuthenticated) {
+      return { name: 'login', query: { redirect: to.fullPath }}
+    }
+})
+
+export default router
