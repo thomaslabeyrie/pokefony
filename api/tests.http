@@ -1,0 +1,16 @@
+@ApiBaseUrl=http://localhost:8000
+
+### Pokedex
+GET {{ ApiBaseUrl }}/pokedex
+
+### Login
+POST {{ ApiBaseUrl }}/api/login
+Content-Type: application/json
+
+{
+    "username": "test@user.fr",
+    "password": "J'aimeTropLeZizi123!!!"
+}
+
+### Me
+GET {{ ApiBaseUrl }}/api/me
