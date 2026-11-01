@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { login } from '@/services/requester'
 import TextInput from '@/components/TextInput.vue'
 import useFetch from '@/composables/fetch'
 import { useRouter } from 'vue-router'
 import { fieldErrorsOf, generalErrorOf } from '@/errors/errors'
+import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
-const { execute, data, loading, error } = useFetch(login)
+const auth = useAuthStore()
+const { execute, loading, error } = useFetch(auth.login)
 
 const fieldErrors = computed(() => fieldErrorsOf(error.value))
 const generalError = computed(() => generalErrorOf(error.value))
 
 async function handleLogin() {
-  const result = await execute({ username: email.value, password: password.value })
-  if (result) router.push({ name: 'home' })
+  await execute(email.value, password.value)
+  if (auth.isAuthenticated) router.push({ name: 'home' })
 }
 </script>
 

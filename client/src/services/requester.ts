@@ -33,8 +33,7 @@ async function request<T>(
 ): Promise<T> {
   let response: Response
 
-  let headers: Headers = new Headers()
-  headers.append('Accept', 'application/json')
+  const headers = new Headers({ Accept: 'application/json' })
   if (body) {
     headers.append('Content-Type', 'application/json')
   }
