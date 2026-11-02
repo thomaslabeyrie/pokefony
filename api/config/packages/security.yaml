@@ -21,12 +21,8 @@ security:
             provider: app_user_provider
             json_login:
                 check_path: api_login
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                enable_csrf: true
             logout:
-                path: app_logout
+                path: /api/logout
                 # where to redirect after logout
                 # target: app_any_route
 

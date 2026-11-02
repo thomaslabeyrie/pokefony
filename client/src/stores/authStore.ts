@@ -19,6 +19,11 @@ export const useAuthStore = defineStore('auth', () => {
     initialized.value = true
   }
 
+  async function logout() {
+    await api.logout()
+    user.value = null
+  }
+
   async function fetchUser() {
     try {
       const result = await api.me()
@@ -30,5 +35,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, fetchUser, login, initialized, isAuthenticated }
+  return { user, fetchUser, login, logout, initialized, isAuthenticated }
 })

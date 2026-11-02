@@ -15,6 +15,9 @@ export function login(body: LoginBody): Promise<User> {
 export function me(): Promise<User> {
   return request<User>('/api/me')
 }
+export function logout() {
+  return request('/api/logout', 'POST')
+}
 
 export function getSpecies(name: string): Promise<Species> {
   return request<Species>(`/pokemon/${name}`)
@@ -59,6 +62,10 @@ async function request<T>(
       default:
         throw new ApiError('Server failure. Please try again later.')
     }
+  }
+
+  if (response.status === 204) {
+    return undefined as T
   }
 
   return await response.json()
