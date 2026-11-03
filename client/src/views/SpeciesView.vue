@@ -21,11 +21,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-6 gap-6 py-6">
+  <div class="grid grid-cols-6 gap-6 py-6 w-3/5 m-auto">
     <!-- Sprite -->
     <div class="col-span-2 rounded-xl bg-neutral-800">
       <div class="p-6">
-        <div v-if="!species" class="h-[200px] animate-pulse rounded-xl bg-neutral-700"></div>
+        <div v-if="!species" class="h-50 animate-pulse rounded-xl bg-neutral-700"></div>
         <img v-else :src="species.spriteUrl" :alt="species.name" class="mx-auto block" />
       </div>
       <div class="border-t border-neutral-700 px-6 py-4">
