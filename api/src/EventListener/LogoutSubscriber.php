@@ -20,7 +20,7 @@ class LogoutSubscriber implements EventSubscriberInterface
 
     public function onLogout(LogoutEvent $event): void
     {
-        $response = new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        $response = new JsonResponse(['message' => 'Logged out.'], Response::HTTP_OK);
         $event->setResponse($response);
     }
 }

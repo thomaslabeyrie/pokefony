@@ -13,3 +13,5 @@ export type User = { user: string }
 export type HttpRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export type RegistrationResponse = { message: string }
+
+export type LogoutResponse = { message: string }

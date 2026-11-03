@@ -22,7 +22,7 @@ async function handleLogout() {
       <div v-if="auth.isAuthenticated" class="flex w-full items-center justify-end gap-4">
         <p>{{ auth.user?.user }}</p>
         <button
-          class="transition-200 h-12 cursor-pointer rounded-xl bg-neutral-700 px-6 py-2 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-900"
+          class="transition-200 h-12 cursor-pointer transition-colors duration-150 text-neutral-500 hover:text-neutral-100"
           @click="handleLogout"
         >
           Logout

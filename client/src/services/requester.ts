@@ -1,7 +1,7 @@
 import type { Species } from '@/types/Species'
 import type { Pokedex } from '@/types/Pokedex'
 import { ApiError, NetworkError, UnprocessableEntityError, UnauthorizedError } from '@/errors/errors'
-import type { User, RegistrationBody, RegistrationResponse, LoginBody, HttpRequestMethod } from '@/types/requester'
+import type { User, RegistrationBody, RegistrationResponse, LoginBody, HttpRequestMethod, LogoutResponse } from '@/types/requester'
 
 const baseUrl = import.meta.env.VITE_API_URL
 
@@ -15,7 +15,7 @@ export function login(body: LoginBody): Promise<User> {
 export function me(): Promise<User> {
   return request<User>('/api/me')
 }
-export function logout() {
+export function logout(): Promise<LogoutResponse> {
   return request('/api/logout', 'POST')
 }
 
@@ -62,10 +62,6 @@ async function request<T>(
       default:
         throw new ApiError('Server failure. Please try again later.')
     }
-  }
-
-  if (response.status === 204) {
-    return undefined as T
   }
 
   return await response.json()
