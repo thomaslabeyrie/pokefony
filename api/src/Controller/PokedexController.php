@@ -5,12 +5,9 @@ namespace App\Controller;
 use App\Service\ApiToViewMapper;
 use App\Service\PokeApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class PokedexController extends AbstractController
 {
@@ -19,7 +16,7 @@ final class PokedexController extends AbstractController
         private readonly ApiToViewMapper $viewMapper,
     ) {}
 
-    #[Route(path: '/pokedex', name: 'app_pokedex_list')]
+    #[Route(path: '/pokedex', name: 'api_pokedex_list')]
     public function list(): Response
     {
         $list = $this->pokeApi->getAllPokedexes();
@@ -36,72 +33,16 @@ final class PokedexController extends AbstractController
         return new JsonResponse($pokedex);
     }
 
-    #[Route(path: '/pokemon/{name}', name: 'app_pokemon_show')]
+    #[Route(path: '/species/{name}', name: 'api_species_show')]
     public function show(string $name): Response
     {
-        $fullPokemonEntry = $this->pokeApi->getFullPokemonData($name);
+        $fullSpeciesEntry = $this->pokeApi->getFullSpeciesData($name);
         $viewModel = $this->viewMapper->speciesPage(
-            $fullPokemonEntry['pokemon'],
-            $fullPokemonEntry['species'],
-            $fullPokemonEntry['evolutionChain'],
+            $fullSpeciesEntry['pokemon'],
+            $fullSpeciesEntry['species'],
+            $fullSpeciesEntry['evolutionChain'],
         );
 
         return new JsonResponse($viewModel);
-    }
-
-    #[Route('/search', name: 'app_pokemon_search', methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
-    public function search(Request $request): Response
-    {
-        // Extract and validate query parameter
-        $query = trim($request->query->get('q', ''));
-
-        if (empty($query)) {
-            $this->addFlash('warning', 'Please enter a Pokémon name or ID to search.');
-
-            return $this->redirectToRoute('app_pokedex_region', [
-                'region' => 'national',
-                'page' => 1,
-            ]);
-        }
-
-        // Lowercase the query for consistency (PokéAPI is case-insensitive)
-        $query = strtolower($query);
-
-        try {
-            // Fetch Pokémon data (handles both name and ID)
-            $pokemonDTO = $this->pokeApi->getPokemon($query);
-
-            // Transform PokemonDTO to array matching PokedexEntryDTO structure
-            $searchResult = [
-                'id' => $pokemonDTO->id,
-                'name' => $pokemonDTO->name,
-                'artwork' => $pokemonDTO->sprites->officialArtwork,
-                'types' => array_map(fn($type) => $type->name, $pokemonDTO->types),
-            ];
-
-            return $this->render('pokemon/search.html.twig', [
-                'query' => $query,
-                'pokemons' => $pokemons,
-                'teamPokemonIds' => $teamPokemonIds,
-            ]);
-        } catch (ClientException $e) {
-            if (404 === $e->getResponse()->getStatusCode()) {
-                $this->addFlash('error', "Pokémon '$query' not found. Please check the name or ID.");
-
-                return $this->redirectToRoute('app_pokedex_region', [
-                    'region' => 'national',
-                    'page' => 1,
-                ]);
-            }
-            throw $e; // Re-throw other client errors
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'An error occurred while searching. Please try again.');
-
-            return $this->redirectToRoute('app_pokedex_region', [
-                'region' => 'national',
-                'page' => 1,
-            ]);
-        }
     }
 }

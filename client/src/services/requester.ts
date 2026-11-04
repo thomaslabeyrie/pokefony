@@ -20,7 +20,7 @@ export function logout(): Promise<LogoutResponse> {
 }
 
 export function getSpecies(name: string): Promise<Species> {
-  return request<Species>(`/pokemon/${name}`)
+  return request<Species>(`/species/${name}`)
 }
 export function getPokedex(name: string): Promise<Pokedex> {
   return request<Pokedex>(`/pokedex/${name}`)
