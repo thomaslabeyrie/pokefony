@@ -22,17 +22,26 @@ async function handleLogout() {
       <div v-if="auth.isAuthenticated" class="flex w-full items-center justify-end gap-4">
         <p>{{ auth.user?.user }}</p>
         <button
-          class="transition-200 h-12 cursor-pointer text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
+          class="transition-200 cursor-pointer text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
           @click="handleLogout"
         >
           Logout
         </button>
-        <UserCircleIcon class="size-10 text-neutral-400" />
       </div>
 
       <div v-else class="flex gap-4">
-        <RouterLink :to="{ name: 'login' }"> Login </RouterLink>
-        <RouterLink :to="{ name: 'register' }"> Register </RouterLink>
+        <RouterLink
+          :to="{ name: 'login' }"
+          class="transition-200 cursor-pointer text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
+        >
+          Login
+        </RouterLink>
+        <RouterLink
+          :to="{ name: 'register' }"
+          class="transition-200 cursor-pointer text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
+        >
+          Register
+        </RouterLink>
       </div>
     </div>
   </div>
