@@ -3,20 +3,20 @@ import type { Pokedex } from '@/types/Pokedex'
 import { ApiError, NetworkError, UnprocessableEntityError, UnauthorizedError } from '@/errors/errors'
 import type { User, RegistrationBody, RegistrationResponse, LoginBody, HttpRequestMethod, LogoutResponse } from '@/types/requester'
 
-const baseUrl = import.meta.env.VITE_API_URL
+const baseUrl = import.meta.env.VITE_API_URL + '/api'
 
 // Auth
 export function register(body: RegistrationBody): Promise<RegistrationResponse> {
-  return request<RegistrationResponse>('/api/register', 'POST', body)
+  return request<RegistrationResponse>('/register', 'POST', body)
 }
 export function login(body: LoginBody): Promise<User> {
-  return request<User>('/api/login', 'POST', body)
+  return request<User>('/login', 'POST', body)
 }
 export function me(): Promise<User> {
-  return request<User>('/api/me')
+  return request<User>('/me')
 }
 export function logout(): Promise<LogoutResponse> {
-  return request('/api/logout', 'POST')
+  return request('/logout', 'POST')
 }
 
 export function getSpecies(name: string): Promise<Species> {

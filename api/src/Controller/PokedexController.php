@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/api')]
 final class PokedexController extends AbstractController
 {
     public function __construct(
@@ -25,7 +26,7 @@ final class PokedexController extends AbstractController
         return new JsonResponse($viewModel);
     }
 
-    #[Route(path: '/pokedex/{name?national}/{page?1}', name: 'app_pokedex_region')]
+    #[Route(path: '/pokedex/{name?national}/{page?1}', name: 'api_pokedex_region')]
     public function getOne(string $name, int $page): Response
     {
         $pokedex = $this->pokeApi->getPokedex($name, $page);
