@@ -94,7 +94,7 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
           <tr
             v-for="item in paginatedPokedex.items"
             :key="item.number"
-            class="cursor-pointer rounded-xl transition-colors hover:bg-neutral-800"
+            class="cursor-pointer *:transition-colors hover:*:bg-neutral-800"
             @click="router.push({ name: 'species', params: { name: item.name } })"
           >
             <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ item.number }}</td>
