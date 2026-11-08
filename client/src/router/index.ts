@@ -6,6 +6,7 @@ import SpeciesView from '@/views/SpeciesView.vue'
 import NotFound from '@/views/NotFoundView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PcView from '@/views/PcView.vue'
 
 const routes = [
   {
@@ -32,6 +33,12 @@ const routes = [
       query: route.query.pokemon || '',
     }),
     component: PokedexView,
+  },
+  {
+    path: '/pc',
+    name: 'pc',
+    props: true,
+    component: PcView,
   },
   {
     path: '/species/:name',

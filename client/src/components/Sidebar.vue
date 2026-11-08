@@ -26,8 +26,9 @@ async function handleLogout() {
       >
         Pokédex
       </RouterLink>
+
       <RouterLink
-        :to="{ name: 'home' }"
+        :to="{ name: 'pc' }"
         class="transition-200 flex items-center gap-2 rounded-lg px-2 py-1 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-900"
       >
         PC
