@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAuthStore } from '@/stores/authStore'
-import { BookOpenIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -14,7 +13,7 @@ async function handleLogout() {
 
 <template>
   <div
-    class="flex h-full flex-col justify-between gap-4 border-r border-r-neutral-700 bg-neutral-900 px-2 py-3"
+    class="flex h-full min-w-64 flex-col justify-between gap-4 border-r border-r-neutral-700 bg-neutral-900 px-2 py-3"
   >
     <h1 class="w-full px-2 text-2xl">Pokéfony</h1>
 
@@ -37,7 +36,7 @@ async function handleLogout() {
 
     <hr class="text-neutral-600" />
 
-    <div class="flex w-full items-center justify-end gap-12 px-2">
+    <div v-if="auth.isAuthenticated" class="flex w-full items-center justify-between gap-12 px-2">
       <p>{{ auth.user?.user }}</p>
       <button
         class="transition-200 cursor-pointer text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
@@ -45,6 +44,21 @@ async function handleLogout() {
       >
         Logout
       </button>
+    </div>
+
+    <div v-else class="flex flex-col gap-2">
+      <RouterLink
+        :to="{ name: 'login' }"
+        class="transition-200 cursor-pointer px-2 py-1 text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
+      >
+        Login
+      </RouterLink>
+      <RouterLink
+        :to="{ name: 'register' }"
+        class="transition-200 cursor-pointer px-2 py-1 text-neutral-500 transition-colors duration-150 hover:text-neutral-100"
+      >
+        Register
+      </RouterLink>
     </div>
   </div>
 </template>
