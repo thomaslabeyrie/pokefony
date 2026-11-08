@@ -84,11 +84,12 @@ const range = (from: number, to: number): number[] => {
       <RouterLink
         v-else
         :to="pageLink(item)"
-        class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:text-neutral-100"
+        class="flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors"
         :class="{
-          'bg-neutral-700': item === props.currentPage,
-          'text-neutral-100': item === props.currentPage,
+          'bg-neutral-100': item === props.currentPage,
+          'text-neutral-800': item === props.currentPage,
           'text-neutral-500': item !== props.currentPage,
+          'hover:text-neutral-100': item !== props.currentPage,
         }"
       >
         {{ item }}
