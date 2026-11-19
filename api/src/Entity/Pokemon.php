@@ -8,8 +8,6 @@ use App\Entity\Embeddable\Moveset;
 use App\Enum\NatureEnum;
 use App\Enum\GenderEnum;
 use App\Repository\PokemonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

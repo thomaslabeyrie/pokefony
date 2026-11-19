@@ -36,6 +36,16 @@ readonly class PokeApiService
         return $cached;
     }
 
+    public function getPokemon(string $pokemonName): PokemonDTO {
+        $cached = $this->cache->get("pokemon_$pokemonName",
+            function (ItemInterface $item) use ($pokemonName) {
+                $item->expiresAfter(60 * 60 * 24);
+                return $this->pokeApiClient->get(PokemonDTO::class, $pokemonName);
+        });
+
+        return $cached;
+    }
+
     /**
      * @return array<string,mixed>
      */

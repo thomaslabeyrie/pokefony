@@ -14,3 +14,9 @@ Content-Type: application/json
 
 ### Me
 GET {{ ApiBaseUrl }}/api/me
+
+### PC
+GET {{ ApiBaseUrl }}/api/pc
+
+### Pokémon
+GET {{ ApiBaseUrl }}/api/pokemon/bulbasaur
