@@ -32,7 +32,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Gender rate</th>
         <td>
           {{ props.genderRate }} / 12
-          <span class="text-neutral-500">({{ toPercent(props.genderRate, 12) }}%)</span>
+          <span class="text-base-content/60">({{ toPercent(props.genderRate, 12) }}%)</span>
         </td>
       </tr>
 
@@ -50,7 +50,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Capture rate</th>
         <td>
           {{ props.captureRate }} / 255
-          <span class="text-neutral-500">({{ toPercent(props.captureRate, 255) }}%)</span>
+          <span class="text-base-content/60">({{ toPercent(props.captureRate, 255) }}%)</span>
         </td>
       </tr>
 
@@ -58,7 +58,7 @@ const props = defineProps<{
         <th scope="row" class="w-2/12 py-4 font-normal">Base happiness</th>
         <td>
           {{ props.baseHappiness }} / 255
-          <span class="text-neutral-500">({{ toPercent(props.baseHappiness, 255) }}%)</span>
+          <span class="text-base-content/60">({{ toPercent(props.baseHappiness, 255) }}%)</span>
         </td>
       </tr>
 
@@ -74,7 +74,7 @@ const props = defineProps<{
             <span
               v-for="(ability, key) in props.abilities"
               :key
-              class="rounded-full bg-neutral-700 px-3 py-1 text-sm"
+              class="badge badge-neutral"
               >{{ toUcFirst(ability, ' ') }}</span
             >
           </div>

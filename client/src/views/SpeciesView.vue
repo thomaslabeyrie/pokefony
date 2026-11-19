@@ -23,23 +23,23 @@ onMounted(async () => {
 <template>
   <div class="grid grid-cols-6 gap-6 py-6 w-3/5 m-auto">
     <!-- Sprite -->
-    <div class="col-span-2 rounded-xl bg-neutral-800">
+    <div class="col-span-2 rounded-box bg-base-200">
       <div class="p-6">
-        <div v-if="!species" class="h-50 animate-pulse rounded-xl bg-neutral-700"></div>
+        <div v-if="!species" class="skeleton h-50"></div>
         <img v-else :src="species.spriteUrl" :alt="species.name" class="mx-auto block" />
       </div>
-      <div class="border-t border-neutral-700 px-6 py-4">
+      <div class="border-t border-base-300 px-6 py-4">
         <template v-if="!species">
-          <div class="mb-2 h-4 w-1/2 animate-pulse rounded bg-neutral-700"></div>
-          <div class="mb-2 h-3 w-1/3 animate-pulse rounded bg-neutral-700"></div>
-          <div class="h-5 w-2/3 animate-pulse rounded-full bg-neutral-700"></div>
+          <div class="skeleton mb-2 h-4 w-1/2"></div>
+          <div class="skeleton mb-2 h-3 w-1/3"></div>
+          <div class="skeleton h-5 w-2/3 rounded-full"></div>
         </template>
         <template v-else>
           <h3 class="text-xl font-bold">
             {{ toUcFirst(species.name) }}
-            <span class="text-neutral-500">#{{ species.id }}</span>
+            <span class="text-base-content/60">#{{ species.id }}</span>
           </h3>
-          <h6 class="font-light text-neutral-400">{{ species.genus }}</h6>
+          <h6 class="font-light text-base-content/70">{{ species.genus }}</h6>
           <div class="mt-2 flex flex-wrap gap-1">
             <span
               v-for="type in species.types"
@@ -58,12 +58,12 @@ onMounted(async () => {
     </div>
 
     <!-- Species Details -->
-    <div class="col-span-4 rounded-xl bg-neutral-800">
-      <div class="border-b border-neutral-700 px-6 py-4">
+    <div class="col-span-4 rounded-box bg-base-200">
+      <div class="border-b border-base-300 px-6 py-4">
         <h5 class="font-semibold">Species Details</h5>
       </div>
       <div class="p-6">
-        <div v-if="!species" class="h-4 w-1/2 animate-pulse rounded bg-neutral-700"></div>
+        <div v-if="!species" class="skeleton h-4 w-1/2"></div>
         <SpeciesDetailsTable
           v-else
           v-bind="{
@@ -83,23 +83,23 @@ onMounted(async () => {
     </div>
 
     <!-- Stats -->
-    <div class="col-span-6 rounded-xl bg-neutral-800">
-      <div class="border-b border-neutral-700 px-6 py-4">
+    <div class="col-span-6 rounded-box bg-base-200">
+      <div class="border-b border-base-300 px-6 py-4">
         <h5 class="font-semibold">Stats</h5>
       </div>
       <div class="p-6">
-        <div v-if="!species" class="h-4 w-1/2 animate-pulse rounded bg-neutral-700"></div>
+        <div v-if="!species" class="skeleton h-4 w-1/2"></div>
         <StatsTable v-else :stats="species.stats" />
       </div>
     </div>
 
     <!-- Type effectiveness -->
-    <div class="col-span-6 rounded-xl bg-neutral-800">
-      <div class="border-b border-neutral-700 px-6 py-4">
+    <div class="col-span-6 rounded-box bg-base-200">
+      <div class="border-b border-base-300 px-6 py-4">
         <h5 class="font-semibold">Type effectiveness</h5>
       </div>
       <div class="p-6">
-        <div v-if="!species" class="h-4 w-1/2 animate-pulse rounded bg-neutral-700"></div>
+        <div v-if="!species" class="skeleton h-4 w-1/2"></div>
         <DamageRelationsTable v-else :relations="species.damageRelations" />
       </div>
     </div>

@@ -2,7 +2,6 @@
 import { ref, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { toUcFirst } from '@/utils'
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { Pokedex } from '@/types/Pokedex'
 import { getPokedex, getPokedexesList } from '@/services/requester'
 import PokemonTypeIcon from '@/components/PokemonTypeIcon.vue'
@@ -49,63 +48,37 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
 </script>
 
 <template>
-  <div class="mx-auto my-8 w-1/2">
-    <div class="relative flex gap-4">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search for a Pokémon"
-        class="focus-within m-auto flex h-10 w-1/2 justify-between gap-2 rounded-full px-4 py-2 outline-1 outline-neutral-700 transition-colors focus-within:outline-neutral-400"
-      />
+  <div class="flex flex-col items-center justify-center px-4 py-8 md:px-16 lg:px-24">
+    <div class="relative mb-4 flex w-1/2 flex-col justify-center gap-4 px-4 md:flex-row">
+      <input v-model="searchQuery" type="text" placeholder="Search for a Pokémon" class="input" />
 
-      <select
-        name="pokedex"
-        id="pokedex"
-        v-model="selectedDex"
-        placeholder="Pokédex"
-        class="m-auto h-10 w-1/2 appearance-none rounded-full py-2 pr-10 pl-4 outline-1 outline-neutral-700 transition-colors focus-within:outline-neutral-400"
-      >
+      <select name="pokedex" id="pokedex" v-model="selectedDex" class="select">
         <optgroup v-for="(_, region) in dexNamesByRegion" :label="toUcFirst(region)">
           <option v-for="dex in dexNamesByRegion[region]" :key="dex" :value="dex">
             {{ toUcFirst(dex, ' ') }}
           </option>
         </optgroup>
       </select>
-
-      <ChevronDownIcon
-        class="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-neutral-500"
-      />
     </div>
 
-    <div
-      v-if="paginatedPokedex"
-      class="m-8 flex flex-col items-center transition-opacity duration-200"
-      :class="{ 'pointer-events-none opacity-0': loading }"
-    >
-      <table class="w-full table-fixed">
-        <colgroup>
-          <col class="w-38" />
-          <col class="w-42" />
-          <col />
-          <col class="w-40" />
-        </colgroup>
-
+    <div v-if="paginatedPokedex" class="my-8 xl:w-3/5">
+      <table class="table">
         <tbody>
-          <tr
-            v-for="item in paginatedPokedex.items"
-            :key="item.number"
-            class="cursor-pointer *:transition-colors hover:*:bg-neutral-800"
-            @click="router.push({ name: 'species', params: { name: item.name } })"
-          >
-            <td class="w-12 rounded-l-full px-6 py-3 text-neutral-400">#{{ item.number }}</td>
+          <tr v-for="item in paginatedPokedex.items" :key="item.number">
+            <td class="text-base-content/60 px-6 py-3">#{{ item.number }}</td>
 
             <td class="py-3">
               <SpriteImage :src="item.spriteUrl" :alt="item.name" />
             </td>
 
-            <td class="py-3 font-bold">{{ toUcFirst(item.name) }}</td>
+            <td
+              class="cursor-pointer py-3 font-bold hover:underline"
+              @click="router.push({ name: 'species', params: { name: item.name } })"
+            >
+              <div>{{ toUcFirst(item.name) }}</div>
+            </td>
 
-            <td class="rounded-r-full py-3">
+            <td>
               <div class="flex gap-2">
                 <PokemonTypeIcon v-for="type in item.types" :key="type" :type />
               </div>
@@ -122,5 +95,3 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
     </div>
   </div>
 </template>
-
-<style></style>

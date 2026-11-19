@@ -1,7 +1,11 @@
 @import 'tailwindcss';
+@plugin 'daisyui' {
+  themes: all;
+}
 
-@layer base {
-  body {
-    @apply bg-neutral-900 text-white;
-  }
+:root,
+[data-theme] {
+  --radius-box: 1rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 1rem;
 }

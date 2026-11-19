@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import TextInput from '@/components/TextInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import useFetch from '@/composables/fetch'
 import { useRouter } from 'vue-router'
 import { fieldErrorsOf, generalErrorOf } from '@/errors/errors'
@@ -26,7 +26,7 @@ async function handleLogin() {
 <template>
   <div class="flex h-full w-full justify-center items-center">
     <form @submit.prevent="handleLogin" class="flex h-fit w-1/4 flex-col gap-8">
-      <TextInput
+      <BaseInput
         v-model="email"
         type="text"
         name="email"
@@ -34,7 +34,7 @@ async function handleLogin() {
         :error="fieldErrors['email']"
       />
 
-      <TextInput
+      <BaseInput
         v-model="password"
         type="password"
         name="password"
@@ -44,7 +44,7 @@ async function handleLogin() {
 
       <div
         v-if="generalError"
-        class="w-full rounded-lg bg-red-950 px-4 py-2 text-center text-red-400"
+        class="alert alert-error alert-soft justify-center"
       >
         {{ generalError }}
       </div>
@@ -52,7 +52,7 @@ async function handleLogin() {
       <button
         type="submit"
         :disabled="loading"
-        class="transition-200 h-12 cursor-pointer rounded-xl bg-neutral-700 px-6 py-2 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-900"
+        class="btn btn-primary h-12"
       >
         Login
       </button>

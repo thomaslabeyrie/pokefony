@@ -71,26 +71,23 @@ const range = (from: number, to: number): number[] => {
   <div v-if="totalPages > 0" class="flex w-full items-center justify-center gap-4">
     <RouterLink
       :to="pageLink(currentPage - 1)"
-      class="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-neutral-600 hover:first:text-neutral-100"
+      class="btn btn-circle btn-ghost btn-sm text-base-content/60 hover:text-base-content"
     >
-      <ChevronLeftIcon
-        class="size-5 cursor-pointer text-neutral-500 transition-colors hover:text-neutral-100"
-      />
+      <ChevronLeftIcon class="size-5" />
     </RouterLink>
 
     <template v-for="item in items">
-      <div v-if="item === ellipsis" class="text-neutral-500">...</div>
+      <div v-if="item === ellipsis" class="text-base-content/60">...</div>
 
       <RouterLink
         v-else
         :to="pageLink(item)"
-        class="flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors"
-        :class="{
-          'bg-neutral-100': item === props.currentPage,
-          'text-neutral-800': item === props.currentPage,
-          'text-neutral-500': item !== props.currentPage,
-          'hover:text-neutral-100': item !== props.currentPage,
-        }"
+        class="btn btn-square btn-sm"
+        :class="
+          item === props.currentPage
+            ? 'btn-primary'
+            : 'btn-ghost text-base-content/60 hover:text-base-content'
+        "
       >
         {{ item }}
       </RouterLink>
@@ -98,11 +95,9 @@ const range = (from: number, to: number): number[] => {
 
     <RouterLink
       :to="pageLink(currentPage + 1)"
-      class="flex size-8 cursor-pointer items-center justify-center rounded-full text-neutral-100 transition-colors hover:bg-neutral-600"
+      class="btn btn-circle btn-ghost btn-sm text-base-content/60 hover:text-base-content"
     >
-      <ChevronRightIcon
-        class="size-5 cursor-pointer text-neutral-500 transition-colors hover:text-neutral-100"
-      />
+      <ChevronRightIcon class="size-5" />
     </RouterLink>
   </div>
 </template>

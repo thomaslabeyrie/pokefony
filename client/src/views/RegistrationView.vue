@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { register } from '@/services/requester'
-import TextInput from '@/components/TextInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import useFetch from '@/composables/fetch'
 import { useRouter } from 'vue-router'
 import { fieldErrorsOf, generalErrorOf } from '@/errors/errors'
@@ -24,7 +24,7 @@ async function handleRegister() {
 
 <template>
   <form @submit.prevent="handleRegister" class="m-auto mt-16 flex w-1/3 flex-col gap-8">
-    <TextInput
+    <BaseInput
       v-model="email"
       type="text"
       name="email"
@@ -32,7 +32,7 @@ async function handleRegister() {
       :error="fieldErrors['email']"
     />
 
-    <TextInput
+    <BaseInput
       v-model="plainPassword"
       type="password"
       name="password"
@@ -42,7 +42,7 @@ async function handleRegister() {
 
     <div
       v-if="generalError"
-      class="w-full rounded-lg bg-red-950 px-4 py-2 text-center text-red-400"
+      class="alert alert-error alert-soft justify-center"
     >
       {{ generalError }}
     </div>
@@ -50,7 +50,7 @@ async function handleRegister() {
     <button
       type="submit"
       :disabled="loading"
-      class="transition-200 h-12 cursor-pointer rounded-xl bg-neutral-700 px-6 py-2 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-900"
+      class="btn btn-primary h-12"
     >
       Register
     </button>
