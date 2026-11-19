@@ -1,5 +1,6 @@
 import type { Species } from '@/types/Species'
 import type { Pokedex } from '@/types/Pokedex'
+import type { Pokemon } from '@/types/Pokemon'
 import { ApiError, NetworkError, UnprocessableEntityError, UnauthorizedError } from '@/errors/errors'
 import type { User, RegistrationBody, RegistrationResponse, LoginBody, HttpRequestMethod, LogoutResponse } from '@/types/requester'
 
@@ -27,6 +28,9 @@ export function getPokedex(name: string): Promise<Pokedex> {
 }
 export function getPokedexesList(): Promise<Record<string, string[]>> {
   return request<Record<string, string[]>>('/pokedex')
+}
+export function getPokemon(name: string): Promise<Pokemon> {
+  return request<Pokemon>(`/pokemon/${name}`)
 }
 
 async function request<T>(

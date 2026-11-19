@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { toUcFirst } from '@/utils'
+import { PlusIcon } from '@heroicons/vue/24/outline'
 import type { Pokedex } from '@/types/Pokedex'
 import { getPokedex, getPokedexesList } from '@/services/requester'
 import PokemonTypeIcon from '@/components/PokemonTypeIcon.vue'
@@ -10,6 +11,8 @@ import SpriteImage from '@/components/SpriteImage.vue'
 import useFuzzyFinding from '@/composables/fuzzyFinding'
 import usePaginated from '@/composables/pagination'
 import useSearchQuery from '@/composables/searchQuery'
+import BaseModal from '@/components/BaseModal.vue'
+import AddPokemonForm from '@/components/AddPokemonForm.vue'
 
 const props = defineProps<{
   pokedex: string
@@ -45,6 +48,15 @@ watch(
 const searchQuery = useSearchQuery(() => props.query)
 const searchablePokedex = useFuzzyFinding(pokedex, () => props.query)
 const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
+
+const showModal = ref(false)
+const modalLoading = ref(false)
+const speciesToAdd = ref<string | null>(null)
+
+function openAddPokemonModal(pokemon: string) {
+  speciesToAdd.value = pokemon
+  showModal.value = true
+}
 </script>
 
 <template>
@@ -83,6 +95,15 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
                 <PokemonTypeIcon v-for="type in item.types" :key="type" :type />
               </div>
             </td>
+
+            <td class="py-3">
+              <button
+                @click="openAddPokemonModal(item.name)"
+                class="btn btn-square btn-ghost btn-sm"
+              >
+                <PlusIcon class="size-6" />
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -93,5 +114,10 @@ const paginatedPokedex = usePaginated(searchablePokedex, () => props.page, 20)
         class="mt-8"
       />
     </div>
+
+    <BaseModal v-model="showModal" class="m-auto">
+      <h2 v-if="modalLoading">Loading</h2>
+      <AddPokemonForm v-model:species="speciesToAdd"/>
+    </BaseModal>
   </div>
 </template>
