@@ -26,6 +26,9 @@ class PokemonDTO implements PokeApiEndpointDtoInterface
     /** @var NamedResourceDTO[] */
     public array $forms;
 
+    /** @var PokemonMoveDTO[] */
+    public array $moves;
+
     public NamedResourceDTO $species;
 
     public PokemonSpritesDTO $sprites;
