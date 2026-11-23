@@ -8,6 +8,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.poke_api_url: "%env(POKEAPI_BASE_URL)%"
+    # PokéAPI commit the pokedata schema is built from.
+    # Find a newer one at https://github.com/PokeAPI/pokeapi/commits/master/data/v2/csv
+    pokedata.commit: 'de6760be38b60a3024f1d9054330ff265f0dc619'
 
 services:
     # default configuration for services in *this* file
