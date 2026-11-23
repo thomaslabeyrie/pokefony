@@ -1,4 +1,4 @@
-export function toUcFirst(text: string, separator?: string): string {
+export function toUcFirst(text: string, separator: string = ' '): string {
   const split = text.split('')
   const toReplace = ['-', '_']
 

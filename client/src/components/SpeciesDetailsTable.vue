@@ -38,7 +38,7 @@ const props = defineProps<{
 
       <tr class="text-left">
         <th scope="row" class="w-2/12 py-4 font-normal">Growth rate</th>
-        <td>{{ toUcFirst(props.growthRate, ' ') }}</td>
+        <td>{{ toUcFirst(props.growthRate) }}</td>
       </tr>
 
       <tr class="text-left">
@@ -75,7 +75,7 @@ const props = defineProps<{
               v-for="(ability, key) in props.abilities"
               :key
               class="badge badge-neutral"
-              >{{ toUcFirst(ability, ' ') }}</span
+              >{{ toUcFirst(ability) }}</span
             >
           </div>
         </td>

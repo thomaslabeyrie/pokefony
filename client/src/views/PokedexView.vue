@@ -67,7 +67,7 @@ function openAddPokemonModal(pokemon: string) {
       <select name="pokedex" id="pokedex" v-model="selectedDex" class="select">
         <optgroup v-for="(_, region) in dexNamesByRegion" :label="toUcFirst(region)">
           <option v-for="dex in dexNamesByRegion[region]" :key="dex" :value="dex">
-            {{ toUcFirst(dex, ' ') }}
+            {{ toUcFirst(dex) }}
           </option>
         </optgroup>
       </select>
